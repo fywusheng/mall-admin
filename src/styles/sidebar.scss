@@ -1,0 +1,71 @@
+#app {
+  .app-wrapper {}
+
+  .main-container {
+    min-height: 100%;
+    margin-left: 235px;
+    width: calc(100% - 235px);
+    transition: margin-left .28s;
+    position: relative;
+    background: #F7F8FA;
+    padding: 0 18px;
+    box-sizing: border-box;
+  }
+
+  .hideSidebar {
+    .left-sidebar-container {
+      width: 56px !important;
+    }
+
+    .main-container {
+      width: calc(100% - 200px);
+      margin-left: 200px;
+    }
+
+    .sidebar-container {
+      left: 0px !important;
+    }
+
+    .fixed-header {
+      width: calc(100% - 200px);
+      left: 200px;
+      background: #F7F8FA;
+    }
+  }
+
+  .sidebar-container,
+  .left-sidebar-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 100px;
+    transition: width 0.28s;
+    // padding-top: 50px;
+    width: $sideBarWidth !important;
+    flex-shrink: 0;
+    height: calc(100vh - 70px);
+    font-size: 0px;
+    z-index: 1001;
+    overflow-x: auto;
+    // overflow: hidden;
+
+    .side-menu-list {
+      height: 100vh;
+    }
+  }
+
+  .left-sidebar-container {
+    left: 0;
+    background-color: $menuBg;
+    width: 100px !important;
+
+    .el-menu {
+      border-right: 1px solid #f5f5f5;
+      border: none !important;
+    }
+
+    .el-menu--collapse {
+      width: 100% !important;
+    }
+  }
+}
