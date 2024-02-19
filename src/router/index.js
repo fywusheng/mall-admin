@@ -83,34 +83,46 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: '/apps/oss/commerce/commodity',
-    component: Layout,
-    children: [
-      {
-        path: 'approval-pending',
-        component: resolve => require(['../views/commodity-module/product/approval-pending-list'], resolve),
-        name: 'Approval-Pending',
-        meta: { title: '商城 / 商品管理 / 商品审核' }
-      }
-    ]
-  },
+  // TODO 动态权限菜单需要添加该路由
+  // {
+  //   path: '/apps/oss/commerce/commodity',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'approval-pending',
+  //       component: resolve => require(['../views/commodity-module/product/approval-pending-list'], resolve),
+  //       name: 'Approval-Pending',
+  //       meta: { title: '商城 / 商品管理 / 商品审核' }
+  //     }
+  //   ]
+  // },
 
   {
     path: '/apps/commodity',
     component: Layout,
     children: [
+      // TODO 动态权限菜单需要添加该路由， 老的商品审核注释掉了，从老龄服务平台复制过来新文件修改
+      {
+        path: 'examine',
+        component: resolve => require(['../views/commodity-module/examine/examined-list.vue'], resolve),
+        name: 'Examine',
+        meta: { title: '商城 / 商品管理 / 商品审核' }
+      },
+      // TODO 动态权限菜单需要添加该路由
       {
         path: 'brand',
         component: resolve => require(['../views/commodity-module/brand/list'], resolve),
         name: 'Brand',
-        meta: { title: '商城 / 商品管理 / 品牌信息' }
+        // meta: { title: '商城 / 商品管理 / 品牌信息' }
+        meta: { title: '商城 / 商品管理 / 品牌管理' }
       },
+      // TODO 动态权限菜单需要添加该路由
       {
         path: 'category',
         component: resolve => require(['../views/commodity-module/category/list'], resolve),
         name: 'Category',
-        meta: { title: '商城 / 商品管理 / 基础类目' }
+        // meta: { title: '商城 / 商品管理 / 基础类目' }
+        meta: { title: '商城 / 商品管理 / 后台类目' }
       },
       {
         path: ':id/categoryAttribute',
@@ -118,6 +130,7 @@ export const constantRoutes = [
         name: 'CategoryAttribute',
         meta: { title: '商城 / 商品管理 / 配置类目规格' }
       },
+      // TODO 动态权限菜单需要添加该路由
       {
         path: 'attribute',
         component: resolve => require(['../views/commodity-module/attribute/attr-list'], resolve),
@@ -172,17 +185,20 @@ export const constantRoutes = [
         name: 'InventoryPriceDetails',
         meta: { title: '商城 / 商品管理 / 价格、库存变更明细' }
       },
+      // TODO 动态权限菜单需要添加该路由
       {
         path: 'salescategory',
         component: resolve => require(['../views/commodity-module/salescategory/sales-category-list'], resolve),
         name: 'SalesCategory',
-        meta: { title: '商城 / 商品运营 / 运营类目' }
+        // meta: { title: '商城 / 商品运营 / 运营类目' }
+        meta: { title: '商城 / 商品运营 / 前台类目' }
       },
       {
         path: 'salescategory-product/:id',
         component: resolve => require(['../views/commodity-module/salescategory/sales-category-product-list'], resolve),
         name: 'SalesCategoryProduct',
-        meta: { title: '商城 / 商品运营 / 运营类目 / 商品列表 ' }
+        // meta: { title: '商城 / 商品运营 / 运营类目 / 商品列表 ' }
+        meta: { title: '商城 / 商品运营 / 前台类目 / 商品列表 ' }
       },
       {
         path: 'salesplanning',
@@ -241,7 +257,7 @@ export const constantRoutes = [
         meta: { title: '商城 / 交易管理 / 订单信息' }
       },
       {
-        path: 'order-detail/:orderCode',
+        path: 'order-detail/:orderCode/:orderType',
         component: resolve => require(['../views/trade-module/oms/order-template'], resolve),
         name: 'Order-Detail',
         meta: { title: '商城 / 订单中心 / 订单详情' }
@@ -263,6 +279,26 @@ export const constantRoutes = [
         component: resolve => require(['../views/trade-module/aftersales/refund-list'], resolve),
         name: 'Refund-List',
         meta: { title: '商城 / 结算管理 / 退款记录' }
+      }
+    ]
+  },
+
+  // 用户管理
+  {
+    path: '/apps/user',
+    component: Layout,
+    children: [
+      {
+        path: 'user-list',
+        component: resolve => require(['../views/user-module/user/user-list.vue'], resolve),
+        name: 'User-List',
+        meta: { title: '商城  / 用户管理 / 用户列表' }
+      },
+      {
+        path: 'user-details/:psnId/:acctId',
+        component: resolve => require(['../views/user-module/user/user-details.vue'], resolve),
+        name: 'User-Details',
+        meta: { title: '商城 / 用户管理 / 用户详情' }
       }
     ]
   },

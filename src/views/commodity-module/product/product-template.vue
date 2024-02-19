@@ -201,15 +201,36 @@
     <!-- 校验规则处理 -->
     <el-form label-width="160px" class="data-form" :model="oldMoneyForm" :rules="oldMoneyFormRule"
       :v-loading="loading" ref="oldMoneyForm" label-position="right" size="small">
+      <el-form-item label="是否支持会员优惠:" prop="huiyuanyouhui">
+        <el-radio-group v-model="oldMoneyForm.huiyuanyouhui">
+          <el-radio label="1">是</el-radio>
+          <el-radio label="0">否</el-radio>
+        </el-radio-group>
+        <el-input v-if="oldMoneyForm.huiyuanyouhui == 1" v-model="huiyuanyouhuijine"
+          placeholder="请输入会员优惠金额">
+          <template slot="append">元</template>
+        </el-input>
+      </el-form-item>
+
       <el-form-item label="是否支持积分抵扣:" prop="isCreditPoints">
         <el-radio-group v-model="oldMoneyForm.isCreditPoints">
           <el-radio label="0">否</el-radio>
           <el-radio label="1">是</el-radio>
         </el-radio-group>
-        <el-input v-if="oldMoneyForm.isCreditPoints == 1" v-model="pointValue"
-          placeholder="请输入抵扣积分">
-          <template slot="append">元</template>
-        </el-input>
+        <template v-if="oldMoneyForm.isCreditPoints == 1">
+          <span class="_label">会员用户积分抵扣</span>
+          <el-input v-model="pointValue"
+            placeholder="请输入会员用户抵扣积分">
+            <template slot="append">元</template>
+          </el-input>
+        </template>
+        <template v-if="oldMoneyForm.isCreditPoints == 1">
+          <span class="_label">注册用户积分抵扣</span>
+          <el-input v-model="pointValue2"
+            placeholder="请输入注册用户抵扣积分">
+            <template slot="append">元</template>
+          </el-input>
+        </template>
       </el-form-item>
       <!-- 9自营 0供应商 1合伙人 -->
       <el-form-item v-if="userObject.accountType == 9" label="是否返现养老金:" prop="money">
@@ -377,6 +398,7 @@
 import Vue from 'vue'
 import { fetch, post } from "@/utils/http-client"
 import Editor from "@/components/Tinymce"
+import Template from '../brand/template.vue';
 
 export default {
   name: "",
@@ -439,16 +461,23 @@ export default {
         { key: 2, label: "海外发货" }
       ],
       pointValue: '',//积分值
+      pointValue2: '', // 注册用户积分
       oldMoneyForm: {
         money: '0',
         shop: '0',
-        isCreditPoints: '0'
+        isCreditPoints: '0',
+        // TODO
+        huiyuanyouhui: '1'
       },
       moneyValue: '',//输入金额
+      // TODO
+      huiyuanyouhuijine: '', // 会员优惠金额
       oldMoneyFormRule: {
         money: [{ required: true, trigger: "blur" }],
         shop: [{ required: true, trigger: "blur" }],
-        isCreditPoints: [{ required: true, trigger: "blur" }]
+        isCreditPoints: [{ required: true, trigger: "blur" }],
+        // TODO
+        huiyuanyouhui: [{ required: true, trigger: "blur" }]
       },
       shopForm: {
         area: '0',
@@ -905,11 +934,22 @@ export default {
           if (this.oldMoneyForm.isCreditPoints == 1) {
             const patter = /^-?\d+\.?\d{0,2}$/
             if (!this.pointValue) {
-              this.$message.warning('输入的积分不能为空！')
+              this.$message.warning('输入的会员用户积分不能为空！')
               return
             }
             if (!patter.test(this.pointValue)) {
-              this.$message.warning('输入的积分为数字或者数字保留2位小数！')
+              this.$message.warning('输入的会员用户积分为数字或者数字保留2位小数！')
+              return
+            }
+            // TODO
+            // 会员用户抵扣积分 & 注册用户抵扣积分，两项都必须填写，如只写其中一项，需要提示： 积分抵扣设置不完整，请重新设置
+            // 最后需要替换字段
+            if (!this.pointValue2) {
+              this.$message.warning('输入的注册用户积分不能为空！')
+              return
+            }
+            if (!patter.test(this.pointValue2)) {
+              this.$message.warning('输入的注册用户积分为数字或者数字保留2位小数！')
               return
             }
           }
@@ -1134,5 +1174,8 @@ export default {
 }
 .item .el-form-item__label {
   height: 35px;
+}
+._label {
+  margin-left: 25px;
 }
 </style>

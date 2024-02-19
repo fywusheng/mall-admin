@@ -3,9 +3,9 @@
     <el-row class="mb-2">
       <el-form :inline="true">
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" @click="loadData"
-            size="mini">查询</el-button>
-          <el-button type="default" icon="el-icon-circle-plus-outline" @click="add"
+          <!-- <el-button type="primary" icon="el-icon-search" @click="loadData"
+            size="mini">查询</el-button> -->
+          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="add"
             size="mini">新增</el-button>
         </el-form-item>
       </el-form>
