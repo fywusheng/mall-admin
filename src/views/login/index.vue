@@ -1,14 +1,16 @@
 <template>
   <div class="login-container">
     <div class="header">
-      <img class="logo" :src="logo">
-      <div class="header-right">商家帮助中心</div>
+      <!-- <img class="logo" :src="logo"> -->
+      <img class="logo" src="" alt="">
+      <h2 class="title">智慧康复平台业务管理系统</h2>
+      <!-- <div class="header-right">商家帮助中心</div> -->
     </div>
     <div class="center">
-      <div class="center-title">
+      <!-- <div class="center-title">
         <div class="top">轻松开店 惠老惠己</div>
         <div class="btm">开拓市场 提升客流 助力经营</div>
-      </div>
+      </div> -->
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form"
         autocomplete="on" label-position="center" size="large">
 
@@ -35,13 +37,13 @@
     </div>
 
     <div class="footer">
-      <div class="lianxi">
+      <!-- <div class="lianxi">
         <div>关于我们</div>
         <div>联系我们</div>
         <div>公司官网</div>
       </div>
       <div class="copyright">Copyright ©2020-2022 gjllfw.com All rights reserved. 版权所有:国家老龄服务平台
-      </div>
+      </div> -->
     </div>
 
   </div>
@@ -185,11 +187,24 @@ export default {
     box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.02);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    // justify-content: space-between;
+
     .logo {
       height: 43px;
-      width: 383px;
+      // width: 383px;
+      width: 43px;
       margin-left: 73px;
+    }
+    .title {
+//      width: 261px;
+//      height: 28px;
+      font-size: 20px;
+      font-family: PingFangSC, PingFang SC;
+      font-weight: 500;
+      color: #FFFFFF;
+      line-height: 28px;
+      letter-spacing: 1px;
+      margin-left: 15px;
     }
     .header-right {
       font-size: 20px;

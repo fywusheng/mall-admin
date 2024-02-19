@@ -4,9 +4,12 @@
       <div class="logo-warpper">
         <el-image class="logoImg" :src="imgsrc" fit="fill"></el-image>
         <div class="left_title">
+          <div class="comy-name">智慧康复平台业务管理系统</div>
+        </div>
+        <!-- <div class="left_title">
           <div class="comy">{{userObject.supplierName}}</div>
           <div class="people">{{autoObj[userObject.accountType]}}</div>
-        </div>
+        </div> -->
       </div>
 
       <div class="_right">
@@ -71,7 +74,8 @@ export default {
     return {
       autoObj: { 0: '供应商', 1: '合伙人', 9: '平台自营' },
       userObject: {},
-      imgsrc: require('../layout/static/logo.png')
+      // imgsrc: require('../layout/static/logo.png')
+      imgsrc: ''
     }
   },
   mounted() {
@@ -117,12 +121,22 @@ export default {
     .people {
       margin-left: 31px;
     }
+    .comy-name {
+      width: 261px;
+      height: 28px;
+      font-size: 20px;
+      font-family: PingFangSC, PingFang SC;
+      font-weight: 500;
+      color: #FFFFFF;
+      line-height: 28px;
+      letter-spacing: 1px;
+    }
   }
 
   // background-image: url('../layout/static/top_bg.png');
   .logoImg {
-    width: 118px;
-    height: 39px;
+    width: 37px;
+    height: 37px;
     margin-left: 20px;
     margin-right: 14px;
   }

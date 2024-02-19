@@ -2,7 +2,7 @@
   <div v-loading="loading">
     <div class="_body">
       <div class="store">
-        <div class="_left">
+        <!-- <div class="_left">
           <el-image class="_img" :src="storeData.src">
             <div slot="error" class="image-slot spaceImg">无图</div>
           </el-image>
@@ -18,12 +18,14 @@
               >进入店铺设置</el-button
             >
           </div>
-        </div>
+        </div> -->
+        <!-- TODO -->
+        <!-- 最后确认 是否需要根据类型不同来显示加盟商管理的内容 -->
         <div
           v-if="userObject.accountType == 9 || userObject.accountType == 1"
           class="_right"
         >
-          <div class="_title">供应商管理</div>
+          <div class="_title">加盟商管理</div>
           <div class="body">
             <div class="_item" v-for="(item, i) in GYManage.list" :key="i">
               <div class="_icon">
@@ -31,14 +33,14 @@
               </div>
               <div class="_lable">
                 {{ item.t }}
-                <el-popover
+                <!-- <el-popover
                   placement="top-start"
                   width="200"
                   trigger="hover"
                   :content="item.notice"
                 >
                   <i slot="reference" class="el-icon-warning-outline"></i>
-                </el-popover>
+                </el-popover> -->
               </div>
               <div
                 class="_num _marginTop _hover"
@@ -65,14 +67,14 @@
               >
                 <div class="lable">
                   {{ block.label }}
-                  <el-popover
+                  <!-- <el-popover
                     placement="top-start"
                     width="200"
                     trigger="hover"
                     :content="block.notice"
                   >
                     <i slot="reference" class="el-icon-warning-outline"></i>
-                  </el-popover>
+                  </el-popover> -->
                 </div>
                 <div
                   class="num _hover"
@@ -133,33 +135,92 @@
           end-placeholder="结束日期"
         >
         </el-date-picker>
+        <!-- TODO -->
+        <el-button class="statistics-table" @click="showExportDialog">统计报表</el-button>
         <div class="_center">
           <div class="_item" v-for="(item, i) in showData.list" :key="i">
             <div class="_lable">
               {{ item.t }}
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :content="item.notice"
-              >
-                <i slot="reference" class="el-icon-warning-outline"></i>
-              </el-popover>
-            </div>
-            <div class="_num _hover" @click="goPath(saleData[i].url)">
-              {{ saleData[i].num }}
-            </div>
-            <div class="_icon">
+              <div class="_icon">
               <el-avatar
                 :src="item.icon"
                 style="width: 30px; height: 30px"
               ></el-avatar>
             </div>
+            </div>
+            <div class="_num _hover" @click="goPath(saleData[i].url)">
+              {{ saleData[i].num }}
+            </div>
           </div>
         </div>
       </div>
 
-      <div
+      <!-- TODO -->
+      <!-- 排行榜 -->
+      <div class="rank-list">
+        <div class="rank-item">
+          <div class="showData">
+            <div class="_t">
+              <div class="_title">加盟商销售额排行</div>
+              <div class="_line"></div>
+            </div>
+            <div class="_table">
+              <el-table
+                :data="tableData"
+                height="800"
+                stripe
+                style="width: 100%">
+                <el-table-column prop="date" label="排名" width="60"/>
+                <el-table-column prop="name" label="加盟商名称"/>
+                <el-table-column prop="address" label="销售额" width="140"/>
+              </el-table>
+            </div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <div class="showData">
+            <div class="_t">
+              <div class="_title">加盟商注册用户排行</div>
+              <div class="_line"></div>
+            </div>
+            <div class="_table">
+              <el-table
+                :data="tableData"
+                height="800"
+                stripe
+                style="width: 100%">
+                <el-table-column prop="date" label="排名" width="60"/>
+                <el-table-column prop="name" label="加盟商名称"/>
+                <el-table-column prop="address" label="注册数" width="140"/>
+              </el-table>
+            </div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <div class="showData">
+            <div class="_t">
+              <div class="_title">加盟商会员客户排行</div>
+              <div class="_line"></div>
+            </div>
+            <div class="_table">
+              <el-table
+                :data="tableData"
+                height="800"
+                stripe
+                style="width: 100%">
+                <el-table-column prop="date" label="排名" width="60"/>
+                <el-table-column prop="name" label="加盟商名称"/>
+                <el-table-column prop="address" label="会员数" width="140"/>
+              </el-table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 导出弹窗 -->
+      <export-modal v-model="visibleExportModal"/>
+      
+      <!-- <div
         class="showData"
         v-if="userObject.accountType == 9 || userObject.accountType == 1"
       >
@@ -214,7 +275,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -223,6 +284,7 @@
 // import Activate from './activate'
 // import AreaMap from './area'
 // import Status from './status'
+import exportModal from './export-modal.vue'
 import { fetch, post } from "@/utils/http-client";
 export default {
   name: "DeviceStatics",
@@ -230,6 +292,10 @@ export default {
     return {
       loading: false,
       saleData: [
+        { num: "", url: "" },
+        { num: "", url: "" },
+        { num: "", url: "" },
+        { num: "", url: "" },
         { num: "", url: "" },
         { num: "", url: "" },
         { num: "", url: "" },
@@ -258,18 +324,18 @@ export default {
           labelList: [
             {
               label: "待发货订单",
-              notice:
-                "订单需商家进行发货。请在订单支付后48小时内发货完成，若已完成发货，须将发货物流信息录入到仓储发货模块中，否则买家无法查看物流跟踪信息。",
+              // notice:
+              //   "订单需商家进行发货。请在订单支付后48小时内发货完成，若已完成发货，须将发货物流信息录入到仓储发货模块中，否则买家无法查看物流跟踪信息。",
             },
             {
               label: "超48小时发货",
-              notice:
-                "订单支付成功后超过48小时未发货，请尽快发货，以免买家发起纠纷或投诉。",
+              // notice:
+              //   "订单支付成功后超过48小时未发货，请尽快发货，以免买家发起纠纷或投诉。",
             },
             {
               label: "待审核退款订单",
-              notice:
-                "售后退款单需要商家进行人工审核，请尽快处理退款单，以免买家发起纠纷或投诉。",
+              // notice:
+              //   "售后退款单需要商家进行人工审核，请尽快处理退款单，以免买家发起纠纷或投诉。",
             },
           ],
         },
@@ -296,75 +362,85 @@ export default {
         list: [
           {
             t: "订单总数",
-            notice:
-              "产生的所有订单数量，统计订单状态包含“待付款、待发货、配送中、已完成和已退款”等状态的订单。",
-            icon: require("../../../src/assets/imgs/order.png"),
+            icon: require("../../../src/assets/imgs/xs-dt-01.png"),
           },
           {
             t: "订单GMV",
-            notice:
-              "产生的订单实付金额（含运费，不含优惠），统计订单状态包含“待付款、待发货、配送中、已完成、已退款”等状态的订单。",
-            icon: require("../../../src/assets/imgs/gmv.png"),
+            icon: require("../../../src/assets/imgs/xs-dt-02.png"),
           },
           {
             t: "退款单",
-            notice: "产生的所有退款单数量。",
-            icon: require("../../../src/assets/imgs/tkd.png"),
+            icon: require("../../../src/assets/imgs/xs-dt-03.png"),
           },
           {
             t: "已退款金额",
-            notice: "退款成功的所有退款金额（含运费）。",
-            icon: require("../../../src/assets/imgs/tk.png"),
+            icon: require("../../../src/assets/imgs/xs-dt-04.png"),
+          },
+          {
+            t: "订单实付总金额",
+            icon: require("../../../src/assets/imgs/xs-dt-05.png"),
+          },
+          {
+            t: "注册用户",
+            icon: require("../../../src/assets/imgs/xs-dt-06.png"),
+          },
+          {
+            t: "会员客户",
+            icon: require("../../../src/assets/imgs/xs-dt-07.png"),
+          },
+          {
+            t: "平均客单价",
+            icon: require("../../../src/assets/imgs/xs-dt-08.png"),
           },
         ],
       },
       selectDay: "1",
-      GYData: {
-        title: "供应商数据看板",
-        list: [
-          {
-            t: "订单总数",
-            notice:
-              "所有供应商产生的所有订单数量，统计订单状态包含“待付款、待发货、配送中、已完成、已退款”等状态的订单。",
-            icon: require("../../../src/assets/imgs/order.png"),
-          },
-          {
-            t: "订单GMV",
-            notice:
-              "所有供应商产生的订单实付金额（含运费，不含优惠），统计订单状态包含“待付款、待发货、配送中、已完成、已退款”等状态的订单。",
-            icon: require("../../../src/assets/imgs/gmv.png"),
-          },
-          {
-            t: "新增客户",
-            notice:
-              "合伙人管辖下的供应商的首单用户（首单用户：第一次在该店铺产生订单的用户)。",
-            icon: require("../../../src/assets/imgs/xzkh.png"),
-          },
-          {
-            t: "平均客单价",
-            notice: "合伙人当前所有供应商的平均客单价。",
-            icon: require("../../../src/assets/imgs/kdj.png"),
-          },
-        ],
-      },
+      // GYData: {
+      //   title: "供应商数据看板",
+      //   list: [
+      //     {
+      //       t: "订单总数",
+      //       notice:
+      //         "所有供应商产生的所有订单数量，统计订单状态包含“待付款、待发货、配送中、已完成、已退款”等状态的订单。",
+      //       icon: require("../../../src/assets/imgs/order.png"),
+      //     },
+      //     {
+      //       t: "订单GMV",
+      //       notice:
+      //         "所有供应商产生的订单实付金额（含运费，不含优惠），统计订单状态包含“待付款、待发货、配送中、已完成、已退款”等状态的订单。",
+      //       icon: require("../../../src/assets/imgs/gmv.png"),
+      //     },
+      //     {
+      //       t: "新增客户",
+      //       notice:
+      //         "合伙人管辖下的供应商的首单用户（首单用户：第一次在该店铺产生订单的用户)。",
+      //       icon: require("../../../src/assets/imgs/xzkh.png"),
+      //     },
+      //     {
+      //       t: "平均客单价",
+      //       notice: "合伙人当前所有供应商的平均客单价。",
+      //       icon: require("../../../src/assets/imgs/kdj.png"),
+      //     },
+      //   ],
+      // },
       GYManage: {
-        title: "供应商管理",
+        title: "加盟商管理",
         list: [
           {
-            t: "已有供应商",
-            notice: "合伙人当前所有已通过平台审核的供应商。",
+            t: "已有加盟商",
+            // notice: "合伙人当前所有已通过平台审核的供应商。",
             icon: require("../../../src/assets/imgs/index-supply-1.png"),
           },
           {
-            t: "待审核供应商",
-            notice:
-              "合伙人新发展的供应商须平台进行人工审核，审核通过后，方可登录使用老龄宝系统。",
+            t: "待审核加盟商",
+            // notice:
+            //   "合伙人新发展的供应商须平台进行人工审核，审核通过后，方可登录使用老龄宝系统。",
             icon: require("../../../src/assets/imgs/index-supply-2.png"),
           },
           {
-            t: "审核未通过供应商",
-            notice:
-              "合伙人新发展的供应商须平台进行人工审核，审核未通过，无法登录使用老龄宝系统。",
+            t: "审核未通过加盟商",
+            // notice:
+            //   "合伙人新发展的供应商须平台进行人工审核，审核未通过，无法登录使用老龄宝系统。",
             icon: require("../../../src/assets/imgs/index-supply-3.png"),
           },
         ],
@@ -383,6 +459,58 @@ export default {
         { number: "", url: "" },
         { number: "", url: "" },
       ],
+      visibleExportModal: false,
+      tableData: [{
+          date: '1',
+          name: '王小虎',
+          address: '1518'
+        }, {
+          date: '2',
+          name: '王小虎',
+          address: '1517'
+        }, {
+          date: '3',
+          name: '王小虎',
+          address: '1519'
+        }, {
+          date: '4',
+          name: '王小虎',
+          address: '1516'
+        },{
+          date: '1',
+          name: '王小虎',
+          address: '1518'
+        }, {
+          date: '2',
+          name: '王小虎',
+          address: '1517'
+        }, {
+          date: '3',
+          name: '王小虎',
+          address: '1519'
+        }, {
+          date: '4',
+          name: '王小虎',
+          address: '1516'
+        },
+        {
+          date: '1',
+          name: '王小虎',
+          address: '1518'
+        }, {
+          date: '2',
+          name: '王小虎',
+          address: '1517'
+        }, {
+          date: '3',
+          name: '王小虎',
+          address: '1519'
+        }, {
+          date: '4',
+          name: '王小虎',
+          address: '1516'
+        }]
+
     };
   },
   components: {
@@ -390,6 +518,7 @@ export default {
     // Activate,
     // Status,
     // AreaMap
+    exportModal
   },
   created() {
     this.getStoreInfo();
@@ -423,6 +552,11 @@ export default {
           data.orderGmv,
           data.refundOrderCount,
           data.refundAmount,
+          // TODO
+          data.orderNum,
+          data.orderGmv,
+          data.refundOrderCount,
+          data.refundAmount,
         ];
       } else {
         this.$message.warning(res.msg);
@@ -449,6 +583,11 @@ export default {
       this.defineDay = [];
       if (day == "5") return;
       this.supplierDisplayBoard();
+    },
+    // 统计报表
+    showExportDialog () {
+      console.log('统计报表显示')
+      this.visibleExportModal = true
     },
     //供应商数据看板
     async supplierDisplayBoard() {
@@ -613,7 +752,7 @@ export default {
       }
     }
     ._right {
-      margin-left: 96px;
+      margin-left: 30px;
       color: #ffffff;
       ._title {
         margin-top: 38px;
@@ -765,22 +904,36 @@ export default {
     .top_line {
       margin: 12px 0px 16px 0px;
     }
+    .statistics-table {
+      float: right;
+      margin-top: 12px;
+    }
     ._center {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       width: 100%;
       ._item {
         width: 23%;
-        height: 124px;
+        height: 113px;
         background: #ffffff;
         border-radius: 4px;
         border: 1px solid #e5e5e5;
         padding: 12px;
+        margin-bottom: 20px;
+        &:nth-child(5),
+        &:nth-child(6),
+        &:nth-child(7),
+        &:nth-child(8) {
+          margin-bottom: 0px;
+        }
         ._lable {
           font-size: 14px;
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
           color: #333333;
+          display: flex;
+          justify-content: space-between;
         }
         ._num {
           font-size: 24px;
@@ -806,6 +959,54 @@ export default {
       ._marginTop {
         margin-top: 14px;
       }
+    }
+  }
+  .rank-list {
+    display: flex;
+    justify-content: space-between;
+    .rank-item {
+      width: 33.33%;
+      .showData {
+        margin: 0 16px !important;
+      }
+      &:nth-child(1) {
+        .showData {
+          margin-right: 0 !important;
+        }
+      }
+      &:nth-child(3) {
+        .showData {
+          margin-left: 0 !important;
+        }
+      }
+    }
+    ._table {
+      margin-top: 20px;
+      ::v-deep .el-table__header-wrapper {
+        table thead tr th.el-table__cell {
+          background-color: #EBEDF0 !important;
+          height: 56px;
+          font-size: 14px;
+          font-family: PingFangSC, PingFang SC;
+          font-weight: 500;
+          color: #323233;
+        }
+      }
+      ::v-deep .el-table__body-wrapper {
+        table tbody tr td {
+          height: 80px;
+          &:nth-child(1) {
+            color: #FF5500 !important;
+          }
+        }
+      }
+      ::v-deep .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+        background: #FFFAF7;
+        font-size: 14px;
+        font-weight: 400;
+        color: #323233;
+      }
+
     }
   }
   ._padding {
