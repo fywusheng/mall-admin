@@ -317,7 +317,7 @@ export const constantRoutes = [
   },
 
   // 内容管理
-  // TODO 下边四个路由 动态权限菜单需要添加
+  // TODO 下边路由 动态权限菜单需要添加
   {
     path: '/apps/content',
     component: Layout,
@@ -337,6 +337,83 @@ export const constantRoutes = [
     ]
   },
 
+  // 加盟商管理
+  // TODO 下边路由 动态权限菜单需要添加
+  {
+    path: '/apps/franchisee',
+    component: Layout,
+    children: [
+      {
+        path: 'franchisee-list',
+        component: resolve => require(['../views/franchisee-module/franchisee/franchisee-list.vue'], resolve),
+        name: 'Franchisee-List',
+        meta: { title: '商城  / 加盟商管理 / 加盟商列表' }
+      },
+      {
+        path: 'franchisee-tpl/:id',
+        component: resolve => require(['../views/franchisee-module/franchisee/franchisee-tpl.vue'], resolve),
+        name: 'Franchisee-Tpl',
+        meta: { title: '商城 / 加盟商管理 / 新增或编辑加盟商' }
+      },
+      {
+        path: 'franchisee-detail/:id',
+        component: resolve => require(['../views/franchisee-module/franchisee/franchisee-detail.vue'], resolve),
+        name: 'Franchisee-Detail',
+        meta: { title: '商城 / 加盟商管理 / 加盟商详情' }
+      },
+      {
+        path: 'franchisee-examine/:id',
+        component: resolve => require(['../views/franchisee-module/franchisee/franchisee-examine.vue'], resolve),
+        name: 'Franchisee-Examine',
+        meta: { title: '商城 / 加盟商管理 / 加盟商审核' }
+      }
+    ]
+  },
+
+  // 门店管理
+  // TODO 下边路由 动态权限菜单需要添加
+  {
+    path: '/apps/store-manage',
+    component: Layout,
+    children: [
+      {
+        path: 'store-list',
+        component: resolve => require(['../views/store-manage-module/store/store-list.vue'], resolve),
+        name: 'Store-List',
+        meta: { title: '商城  / 门店管理 / 门店列表' }
+      },
+      {
+        path: 'store-tpl/:id',
+        component: resolve => require(['../views/store-manage-module/store/store-tpl.vue'], resolve),
+        name: 'Store-Tpl',
+        meta: { title: '商城  / 门店管理 / 门店新增或编辑' }
+      },
+      {
+        path: 'store-detail/:id',
+        component: resolve => require(['../views/store-manage-module/store/store-detail.vue'], resolve),
+        name: 'Store-Detail',
+        meta: { title: '商城  / 门店管理 / 门店详情' }
+      },
+      {
+        path: 'store-examine/:id',
+        component: resolve => require(['../views/store-manage-module/store/store-examine.vue'], resolve),
+        name: 'Store-Examine',
+        meta: { title: '商城  / 门店管理 / 门店审核' }
+      },
+      {
+        path: 'renewal-list',
+        component: resolve => require(['../views/store-manage-module/renewal/renewal-list.vue'], resolve),
+        name: 'Renewal-List',
+        meta: { title: '商城  / 门店管理 / 门店续签列表' }
+      },
+      {
+        path: 'renewal-info/:id',
+        component: resolve => require(['../views/store-manage-module/renewal/renewal-info.vue'], resolve),
+        name: 'Renewal-Info',
+        meta: { title: '商城  / 门店管理 / 门店续签' }
+      },
+    ]
+  },
 
   {
     path: '/apps/finance',
