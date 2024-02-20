@@ -10,11 +10,12 @@
           <el-input v-model="searchParams.tempCode" placeholder="请输入模板编码..." clearable
             size="mini"></el-input>
         </el-form-item>
+        <!-- TODO 适用用户字段需和后端确认-->
         <el-form-item label="" prop="searchParams.supplierId">
           <el-select v-model="searchParams.supplierId" collapse-tags filterable style="width:100%"
-            size="mini" placeholder="请选择所属商家...">
-            <el-option v-for="item in supplierOptions" :key="item.id" :label="item.supplierName"
-              :value="item.id"></el-option>
+            size="mini" clearable placeholder="请选择适用用户...">
+            <el-option v-for="item in supplierOptions" :key="item.value" :label="item.label"
+              :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -34,7 +35,8 @@
       <el-table-column prop="tempName" label="模板名称" show-overflow-tooltip></el-table-column>
       <el-table-column prop="tempCode" label="模板编码" width="150px"
         show-overflow-tooltip></el-table-column>
-      <el-table-column prop="supplierId" label="所属商家" width="150px"
+        <!-- TODO 适用用户包括【会员用户和注册用户】字段需和后端确认-->
+      <el-table-column prop="supplierId" label="适用用户" width="150px"
         align="center"></el-table-column>
       <el-table-column prop="type" label="计价方式" width="100px" align="center"
         :formatter="formatType"></el-table-column>
@@ -78,7 +80,7 @@ export default {
       loading: false,
       searchParams: {},
       dialogList: [],
-      supplierOptions: [],
+      supplierOptions: [{ label: "会员用户", value: 1 }, { label: "注册用户", value: 2 }],
       showDialog: false
     }
   },
@@ -86,19 +88,19 @@ export default {
     // EditTemplate,
   },
   async mounted() {
-    this.loadSupplierOptions()
+    // this.loadSupplierOptions()
     this.loadData()
   },
   methods: {
 
-    async loadSupplierOptions() {
-      const result = await post("/srm/supplier/listByPageNo", { pageNum: 1, pageSize: 1000 });
-      if (result.code == 200) {
-        this.supplierOptions = result.data.list;
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
+    // async loadSupplierOptions() {
+    //   const result = await post("/srm/supplier/listByPageNo", { pageNum: 1, pageSize: 1000 });
+    //   if (result.code == 200) {
+    //     this.supplierOptions = result.data.list;
+    //   } else {
+    //     this.$message.error(result.msg);
+    //   }
+    // },
     changePage(pageNo) {
       this.pageNo = pageNo
       this.loadData()

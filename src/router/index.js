@@ -284,6 +284,7 @@ export const constantRoutes = [
   },
 
   // 用户管理
+  // TODO 下边四个路由 动态权限菜单需要添加
   {
     path: '/apps/user',
     component: Layout,
@@ -299,9 +300,43 @@ export const constantRoutes = [
         component: resolve => require(['../views/user-module/user/user-details.vue'], resolve),
         name: 'User-Details',
         meta: { title: '商城 / 用户管理 / 用户详情' }
+      },
+      {
+        path: 'vip-list',
+        component: resolve => require(['../views/user-module/vip/vip-list.vue'], resolve),
+        name: 'Vip-List',
+        meta: { title: '商城  / 用户管理 / 会员列表' }
+      },
+      {
+        path: 'vip-details/:psnId/:acctId',
+        component: resolve => require(['../views/user-module/vip/vip-details.vue'], resolve),
+        name: 'Vip-Details',
+        meta: { title: '商城 / 用户管理 / 会员详情' }
       }
     ]
   },
+
+  // 内容管理
+  // TODO 下边四个路由 动态权限菜单需要添加
+  {
+    path: '/apps/content',
+    component: Layout,
+    children: [
+      {
+        path: 'content-list',
+        component: resolve => require(['../views/content-module/content/content-list.vue'], resolve),
+        name: 'Content-List',
+        meta: { title: '商城  / 内容管理 / 内容列表' }
+      },
+      {
+        path: 'category-list',
+        component: resolve => require(['../views/content-module/category/category-list.vue'], resolve),
+        name: 'Category-Details',
+        meta: { title: '商城 / 内容管理 / 内容类别' }
+      }
+    ]
+  },
+
 
   {
     path: '/apps/finance',

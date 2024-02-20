@@ -15,7 +15,9 @@
         </div>
     </div>
     <!-- 用户信息结束 -->
+    <div class="page-title">会员开通记录</div>
     <!-- 查询结果区开始 -->
+    <!-- TODO 表头字段调整，需核对 -->
     <div class="table-wrap ">
       <el-table ref="table" v-loading="listLoading" height="446px" :data="list" element-loading-text="加载中..."   highlight-current-row>
         <el-table-column align="center" label="序号" prop="id" min-width="75">
@@ -23,10 +25,11 @@
             {{ (scope.$index + 1 )+ (formSearch.pageNum - 1) * formSearch.pageSize }}
             </template>
         </el-table-column>
-        <el-table-column label="操作类别" prop="code_biz_info" show-overflow-tooltip />
-        <el-table-column label="操作对象" prop="opter_name"  show-overflow-tooltip />
-        <el-table-column label="操作地点" prop="org_location" show-overflow-tooltip />
-        <el-table-column label="操作时间" prop="create_time"  show-overflow-tooltip />
+        <el-table-column label="序号" prop="code_biz_info" show-overflow-tooltip />
+        <el-table-column label="开通时间" prop="opter_name"  show-overflow-tooltip />
+        <el-table-column label="开通类型" prop="org_location" show-overflow-tooltip />
+        <el-table-column label="开通卡类型" prop="create_time"  show-overflow-tooltip />
+        <el-table-column label="会员费" prop="create_time"  show-overflow-tooltip />
       </el-table>
       <!-- 分页 -->
       <!-- <y-pagination v-show="total>0" class="pageBox" :total="total" :page.sync="formSearch.pageNum" :limit.sync="formSearch.pageSize" @pagination="fetchData" /> -->
@@ -97,7 +100,27 @@ export default {
         {
           key: "email",
           value: "疾病情况"
-        }
+        },
+        // TODO 字段调整，需要核对
+        {
+          key: "email",
+          value: "使用状态"
+        },
+        // TODO 字段调整，需要核对
+        {
+          key: "email",
+          value: "会员有效期"
+        },
+        // TODO 字段调整，需要核对
+        {
+          key: "email",
+          value: "会员续费次数"
+        },
+        // TODO 字段调整，需要核对
+        {
+          key: "email",
+          value: "会员累计已省金额"
+        },
       ],
       listLoading: false,
       list: [],
@@ -255,7 +278,7 @@ export default {
         border-bottom: 1px solid #b6b7b9;
         border-right: 1px solid #b6b7b9;
         .field{
-          width: 120px;
+          width: 140px;
           height: 100%;
           border-right: 1px solid #b6b7b9;
           line-height: 40px;
@@ -266,12 +289,17 @@ export default {
         }
         .content{
           line-height: 40px;
-          margin-left: 120px;
+          margin-left: 140px;
           padding-left: 10px;
           height: 100%;
         }
       }
     }
+  }
+  .page-title {
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 500
   }
 }
 </style>

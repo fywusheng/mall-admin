@@ -10,6 +10,14 @@
           <el-input v-model="searchParams.phone" placeholder="请输入会员手机号码..." clearable
             size="mini"></el-input>
         </el-form-item>
+        <!-- TODO -->
+        <el-form-item label="">
+          <el-select v-model="searchParams.businessType" size="mini" placeholder="请选择业务类型">
+            <el-option v-for="item in businessTypeOptions" :key="item.value" :label="item.label"
+              :value="item.value">
+            </el-option>
+        </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="loadData"
             size="mini">查询</el-button>
@@ -39,6 +47,9 @@
       </el-table-column>
       <el-table-column prop="id" label="退款单号" width="80px" align="center"></el-table-column>
       <el-table-column prop="userLoginName" label="退款人" width="100px"
+        align="center"></el-table-column>
+        <!-- TODO 业务类型包括【交易订单退款和会员订单退款】-->
+        <el-table-column prop="refundTypeStr" label="业务类型" width="120px"
         align="center"></el-table-column>
       <el-table-column prop="refundTypeStr" label="退款类型" width="120px"
         align="center"></el-table-column>
@@ -75,6 +86,7 @@ export default {
       totalCount: 20,
       loading: false,
       orderStatusOptions: [{ name: '待支付', code: '10' }, { name: '待发货', code: '20' }, { name: '待收货', code: '30' }, { name: '待评价', code: '50' }, { name: '交易完成', code: '40' }, { name: '已取消', code: '90' }],
+      businessTypeOptions: [{ label: "交易订单退款", value: 1 }, { label: "会员订单退款", value: 2 }],
       searchParams: {},
       dialogList: [],
       showDialog: false

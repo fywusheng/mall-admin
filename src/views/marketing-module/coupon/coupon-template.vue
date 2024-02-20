@@ -193,6 +193,40 @@
           </td>
         </tr>
       </table>
+
+      <!-- TODO  -->
+      <el-divider content-position="left">
+        <i class="el-icon-postcard" style="color:blue"></i>
+        <font style="color:blue">适用用户</font>
+      </el-divider>
+      <el-row style="height: 10px">
+        <el-col :span="24"></el-col>
+      </el-row>
+      <table width="100%">
+        <tr>
+          <td width="5%"></td>
+          <td width="45%">
+            <el-form-item label="" prop="goodsScope">
+              <template>
+                <el-radio-group v-model="dataForm.scopeUserType" :disabled="dataForm.approveState==1">
+                  <el-radio :label="0">全部用户</el-radio>
+                  <el-radio :label="1">所有会员用户</el-radio>
+                  <el-radio :label="2">所有注册用户</el-radio>
+                </el-radio-group>
+              </template>
+            </el-form-item>
+          </td>
+          <td width="50%">
+            <!-- <span v-if="dataForm.goodsScope===1">
+              <el-link type="primary" @click="addProduct(1)"><i class="el-icon-circle-plus">&nbsp;&nbsp;导入适用商品列表</i></el-link>
+            </span>
+            <template v-if="dataForm.goodsScope===2">
+              <el-link type="primary" @click="addProduct(2)"><i class="el-icon-circle-plus">&nbsp;&nbsp;导入禁用商品列表</i></el-link>
+            </template> -->
+          </td>
+        </tr>
+      </table>
+
       <!-- <el-divider content-position="left" style="width:80%">
       <i class="el-icon-postcard" style="color:blue"></i>
       <font style="color:blue">成本归属</font>
@@ -274,6 +308,7 @@ export default {
         approveStateLabel: '',
         shareState: 1,
         goodsScope: 0,
+        scopeUserType: 0, // TODO 适用用户，字段需和后端核对
         productList: []
       },
       dataRules: {

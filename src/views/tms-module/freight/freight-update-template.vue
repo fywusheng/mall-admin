@@ -11,11 +11,12 @@
         <tr>
           <td width="5%"></td>
           <td width="40%">
-            <el-form-item label="所属商家" prop="supplierId">
-              <el-select v-model="dataForm.supplierId" collapse-tags disabled="true" filterable
-                style="width:90%" placeholder="请选择商家...">
-                <el-option v-for="item in supplierOptions" :key="item.id" :label="item.supplierName"
-                  :value="item.id"></el-option>
+            <!-- TODO 字段需和后端确认-->
+            <el-form-item label="适用用户" prop="supplierId">
+              <el-select v-model="dataForm.xxxxx" collapse-tags filterable
+                style="width:90%" placeholder="请选择适用用户...">
+                <el-option v-for="item in supplierOptions" :key="item.value" :label="item.label"
+                  :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </td>
@@ -147,7 +148,7 @@ export default {
       showDialog: false,
       sending: false,
       dialogVisible: false,
-      supplierOptions: [],
+      supplierOptions: [{ label: "会员用户", value: 1 }, { label: "注册用户", value: 2 }],
       valuationUnitOptions: [
         { key: 1, label: "件" },
         { key: 2, label: "重量" },
@@ -168,7 +169,7 @@ export default {
         renewPrice: ''
       },
       dataRules: {
-        supplierId: [{ required: true, message: "所属商家不能为空，请选择！", valtrigger: "blur" }],
+        supplierId: [{ required: true, message: "适用用户不能为空，请选择！", valtrigger: "blur" }],
         tempName: [{ required: true, message: "运费模板不能为空，请输入！", trigger: "blur" }],
         type: [{ required: true, message: "计价单位不能为空，请选择！", trigger: "blur" }],
         postage: [{ required: true, validator: validatorPostage, trigger: "blur" }]
@@ -184,21 +185,21 @@ export default {
     const userinfor = localStorage.getItem('userInfor')
     const userinforObject = JSON.parse(userinfor)
     this.dataForm.supplierId = userinforObject.supplierId + ''
-    this.loadSupplierOptions()
+    // this.loadSupplierOptions()
     this.id = this.$route.params.id
     if (!this.$route.params.id) return
     this.loadData(this.$route.params.id);
   },
   methods: {
-    async loadSupplierOptions() {
-      const result = await post("/srm/supplier/listByPageNo", { pageNum: 1, pageSize: 1000 });
-      if (result.code == 200) {
-        this.supplierOptions = result.data.list;
-      }
-      else {
-        this.$message.error(result.msg);
-      }
-    },
+    // async loadSupplierOptions() {
+    //   const result = await post("/srm/supplier/listByPageNo", { pageNum: 1, pageSize: 1000 });
+    //   if (result.code == 200) {
+    //     this.supplierOptions = result.data.list;
+    //   }
+    //   else {
+    //     this.$message.error(result.msg);
+    //   }
+    // },
 
     async loadData(id) {
       const result = await fetch("/tms/freight-template/loading", { templateId: id });
