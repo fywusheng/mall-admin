@@ -17,18 +17,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="门店编号" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入门店编号..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="门店编号" prop="storeCode" class="item">
+              <el-input v-model="dataForm.storeCode" placeholder="请输入门店编号..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="门店名称" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入门店名称..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="门店名称" prop="storeName" class="item">
+              <el-input v-model="dataForm.storeName" placeholder="请输入门店名称..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="所属地区" prop="name" class="item">
-              <el-select v-model="dataForm.supplierId" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择所属地区...">
+            <el-form-item label="所属地区" prop="area" class="item">
+              <el-select v-model="dataForm.area" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择所属地区...">
                 <el-option v-for="item in agentTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -38,20 +38,20 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="开店时间" prop="name" class="item">
-              <el-date-picker v-model="dataForm.supplierId" type="date" placeholder="选择开店时间" style="width: 80%">
+            <el-form-item label="开店时间" prop="storeTime" class="item">
+              <el-date-picker v-model="dataForm.storeTime" type="date" placeholder="选择开店时间" style="width: 80%">
               </el-date-picker>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="门店有效期" prop="name" class="item">
-              <el-date-picker v-model="dataForm.supplierId" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 80% !important">
+            <el-form-item label="门店有效期" prop="date" class="item">
+              <el-date-picker v-model="dataForm.date" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 80% !important">
               </el-date-picker>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="所属加盟商" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入加盟费..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="所属加盟商" prop="franchisee" class="item">
+              <el-input v-model="dataForm.franchisee" placeholder="请输入所属加盟商..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -59,18 +59,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="售卖区域" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入销售额..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="售卖区域" prop="region0" class="item">
+              <el-cascader class="_cascader" v-model="dataForm.region" :options="options" :props="props" clearable placeholder="请选择售卖区域..." style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="经营范围" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入加盟地址..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="经营范围" prop="region1" class="item">
+              <el-cascader class="_cascader" v-model="dataForm.addressList" :options="options" :props="props" clearable placeholder="请选择经营范围..." style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="经营品牌" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入加盟地址..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="经营品牌" prop="region2" class="item">
+              <el-cascader class="_cascader" v-model="dataForm.addressList" :options="options" :props="props" clearable placeholder="请选择经营品牌..." style="width:80%"/>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -89,13 +89,13 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="佣金计算方式" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入门店编号..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="佣金计算方式" prop="computeMode1" class="item">
+              <el-input v-model="dataForm.computeMode1" placeholder="请输入佣金计算方式..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="佣金结算方式" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入门店名称..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="佣金结算方式" prop="computeMode2" class="item">
+              <el-input v-model="dataForm.computeMode2" placeholder="请输入佣金结算方式..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%"></td>
@@ -115,18 +115,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="对公账户户名" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入门店编号..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="对公账户户名" prop="accountName" class="item">
+              <el-input v-model="dataForm.accountName" placeholder="请输入对公账户户名..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="对公银行卡号" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入门店名称..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="对公银行卡号" prop="accountCode" class="item">
+              <el-input v-model="dataForm.accountCode" placeholder="请输入对公银行卡号..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="开户银行及支行" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入门店名称..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="开户银行及支行" prop="accountAddress" class="item">
+              <el-input v-model="dataForm.accountAddress" placeholder="请输入开户银行及支行..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -168,26 +168,16 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
 import { fetch, post } from "@/utils/http-client"
 
 export default {
   name: "",
   data() {
-    const validateParam = (rule, value, callback) => {
-      if (Object.keys(value).length == 0) {
-        this.$message.warning('商品属性参数不能为空，请选择！')
-      } else {
-        callback()
-      }
-    }
-    const validateAttributes = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('商品计量值不能为空,请输入'))
-      } else {
+    const validateNumber = (rule, value, callback) => {
+      if (value) {
         const patter = /^\d+$/
         if (!patter.test(value)) {
-          callback(new Error('商品计量值只能为数字'))
+          callback(new Error('对公银行卡号只能为数字'))
         } else {
           callback()
         }
@@ -212,16 +202,75 @@ export default {
       dataForm: {
         id: "",
         name: "",
+        addressList: [],
       },
       dataRules: {
-        name: [{ required: true, message: "商品名称不能为空，请完整输入！", trigger: "blur" }],
-        subName: [{ required: true, message: "商品简称不能为空，请完整输入！", trigger: "blur" }],
-        brandId: [{ required: true, message: "商品品牌不能为空，请选择品牌！", trigger: "change" }],
-        categoryNode: [{ required: true, message: "商品类目不能为空，请选择类目！", trigger: "change" }],
-        valuationUnit: [{ required: true, message: "计量单位不能为空，请选择！", trigger: "change" }],
-        unitVal: [{ required: true, validator: validateAttributes, trigger: "blur" }],
-        attributeMap: [{ required: true, trigger: "blur", validator: validateParam }]
+        storeCode: [{ required: true, message: "门店编号不能为空，请完整输入！", trigger: "blur" }],
+        storeName: [{ required: true, message: "门店名称不能为空，请完整输入！", trigger: "blur" }],
+        area: [{ required: true, message: "所属地区不能为空，请选择！", trigger: "change" }],
+        storeTime: [{ required: true, message: "开店时间不能为空，请选择！", trigger: "change" }],
+        date: [{ required: true, message: "门店有效期不能为空，请选择！", trigger: "change" }],
+        franchisee: [{ required: true, message: "所属加盟商不能为空，请完整输入！", trigger: "change" }],
+        region0: [{ required: true, message: "售卖区域不能为空，请选择！", trigger: "change" }],
+        region1: [{ required: true, message: "经营范围不能为空，请选择！", trigger: "change" }],
+        region2: [{ required: true, message: "经营品牌不能为空，请选择！", trigger: "change" }],
+        computeMode1: [{ required: true, message: "佣金计算方式不能为空，请完整输入！", trigger: "blur" }],
+        computeMode2: [{ required: true, message: "佣金结算方式不能为空，请完整输入！", trigger: "blur" }],
+        accountName: [{ required: true, message: "对公账户户名不能为空，请完整输入！", trigger: "blur" }],
+        accountCode: [
+          { required: true, message: "对公银行卡号不能为空，请完整输入！", trigger: "blur" },
+          { required: true, validator: validateNumber, trigger: ["blur", "change"] }
+        ],
+        accountAddress: [{ required: true, message: "开户银行及支行不能为空，请完整输入！", trigger: "blur" }],
       },
+      props: { multiple: true },
+      options: [{
+        value: 1,
+        label: '东南',
+        children: [{
+          value: 2,
+          label: '上海',
+          children: [
+            { value: 3, label: '普陀' },
+            { value: 4, label: '黄埔' },
+            { value: 5, label: '徐汇' }
+          ]
+        }, {
+          value: 7,
+          label: '江苏',
+          children: [
+            { value: 8, label: '南京' },
+            { value: 9, label: '苏州' },
+            { value: 10, label: '无锡' }
+          ]
+        }, {
+          value: 12,
+          label: '浙江',
+          children: [
+            { value: 13, label: '杭州' },
+            { value: 14, label: '宁波' },
+            { value: 15, label: '嘉兴' }
+          ]
+        }]
+      }, {
+        value: 17,
+        label: '西北',
+        children: [{
+          value: 18,
+          label: '陕西',
+          children: [
+            { value: 19, label: '西安' },
+            { value: 20, label: '延安' }
+          ]
+        }, {
+          value: 21,
+          label: '新疆维吾尔族自治区',
+          children: [
+            { value: 22, label: '乌鲁木齐' },
+            { value: 23, label: '克拉玛依' }
+          ]
+        }]
+      }]
     };
   },
   async created() {
@@ -296,10 +345,6 @@ export default {
     save() {
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
-          if (this.productDetail.length == 0) {
-            this.$message.warning('商品详情不能为空！')
-            return
-          }
 
           this.sending = true;
           var url = this.dataForm.id ? '/product/update' : '/product/add'
@@ -319,23 +364,6 @@ export default {
     back2Prev() {
       this.$router.back();
     },
-    handleAvatarSuccess(response, file) {
-      if (!response || response.code != 0) {
-        return;
-      }
-      this.dataForm.mainImgUrl = file.response.data.absoluteUrl;
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
-    }
   }
 };
 </script>
@@ -401,5 +429,10 @@ export default {
 }
 ._label {
   margin-left: 25px;
+}
+._cascader {
+  .el-input {
+    width: 100% !important;
+  }
 }
 </style>

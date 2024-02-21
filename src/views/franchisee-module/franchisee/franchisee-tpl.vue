@@ -17,18 +17,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="加盟商编号" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入加盟商编号..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="加盟商编号" prop="franchiseeCode" class="item">
+              <el-input v-model="dataForm.franchiseeCode" placeholder="请输入加盟商编号..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="加盟商名称" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入加盟商名称..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="加盟商名称" prop="franchiseeName" class="item">
+              <el-input v-model="dataForm.franchiseeName" placeholder="请输入加盟商名称..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="授权范围" prop="name" class="item">
-              <el-select v-model="dataForm.supplierId" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择授权范围...">
+            <el-form-item label="授权范围" prop="fanwei" class="item">
+              <el-select v-model="dataForm.fanwei" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择授权范围...">
                 <el-option v-for="item in agentTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -38,18 +38,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="联系人" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入联系人姓名..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="联系人" prop="contacts" class="item">
+              <el-input v-model="dataForm.contacts" placeholder="请输入联系人姓名..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="联系方式" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入联系方式..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="联系方式" prop="phone" class="item">
+              <el-input v-model="dataForm.phone" placeholder="请输入联系方式..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="加盟费" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入加盟费..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="加盟费" prop="price" class="item">
+              <el-input v-model="dataForm.price" placeholder="请输入加盟费..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -57,13 +57,13 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="销售额" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入销售额..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="销售额" prop="xiaoshoue" class="item">
+              <el-input v-model="dataForm.name" placeholder="请输入销售额..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%" colspan="2">
-            <el-form-item label="地址" prop="name" class="item">
-              <el-input :disabled="dataForm.saleState==5" v-model="dataForm.name" placeholder="请输入加盟地址..." maxlength="32" style="width:90%"></el-input>
+            <el-form-item label="地址" prop="address" class="item">
+              <el-input v-model="dataForm.address" placeholder="请输入加盟地址..." maxlength="32" style="width:90%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -71,8 +71,8 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="合同文件" prop="name" class="item">
-              <el-upload :disabled="dataForm.saleState==5" class="avatar-uploader"
+            <el-form-item label="合同文件" prop="file" class="item">
+              <el-upload class="avatar-uploader"
                 :show-file-list="false" :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload" :auto-upload="true">
                 <img v-if="dataForm.mainImgUrl" :src="dataForm.mainImgUrl" class="avatar">
@@ -145,13 +145,17 @@ export default {
         name: "",
       },
       dataRules: {
-        name: [{ required: true, message: "商品名称不能为空，请完整输入！", trigger: "blur" }],
-        subName: [{ required: true, message: "商品简称不能为空，请完整输入！", trigger: "blur" }],
-        brandId: [{ required: true, message: "商品品牌不能为空，请选择品牌！", trigger: "change" }],
-        categoryNode: [{ required: true, message: "商品类目不能为空，请选择类目！", trigger: "change" }],
-        valuationUnit: [{ required: true, message: "计量单位不能为空，请选择！", trigger: "change" }],
-        unitVal: [{ required: true, validator: validateAttributes, trigger: "blur" }],
-        attributeMap: [{ required: true, trigger: "blur", validator: validateParam }]
+        franchiseeCode: [{ required: true, message: "加盟商编号不能为空，请完整输入！", trigger: "blur" }],
+        franchiseeName: [{ required: true, message: "加盟商名称不能为空，请完整输入！", trigger: "blur" }],
+        fanwei: [{ required: true, message: "授权范围不能为空，请选择！", trigger: "change" }],
+        contacts: [{ required: true, message: "联系人不能为空，请完整输入！", trigger: "change" }],
+        phone: [{ required: true, message: "联系方式不能为空，请完整输入！", trigger: "change" }],
+        price: [{ required: true, message: "加盟费不能为空，请完整输入！", trigger: "change" }],
+        xiaoshoue: [{ required: true, message: "销售额不能为空，请完整输入！", trigger: "change" }],
+        // address: [{ required: true, message: "地址不能为空，请完整输入！", trigger: "change" }],
+        file: [{ required: true, message: "销售额不能为空，请完整输入！", trigger: "change" }],
+        // unitVal: [{ required: true, validator: validateAttributes, trigger: "blur" }],
+        // attributeMap: [{ required: true, trigger: "blur", validator: validateParam }]
       },
     };
   },

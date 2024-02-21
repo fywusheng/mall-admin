@@ -40,8 +40,8 @@
       <el-table-column prop="" label="操作" align="center" width="320px" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
-          <el-button icon="el-icon-folder-checked" size="mini" @click="check(scope.row)">审核</el-button>
-          <el-button icon="el-icon-document" size="mini" @click="edit(scope.row)">详情</el-button>
+          <el-button icon="el-icon-folder-checked" size="mini" @click="check(scope.row, 1)">审核</el-button>
+          <el-button icon="el-icon-document" size="mini" @click="check(scope.row, 0)">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -107,8 +107,9 @@ export default {
       this.$router.push({ name: 'Franchisee-Tpl', params: { id: row.id } })
     },
     // 审核
-    check(row) {
-      this.$router.push({ name: 'Franchisee-Examine', params: { id: row.id } })
+    check(row, type) {
+      // type = 1审核 = 0详情
+      this.$router.push({ name: 'Franchisee-Examine', params: { id: row.id, type } })
     },
     async resetting(row) {
       const result = await post('/tms/freight-template/resetting', row);
