@@ -1,6 +1,7 @@
 <template>
   <div class="div-layout">
-    <el-page-header @back="back2Prev" content="加盟商审核"></el-page-header>
+    <!--  = 1审核 = 0详情 -->
+    <el-page-header @back="back2Prev" :content="`加盟商${routeParamsType == 1 ? '审核' : '详情'}`"></el-page-header>
     <el-row style="height: 30px">
       <el-col :span="24"></el-col>
     </el-row>
@@ -18,17 +19,17 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="加盟商编号">
-              <p class="_text">asdfasdf</p>
+              <p class="_text">{{ detailData.informationNo }}</p>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="加盟商名称">
-              <p class="_text">asdfasdf</p>
+              <p class="_text">{{ detailData.informationName }}</p>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="授权范围">
-              <p class="_text">asdfasdf</p>
+              <p class="_text">{{ detailData.authorityScope }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -37,17 +38,17 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="联系人">
-              <p class="_text">asdfasdf</p>
+              <p class="_text">{{ detailData.contacts }}</p>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="联系方式">
-              <p class="_text">asdfasdf</p>
+              <p class="_text">{{ detailData.contactsPhone }}</p>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="加盟费">
-              <p class="_text">asdfasdf</p>
+              <p class="_text">{{ detailData.initialFee }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -56,12 +57,12 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="销售额">
-              <p class="_text">asdfasdf</p>
+              <p class="_text">{{ detailData.salesVolume }}</p>
             </el-form-item>
           </td>
           <td width="30%" colspan="2">
             <el-form-item label="地址">
-              <p class="_text">asdfasdf</p>
+              <p class="_text">{{ detailData.address }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -78,7 +79,8 @@
       </table>
     </el-form>
 
-    <el-form class="data-form" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor" label-position="top" size="small">
+    <!-- 审核显示 -->
+    <el-form v-if="routeParamsType == 1" class="data-form" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor" label-position="top" size="small">
       <el-divider content-position="left" style="width:80%">
         <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
         <font style="color:blue">审核信息</font>
@@ -91,15 +93,15 @@
         <tr>
           <td width="3%"></td>
           <td width="20%">
-            <el-form-item label="审核状态" prop="name" class="item" label-position="top">
-              <el-select v-model="dataForm.supplierId" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择授权范围...">
+            <el-form-item label="审核状态" prop="status" class="item" label-position="top">
+              <el-select v-model="dataForm.status" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择审核状态...">
                 <el-option v-for="item in checkStatusOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </td>
           <td width="30%" colspan="2">
-            <el-form-item label="审核意见" prop="name" class="item" label-position="top">
-              <el-input :disabled="dataForm.saleState==5" size="mini" v-model="dataForm.name" placeholder="请输入加盟地址..." maxlength="32" style="width:100%"></el-input>
+            <el-form-item label="审核意见" prop="reviewComments" class="item" label-position="top">
+              <el-input size="mini" v-model="dataForm.reviewComments" placeholder="请输入审核意见..." maxlength="32" style="width:100%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -111,7 +113,8 @@
     <el-row style="height: 30px">
       <el-col :span="24"></el-col>
     </el-row>
-    <el-row type="flex" style="height:30px;text-align:center">
+    <!-- 审核显示 -->
+    <el-row v-if="routeParamsType == 1" type="flex" style="height:30px;text-align:center">
       <el-col :span="24" style="align:center">
         <el-button @click="back2Prev">返回列表</el-button>
         <el-button v-if="dataForm.saleState!=5" type="primary" :loading="sending"
@@ -127,118 +130,46 @@ import { fetch, post } from "@/utils/http-client"
 export default {
   name: "",
   data() {
-    const validateParam = (rule, value, callback) => {
-      if (Object.keys(value).length == 0) {
-        this.$message.warning('商品属性参数不能为空，请选择！')
-      } else {
-        callback()
-      }
-    }
-    const validateAttributes = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('商品计量值不能为空,请输入'))
-      } else {
-        const patter = /^\d+$/
-        if (!patter.test(value)) {
-          callback(new Error('商品计量值只能为数字'))
-        } else {
-          callback()
-        }
-      }
-    }
-
     return {
+      routeParamsType: '',
       checkStatusOptions: [
         { label: "通过", value: 1 },
-        { label: "不通过", value: 2 },
+        { label: "不通过", value: 0 },
       ],
+      detailData: {},
       userObject: {},
-      areaList: [],
       loading: false,
       sending: false,
-      brandOptions: [],
-      categoryOptions: [],
-      supplierOptions: [],
       dataForm: {
-        id: "",
-        name: "",
+        status: 1,
+        reviewComments: "通过",
       },
       dataRules: {
-        name: [{ required: true, message: "商品名称不能为空，请完整输入！", trigger: "blur" }],
-        subName: [{ required: true, message: "商品简称不能为空，请完整输入！", trigger: "blur" }],
-        brandId: [{ required: true, message: "商品品牌不能为空，请选择品牌！", trigger: "change" }],
-        categoryNode: [{ required: true, message: "商品类目不能为空，请选择类目！", trigger: "change" }],
-        valuationUnit: [{ required: true, message: "计量单位不能为空，请选择！", trigger: "change" }],
-        unitVal: [{ required: true, validator: validateAttributes, trigger: "blur" }],
-        attributeMap: [{ required: true, trigger: "blur", validator: validateParam }]
+        status: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
+        reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
       },
     };
   },
   async created() {
-    const result = await fetch("/area/getAreaTree", {});
-    if (result.code == 200) {
-      this.areaList = result.data;
-    } else {
-      this.$message.error(result.msg);
-    }
   },
   components: {
   },
   async mounted() {
-    const user = localStorage.getItem('userInfor')
-    this.userObject = JSON.parse(user)
-    this.loadBrandOptions();
-    this.loadCategoryOptions();
-    this.loadSupplierOptions();
+    console.log(this.$route)
+    this.routeParamsType = this.$route.params.type
+    // const user = localStorage.getItem('userInfor')
+    // this.userObject = JSON.parse(user)
     if (this.$route.params.id) {
       this.loadData(this.$route.params.id)
     }
   },
   methods: {
-    compare(array) {
-      const result = array.reduce((pre, cur) => {
-        const ids = pre.map(item => item.id)
-        return ids.includes(cur.id) ? pre : [...pre, cur]
-      }, [])
-      return result
-    },
-
-
-    async loadBrandOptions() {
-      const result = await fetch("/brand/listAll", {});
-      if (result.code == 200) {
-        this.brandOptions = result.data;
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
-    async loadCategoryOptions() {
-      const result = await fetch("/category/list.basic", {});
-      if (result.code == 200) {
-        this.categoryOptions = result.data;
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
-
-    async loadSupplierOptions() {
-      const result = await post("/srm/supplier/listByPageNo", { pageNum: 1, pageSize: 1000 });
-      if (result.code == 200) {
-        this.supplierOptions = result.data.list;
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
-
     async loadData(productId) {
-      if (productId && productId == -1) {
-        return;
-      }
       this.loading = true
-      const result = await fetch('/product/getByPK', { productId: productId });
+      const result = await fetch('/srm/sh/information/getById', { id: productId });
       this.loading = false
       if (result.code == 200) {
-        console.log(result)
+        this.detailData = result.data
       } else {
         this.$message.error(result.msg);
       }
@@ -246,17 +177,15 @@ export default {
     save() {
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
-          if (this.productDetail.length == 0) {
-            this.$message.warning('商品详情不能为空！')
-            return
-          }
-
           this.sending = true;
-          var url = this.dataForm.id ? '/product/update' : '/product/add'
-          const result = await post(url, params)
+          // 审核传 id
+          if (this.routeParamsType) {
+            this.dataForm.id = this.$route.params.id
+          }
+          const result = await post("/srm/sh/information/saveInformation", this.dataForm)
           this.sending = false;
           if (result.code == 200) {
-            this.$message.success("商品信息保存成功！");
+            this.$message.success("加盟商数据提交审核成功！");
             this.back2Prev()
           } else {
             this.$message.error(result.msg);

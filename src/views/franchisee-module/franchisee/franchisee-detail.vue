@@ -1,3 +1,12 @@
 <template>
-  <div>加盟商管理 详情</div>
+  <FranchiseeExamine/>
 </template>
+
+<script>
+import FranchiseeExamine from './franchisee-examine.vue'
+export default {
+  components: {
+    FranchiseeExamine
+  }
+}
+</script>

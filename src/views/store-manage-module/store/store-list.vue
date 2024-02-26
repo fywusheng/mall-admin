@@ -2,19 +2,20 @@
   <div class="main-content">
     <el-row class="mb-2">
       <el-form :inline="true">
-        <el-form-item label="">
-          <el-input v-model="searchParams.tempName" placeholder="请输入门店编号..." clearable size="mini"></el-input>
+        <el-form-item label="" prop="storeNo">
+          <el-input v-model="searchParams.storeNo" placeholder="请输入门店编号..." clearable size="mini"></el-input>
         </el-form-item>
-        <el-form-item label="">
-          <el-input v-model="searchParams.tempCode" placeholder="请输入门店名称..." clearable size="mini"></el-input>
+        <el-form-item label="" prop="storeName">
+          <el-input v-model="searchParams.storeName" placeholder="请输入门店名称..." clearable size="mini"></el-input>
         </el-form-item>
-        <el-form-item label="" prop="supplierId">
-          <el-select v-model="searchParams.supplierId" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择加盟商...">
+        <el-form-item label="" prop="informationNo">
+          <!-- <el-select v-model="searchParams.informationNo" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择加盟商...">
             <el-option v-for="item in agentTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
+          </el-select> -->
+          <franchisee-select v-model="searchParams.informationNo" placeholder="请输入加盟商名称..." size="mini"/>
         </el-form-item>
-        <el-form-item label="" prop="supplierId">
-          <el-select v-model="searchParams.supplierId" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择审核状态...">
+        <el-form-item label="" prop="reviewStatus	">
+          <el-select v-model="searchParams.reviewStatus" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择审核状态...">
             <el-option v-for="item in examineOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
@@ -29,14 +30,19 @@
         <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
       </div>
       <el-table-column type="index" label="序号" width="50px" align="center"></el-table-column>
-      <el-table-column prop="tempName" label="门店编号" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="tempCode" label="门店名称" width="150px" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="supplierId" label="所属地区" width="150px" align="center"></el-table-column>
-      <el-table-column prop="type" label="开店时间" width="100px" align="center"></el-table-column>
-      <el-table-column prop="isPostage" label="有效期" width="100px" align="center"></el-table-column>
-      <el-table-column prop="updatedTime" label="所属加盟商" width="150px" align="center"></el-table-column>
-      <el-table-column prop="modifier" label="审核状态" width="80px" align="center"></el-table-column>
-      <el-table-column prop="modifier" label="启用状态" width="80px" align="center"></el-table-column>
+      <el-table-column prop="storeNo" label="门店编号" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="storeName" label="门店名称" width="150px" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="districtArea" label="所属地区" width="150px" align="center"></el-table-column>
+      <el-table-column prop="salesArea" label="开店时间" width="100px" align="center"></el-table-column>
+      <el-table-column prop="openingTime" label="有效期" width="100px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.openingTime }}至{{ scope.row.periodEndValidity }}</span>
+        </template>
+      </el-table-column>
+      <!-- 这个字段文档中没有 -->
+      <el-table-column prop="xxxx" label="所属加盟商" width="150px" align="center"></el-table-column>
+      <el-table-column prop="reviewStatus" label="审核状态" width="80px" align="center"></el-table-column>
+      <el-table-column prop="yn" label="启用状态" width="80px" align="center"></el-table-column>
       <el-table-column prop="" label="操作" align="center" width="320px" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
@@ -53,6 +59,7 @@
 </template>
 <script>
 import { fetch, post } from '@/utils/http-client'
+import FranchiseeSelect from '@/components/FranchiseeSelect'
 
 export default {
   name: '',
@@ -63,7 +70,12 @@ export default {
       dataList: [],
       totalCount: 20,
       loading: false,
-      searchParams: {},
+      searchParams: {
+        storeNo: '',
+        storeName: '',
+        informationNo: '',
+        reviewStatus: '' // 审核状态 0否1是
+      },
       dialogList: [],
       agentTypeOptions: [
         { label: "省代", value: 1 },
@@ -74,13 +86,14 @@ export default {
       ],
       examineOptions: [
         { label: "审核通过", value: 1 },
-        { label: "审核不通过", value: 2 },
-        { label: "待审核", value: 3 },
+        { label: "审核不通过", value: 0 },
+        { label: "待审核", value: 2 },
       ],
       showDialog: false
     }
   },
   components: {
+    FranchiseeSelect
   },
   async mounted() {
     this.loadData()
@@ -152,9 +165,10 @@ export default {
       const params = {
         pageNum: this.pageNo,
         pageSize: this.pageSize,
-        queryObject: this.searchParams
+        // queryObject: this.searchParams
+        ...this.searchParams
       }
-      const result = await post('/tms/freight-template/listPageNo', params)
+      const result = await post('/srm/srm/sh/stores/listByPageNo', params)
       this.loading = false
       if (result.code == 200) {
         this.$nextTick(() => {

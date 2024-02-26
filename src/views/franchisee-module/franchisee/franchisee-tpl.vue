@@ -1,6 +1,6 @@
 <template>
   <div class="div-layout">
-    <el-page-header @back="back2Prev" content="创建/编辑加盟商"></el-page-header>
+    <el-page-header @back="back2Prev" :content="`${routeParamsId == '-1' ? '创建' : '编辑'}加盟商`"></el-page-header>
     <el-row style="height: 30px">
       <el-col :span="24"></el-col>
     </el-row>
@@ -17,18 +17,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="加盟商编号" prop="franchiseeCode" class="item">
-              <el-input v-model="dataForm.franchiseeCode" placeholder="请输入加盟商编号..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="加盟商编号" prop="informationNo" class="item">
+              <el-input v-model="dataForm.informationNo" placeholder="请输入加盟商编号..." style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="加盟商名称" prop="franchiseeName" class="item">
-              <el-input v-model="dataForm.franchiseeName" placeholder="请输入加盟商名称..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="加盟商名称" prop="informationName" class="item">
+              <el-input v-model="dataForm.informationName" placeholder="请输入加盟商名称..." style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="授权范围" prop="fanwei" class="item">
-              <el-select v-model="dataForm.fanwei" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择授权范围...">
+            <el-form-item label="授权范围" prop="authorityScope" class="item">
+              <el-select v-model="dataForm.authorityScope" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择授权范围...">
                 <el-option v-for="item in agentTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -43,13 +43,13 @@
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="联系方式" prop="phone" class="item">
-              <el-input v-model="dataForm.phone" placeholder="请输入联系方式..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="联系方式" prop="contactsPhone" class="item">
+              <el-input v-model="dataForm.contactsPhone" placeholder="请输入联系方式..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="加盟费" prop="price" class="item">
-              <el-input v-model="dataForm.price" placeholder="请输入加盟费..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="加盟费" prop="initialFee" class="item">
+              <el-input v-model="dataForm.initialFee" placeholder="请输入加盟费..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -57,8 +57,8 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="销售额" prop="xiaoshoue" class="item">
-              <el-input v-model="dataForm.name" placeholder="请输入销售额..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="销售额" prop="salesVolume" class="item">
+              <el-input v-model="dataForm.salesVolume" placeholder="请输入销售额..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%" colspan="2">
@@ -71,11 +71,14 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="合同文件" prop="file" class="item">
+            <el-form-item label="合同文件" prop="contractFileUrl" class="item">
               <el-upload class="avatar-uploader"
-                :show-file-list="false" :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload" :auto-upload="true">
-                <img v-if="dataForm.mainImgUrl" :src="dataForm.mainImgUrl" class="avatar">
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+                :auto-upload="true"
+              >
+                <img v-if="dataForm.contractFileUrl" :src="dataForm.contractFileUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
@@ -105,27 +108,23 @@ import { fetch, post } from "@/utils/http-client"
 export default {
   name: "",
   data() {
-    const validateParam = (rule, value, callback) => {
-      if (Object.keys(value).length == 0) {
-        this.$message.warning('商品属性参数不能为空，请选择！')
+    const validateNumber = (rule, value, callback) => {
+      const patter = /^\d+$/
+      if (!patter.test(value)) {
+        let str = ''
+        if (rule.field === 'initialFee') {
+          str = '加盟费'
+        } else if (rule.field === 'salesVolume') {
+          str = '销售额'
+        }
+        callback(new Error(`${str}值只能为数字`))
       } else {
         callback()
       }
     }
-    const validateAttributes = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('商品计量值不能为空,请输入'))
-      } else {
-        const patter = /^\d+$/
-        if (!patter.test(value)) {
-          callback(new Error('商品计量值只能为数字'))
-        } else {
-          callback()
-        }
-      }
-    }
 
     return {
+      routeParamsId: '',
       agentTypeOptions: [
         { label: "省代", value: 1 },
         { label: "市代", value: 2 },
@@ -141,107 +140,71 @@ export default {
       categoryOptions: [],
       supplierOptions: [],
       dataForm: {
-        id: "",
-        name: "",
+        informationNo: '',
+        informationName: '',
+        authorityScope: '',
+        contacts: '',
+        contactsPhone: '',
+        initialFee: '',
+        salesVolume: '',
+        contractFileUrl: '',
       },
       dataRules: {
-        franchiseeCode: [{ required: true, message: "加盟商编号不能为空，请完整输入！", trigger: "blur" }],
-        franchiseeName: [{ required: true, message: "加盟商名称不能为空，请完整输入！", trigger: "blur" }],
-        fanwei: [{ required: true, message: "授权范围不能为空，请选择！", trigger: "change" }],
+        informationNo: [{ required: true, message: "加盟商编号不能为空，请完整输入！", trigger: "blur" }],
+        informationName: [{ required: true, message: "加盟商名称不能为空，请完整输入！", trigger: "blur" }],
+        authorityScope: [{ required: true, message: "授权范围不能为空，请选择！", trigger: "change" }],
         contacts: [{ required: true, message: "联系人不能为空，请完整输入！", trigger: "change" }],
-        phone: [{ required: true, message: "联系方式不能为空，请完整输入！", trigger: "change" }],
-        price: [{ required: true, message: "加盟费不能为空，请完整输入！", trigger: "change" }],
-        xiaoshoue: [{ required: true, message: "销售额不能为空，请完整输入！", trigger: "change" }],
-        // address: [{ required: true, message: "地址不能为空，请完整输入！", trigger: "change" }],
-        file: [{ required: true, message: "销售额不能为空，请完整输入！", trigger: "change" }],
-        // unitVal: [{ required: true, validator: validateAttributes, trigger: "blur" }],
-        // attributeMap: [{ required: true, trigger: "blur", validator: validateParam }]
+        contactsPhone: [{ required: true, message: "联系方式不能为空，请完整输入！", trigger: "change" }],
+        initialFee: [
+          { required: true, message: "加盟费不能为空，请完整输入！", trigger: "change" },
+          { required: true, validator: validateNumber, trigger: "change" }
+        ],
+        salesVolume: [
+          { required: true, message: "销售额不能为空，请完整输入！", trigger: "change" },
+          { required: true, validator: validateNumber, trigger: "change" }  
+        ],
+        contractFileUrl: [{ required: true, message: "合同文件不能为空，请上传！", trigger: ["change", "blur"] }],
       },
     };
   },
   async created() {
-    const result = await fetch("/area/getAreaTree", {});
-    if (result.code == 200) {
-      this.areaList = result.data;
-    } else {
-      this.$message.error(result.msg);
-    }
   },
   components: {
   },
   async mounted() {
+    this.routeParamsId = this.$route.params.id
     const user = localStorage.getItem('userInfor')
     this.userObject = JSON.parse(user)
-    this.loadBrandOptions();
-    this.loadCategoryOptions();
-    this.loadSupplierOptions();
-    if (this.$route.params.id) {
+    if (this.$route.params.id > '-1') {
       this.loadData(this.$route.params.id)
     }
   },
   methods: {
-    compare(array) {
-      const result = array.reduce((pre, cur) => {
-        const ids = pre.map(item => item.id)
-        return ids.includes(cur.id) ? pre : [...pre, cur]
-      }, [])
-      return result
-    },
-
-
-    async loadBrandOptions() {
-      const result = await fetch("/brand/listAll", {});
-      if (result.code == 200) {
-        this.brandOptions = result.data;
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
-    async loadCategoryOptions() {
-      const result = await fetch("/category/list.basic", {});
-      if (result.code == 200) {
-        this.categoryOptions = result.data;
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
-
-    async loadSupplierOptions() {
-      const result = await post("/srm/supplier/listByPageNo", { pageNum: 1, pageSize: 1000 });
-      if (result.code == 200) {
-        this.supplierOptions = result.data.list;
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
-
+    
     async loadData(productId) {
       if (productId && productId == -1) {
         return;
       }
-      this.loading = true
-      const result = await fetch('/product/getByPK', { productId: productId });
-      this.loading = false
-      if (result.code == 200) {
-        console.log(result)
-      } else {
-        this.$message.error(result.msg);
-      }
+      post('/srm/sh/information/getById', {id: productId}).then(res => {
+        if (res.code == '200') {
+          console.log(res)
+        } else {
+          this.$message.error(res.msg);
+        }
+      })
     },
     save() {
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
-          if (this.productDetail.length == 0) {
-            this.$message.warning('商品详情不能为空！')
-            return
-          }
-
           this.sending = true;
-          var url = this.dataForm.id ? '/product/update' : '/product/add'
-          const result = await post(url, params)
+          // 编辑传 id
+          if (this.routeParamsId > -1) {
+            this.dataForm.id = this.routeParamsId
+          }
+          const result = await post("/srm/sh/information/saveInformation", this.dataForm)
           this.sending = false;
           if (result.code == 200) {
-            this.$message.success("商品信息保存成功！");
+            this.$message.success("加盟商数据保存成功！");
             this.back2Prev()
           } else {
             this.$message.error(result.msg);
@@ -255,21 +218,22 @@ export default {
       this.$router.back();
     },
     handleAvatarSuccess(response, file) {
+      console.log(response, file)
       if (!response || response.code != 0) {
         return;
       }
-      this.dataForm.mainImgUrl = file.response.data.absoluteUrl;
+      this.dataForm.contractFileUrl = file.response.data.absoluteUrl;
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+      // const isJPG = file.type === 'image/jpeg';
+      const isLt30M = file.size / 1024 / 1024 < 30;
+      // if (!isJPG) {
+      //   this.$message.error('上传头像图片只能是 JPG 格式!');
+      // }
+      if (!isLt30M) {
+        this.$message.error('上传头像图片大小不能超过 30MB!');
       }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
+      return isJPG && isLt30M;
     }
   }
 };

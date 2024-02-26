@@ -2,19 +2,20 @@
   <div class="main-content">
     <el-row class="mb-2">
       <el-form :inline="true">
-        <el-form-item label="">
-          <el-input v-model="searchParams.tempName" placeholder="请输入加盟商编号..." clearable size="mini"></el-input>
+        <el-form-item label="" prop="informationNo">
+          <el-input v-model="searchParams.informationNo" placeholder="请输入加盟商编号..." clearable size="mini"></el-input>
         </el-form-item>
-        <el-form-item label="">
-          <el-input v-model="searchParams.tempCode" placeholder="请输入加盟商名称..." clearable size="mini"></el-input>
+        <el-form-item label="" prop="informationName">
+          <!-- <el-input v-model="searchParams.informationName" placeholder="请输入加盟商名称..." clearable size="mini"></el-input> -->
+          <franchisee-select placeholder="请输入加盟商名称..." size="mini" @change="changeName"/>
         </el-form-item>
-        <el-form-item label="" prop="supplierId">
-          <el-select v-model="searchParams.supplierId" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择省代...">
+        <el-form-item label="" prop="authorityScope">
+          <el-select v-model="searchParams.authorityScope" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择授权范围...">
             <el-option v-for="item in agentTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="" prop="supplierId">
-          <el-select v-model="searchParams.supplierId" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择审核状态...">
+        <el-form-item label="" prop="status">
+          <el-select v-model="searchParams.status" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择审核状态...">
             <el-option v-for="item in examineOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
@@ -29,18 +30,18 @@
         <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
       </div>
       <el-table-column type="index" label="序号" width="50px" align="center"></el-table-column>
-      <el-table-column prop="tempName" label="加盟商编号" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="tempCode" label="加盟商名称" width="150px" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="supplierId" label="联系人" width="150px" align="center"></el-table-column>
-      <el-table-column prop="type" label="联系方式" width="100px" align="center"></el-table-column>
-      <el-table-column prop="isPostage" label="授权范围" width="100px" align="center"></el-table-column>
-      <el-table-column prop="updatedTime" label="加盟费" width="150px" align="center"></el-table-column>
-      <el-table-column prop="modifier" label="销售额" width="80px" align="center"></el-table-column>
-      <el-table-column prop="modifier" label="审核状态" width="80px" align="center"></el-table-column>
+      <el-table-column prop="informationNo" label="加盟商编号" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="informationName" label="加盟商名称" width="150px" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="contacts" label="联系人" width="150px" align="center"></el-table-column>
+      <el-table-column prop="contactsPhone" label="联系方式" width="100px" align="center"></el-table-column>
+      <el-table-column prop="authorityScope" label="授权范围" width="100px" align="center" :formatter="formatAuthorityScope"></el-table-column>
+      <el-table-column prop="initialFee" label="加盟费" width="150px" align="center"></el-table-column>
+      <el-table-column prop="salesVolume" label="销售额" width="80px" align="center"></el-table-column>
+      <el-table-column prop="status" label="审核状态" width="80px" align="center" :formatter="formatStatus"></el-table-column>
       <el-table-column prop="" label="操作" align="center" width="320px" fixed="right">
         <template slot-scope="scope">
-          <el-button icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
-          <el-button icon="el-icon-folder-checked" size="mini" @click="check(scope.row, 1)">审核</el-button>
+          <el-button icon="el-icon-edit" size="mini" v-if="scope.row.status == 0" @click="edit(scope.row)">编辑</el-button>
+          <el-button icon="el-icon-folder-checked" size="mini" v-if="scope.row.status == 2" @click="check(scope.row, 1)">审核</el-button>
           <el-button icon="el-icon-document" size="mini" @click="check(scope.row, 0)">详情</el-button>
         </template>
       </el-table-column>
@@ -50,6 +51,7 @@
 </template>
 <script>
 import { fetch, post } from '@/utils/http-client'
+import FranchiseeSelect from '@/components/FranchiseeSelect'
 
 export default {
   name: '',
@@ -60,7 +62,12 @@ export default {
       dataList: [],
       totalCount: 20,
       loading: false,
-      searchParams: {},
+      searchParams: {
+        informationNo: '', // 加盟编号
+        informationName: '', // 加盟名称
+        authorityScope: '', // 授权范围 1省 2市 3县 4城 5个
+        status: '', // 审核状态
+      },
       dialogList: [],
       agentTypeOptions: [
         { label: "省代", value: 1 },
@@ -71,18 +78,22 @@ export default {
       ],
       examineOptions: [
         { label: "审核通过", value: 1 },
-        { label: "审核不通过", value: 2 },
-        { label: "待审核", value: 3 },
+        { label: "审核不通过", value: 0 },
+        { label: "待审核", value: 2 },
       ],
       showDialog: false
     }
   },
   components: {
+    FranchiseeSelect
   },
   async mounted() {
     this.loadData()
   },
   methods: {
+    changeName(val) {
+      this.searchParams.informationName = val?.informationName
+    },
     changePage(pageNo) {
       this.pageNo = pageNo
       this.loadData()
@@ -93,12 +104,15 @@ export default {
       this.loadData()
     },
 
-    // formatType: function (row, column) {
-    //   return row.type === 1 ? '计件' : row.type === 2 ? '重量' : row.type === 3 ? '体积' : '--'
-    // },
-    // formatPostage: function (row, column) {
-    //   return row.isPostage === 1 ? '包邮' : row.isPostage === 0 ? '不包邮' : '--'
-    // },
+    formatStatus (row, column) {
+      const res = this.examineOptions.find(item => item.value == row.status)
+      return res ? res.label : '--'
+    },
+
+    formatAuthorityScope (row, column) {
+      const res = this.agentTypeOptions.find(item => item.value == row.authorityScope)
+      return res ? res.label : '--'
+    },
 
     add() {
       this.$router.push({ name: 'Franchisee-Tpl', params: { id: '-1' } })
@@ -129,9 +143,10 @@ export default {
       const params = {
         pageNum: this.pageNo,
         pageSize: this.pageSize,
-        queryObject: this.searchParams
+        // queryObject: this.searchParams
+        ...this.searchParams
       }
-      const result = await post('/tms/freight-template/listPageNo', params)
+      const result = await post('/srm/sh/information/listByPageNo', params)
       this.loading = false
       if (result.code == 200) {
         this.$nextTick(() => {

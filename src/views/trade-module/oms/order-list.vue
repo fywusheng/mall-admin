@@ -33,7 +33,7 @@
         <!-- TODO 新增订单类型 -->
         <el-form-item label="" v-if="activeType == 1">
           <el-select v-model="searchParams.orderStatus" size="mini" clearable collapse-tags
-            filterable style="width:100%" placeholder="请选择订单状态...">
+            filterable style="width:100%" placeholder="请选择订单类型...">
             <el-option v-for="item in orderTypeOptions" :key="item.code" :label="item.name"
               :value="item.code"></el-option>
           </el-select>
