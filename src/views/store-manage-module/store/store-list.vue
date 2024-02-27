@@ -147,15 +147,6 @@ export default {
         console.log(res)
       }).catch((action) => { })
     },
-    async resetting(row) {
-      const result = await post('/tms/freight-template/resetting', row);
-      if (result.code == 200) {
-        this.$message.success("运费模板启用状态重置成功!");
-        this.loadData();
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
     queryByParams() {
       this.pageNo = 1
       this.loadData()
@@ -168,7 +159,7 @@ export default {
         // queryObject: this.searchParams
         ...this.searchParams
       }
-      const result = await post('/srm/srm/sh/stores/listByPageNo', params)
+      const result = await post('/srm/sh/stores/listByPageNo', params)
       this.loading = false
       if (result.code == 200) {
         this.$nextTick(() => {

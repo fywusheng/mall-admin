@@ -40,7 +40,7 @@
       <el-table-column prop="status" label="审核状态" width="80px" align="center" :formatter="formatStatus"></el-table-column>
       <el-table-column prop="" label="操作" align="center" width="320px" fixed="right">
         <template slot-scope="scope">
-          <el-button icon="el-icon-edit" size="mini" v-if="scope.row.status == 0" @click="edit(scope.row)">编辑</el-button>
+          <el-button icon="el-icon-edit" size="mini" v-if="scope.row.status == 0"  @click="edit(scope.row)">编辑</el-button>
           <el-button icon="el-icon-folder-checked" size="mini" v-if="scope.row.status == 2" @click="check(scope.row, 1)">审核</el-button>
           <el-button icon="el-icon-document" size="mini" @click="check(scope.row, 0)">详情</el-button>
         </template>

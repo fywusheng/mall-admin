@@ -1,6 +1,6 @@
 <template>
   <div class="div-layout">
-    <el-page-header @back="back2Prev" content="创建/编辑门店"></el-page-header>
+    <el-page-header @back="back2Prev" :content="`${routeParamsId == -1 ? '创建' : '编辑'}门店`"></el-page-header>
     <el-row style="height: 30px">
       <el-col :span="24"></el-col>
     </el-row>
@@ -17,8 +17,8 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="门店编号" prop="storeCode" class="item">
-              <el-input v-model="dataForm.storeCode" placeholder="请输入门店编号..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="门店编号" prop="storeNo" class="item">
+              <el-input v-model="dataForm.storeNo" placeholder="请输入门店编号..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
@@ -27,8 +27,8 @@
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="所属地区" prop="area" class="item">
-              <el-select v-model="dataForm.area" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择所属地区...">
+            <el-form-item label="所属地区" prop="districtArea" class="item">
+              <el-select v-model="dataForm.districtArea" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择所属地区...">
                 <el-option v-for="item in agentTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -38,20 +38,20 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="开店时间" prop="storeTime" class="item">
-              <el-date-picker v-model="dataForm.storeTime" type="date" placeholder="选择开店时间" style="width: 80%">
+            <el-form-item label="开店时间" prop="openingTime" class="item">
+              <el-date-picker v-model="dataForm.openingTime" type="date" placeholder="选择开店时间" style="width: 80%">
               </el-date-picker>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="门店有效期" prop="date" class="item">
-              <el-date-picker v-model="dataForm.date" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 80% !important">
+            <el-form-item label="门店有效期" prop="periodData" class="item">
+              <el-date-picker v-model="dataForm.periodData" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 80% !important">
               </el-date-picker>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="所属加盟商" prop="franchisee" class="item">
-              <el-input v-model="dataForm.franchisee" placeholder="请输入所属加盟商..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="所属加盟商" prop="xxxxx" class="item">
+              <el-input v-model="dataForm.xxxx" placeholder="请输入所属加盟商..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -59,18 +59,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="售卖区域" prop="region0" class="item">
-              <el-cascader class="_cascader" v-model="dataForm.region" :options="options" :props="props" clearable placeholder="请选择售卖区域..." style="width:80%"/>
+            <el-form-item label="售卖区域" prop="salesArea" class="item">
+              <el-cascader class="_cascader" v-model="dataForm.salesArea" :options="options" :props="props" clearable placeholder="请选择售卖区域..." style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="经营范围" prop="region1" class="item">
-              <el-cascader class="_cascader" v-model="dataForm.addressList" :options="options" :props="props" clearable placeholder="请选择经营范围..." style="width:80%"/>
+            <el-form-item label="经营范围" prop="businessScope" class="item">
+              <el-cascader class="_cascader" v-model="dataForm.businessScope" :options="options" :props="props" clearable placeholder="请选择经营范围..." style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="经营品牌" prop="region2" class="item">
-              <el-cascader class="_cascader" v-model="dataForm.addressList" :options="options" :props="props" clearable placeholder="请选择经营品牌..." style="width:80%"/>
+            <el-form-item label="经营品牌" prop="operatingBrand" class="item">
+              <el-cascader class="_cascader" v-model="dataForm.operatingBrand" :options="options" :props="props" clearable placeholder="请选择经营品牌..." style="width:80%"/>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -89,13 +89,13 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="佣金计算方式" prop="computeMode1" class="item">
-              <el-input v-model="dataForm.computeMode1" placeholder="请输入佣金计算方式..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="佣金计算方式" prop="commissionCalculation" class="item">
+              <el-input v-model="dataForm.commissionCalculation" placeholder="请输入佣金计算方式..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="佣金结算方式" prop="computeMode2" class="item">
-              <el-input v-model="dataForm.computeMode2" placeholder="请输入佣金结算方式..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="佣金结算方式" prop="commissionSettlement" class="item">
+              <el-input v-model="dataForm.commissionSettlement" placeholder="请输入佣金结算方式..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%"></td>
@@ -115,18 +115,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="对公账户户名" prop="accountName" class="item">
-              <el-input v-model="dataForm.accountName" placeholder="请输入对公账户户名..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="对公账户户名" prop="corporateAccount" class="item">
+              <el-input v-model="dataForm.corporateAccount" placeholder="请输入对公账户户名..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="对公银行卡号" prop="accountCode" class="item">
-              <el-input v-model="dataForm.accountCode" placeholder="请输入对公银行卡号..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="对公银行卡号" prop="corporateBank" class="item">
+              <el-input v-model="dataForm.corporateBank" placeholder="请输入对公银行卡号..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="开户银行及支行" prop="accountAddress" class="item">
-              <el-input v-model="dataForm.accountAddress" placeholder="请输入开户银行及支行..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="开户银行及支行" prop="corporateBankBranch" class="item">
+              <el-input v-model="dataForm.corporateBankBranch" placeholder="请输入开户银行及支行..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -145,8 +145,8 @@
         <tr>
           <td width="5%"></td>
           <td width="90%" colspan="3">
-            <el-form-item label="" prop="name" class="item">
-              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="dataForm.name" placeholder="请输入企业信息..." maxlength="32" style="width:93%"></el-input>
+            <el-form-item label="" prop="enterpriseInformation" class="item">
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="dataForm.enterpriseInformation" placeholder="请输入企业信息..." maxlength="32" style="width:93%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -192,6 +192,7 @@ export default {
         { label: "城乡代", value: 4 },
         { label: "个体", value: 5 },
       ],
+      routeParamsId: '-1',
       userObject: {},
       areaList: [],
       loading: false,
@@ -200,28 +201,41 @@ export default {
       categoryOptions: [],
       supplierOptions: [],
       dataForm: {
-        id: "",
-        name: "",
-        addressList: [],
+        storeNo: "", // 门店编号
+        storeName: "", // 门店名称
+        districtArea: '', // 所属区域
+        openingTime: '', // 开店时间
+        periodStartValidity: '', // 有效期开始
+        periodEndValidity: '', // 有效期结束
+        periodData: [], // 有效期开始结束
+        salesArea: '', // 销售区域
+        businessScope: '', //经营范围
+        operatingBrand: '', // 经营品牌
+        commissionCalculation: '', // 佣金计算规则
+        commissionSettlement: '', // 佣金结算方式
+        corporateAccount: '', // 对公账户名
+        corporateBank: '', // 对公银行卡号
+        corporateBankBranch: '', // 对公银行卡开户行
+        enterpriseInformation: '', // 企业信息
       },
       dataRules: {
-        storeCode: [{ required: true, message: "门店编号不能为空，请完整输入！", trigger: "blur" }],
+        storeNo: [{ required: true, message: "门店编号不能为空，请完整输入！", trigger: "blur" }],
         storeName: [{ required: true, message: "门店名称不能为空，请完整输入！", trigger: "blur" }],
         area: [{ required: true, message: "所属地区不能为空，请选择！", trigger: "change" }],
-        storeTime: [{ required: true, message: "开店时间不能为空，请选择！", trigger: "change" }],
-        date: [{ required: true, message: "门店有效期不能为空，请选择！", trigger: "change" }],
+        openingTime: [{ required: true, message: "开店时间不能为空，请选择！", trigger: "change" }],
+        periodData: [{ required: true, message: "门店有效期不能为空，请选择！", trigger: "change" }],
         franchisee: [{ required: true, message: "所属加盟商不能为空，请完整输入！", trigger: "change" }],
-        region0: [{ required: true, message: "售卖区域不能为空，请选择！", trigger: "change" }],
-        region1: [{ required: true, message: "经营范围不能为空，请选择！", trigger: "change" }],
-        region2: [{ required: true, message: "经营品牌不能为空，请选择！", trigger: "change" }],
-        computeMode1: [{ required: true, message: "佣金计算方式不能为空，请完整输入！", trigger: "blur" }],
-        computeMode2: [{ required: true, message: "佣金结算方式不能为空，请完整输入！", trigger: "blur" }],
-        accountName: [{ required: true, message: "对公账户户名不能为空，请完整输入！", trigger: "blur" }],
-        accountCode: [
+        salesArea: [{ required: true, message: "售卖区域不能为空，请选择！", trigger: "change" }],
+        businessScope: [{ required: true, message: "经营范围不能为空，请选择！", trigger: "change" }],
+        operatingBrand: [{ required: true, message: "经营品牌不能为空，请选择！", trigger: "change" }],
+        commissionCalculation: [{ required: true, message: "佣金计算方式不能为空，请完整输入！", trigger: "blur" }],
+        commissionSettlement: [{ required: true, message: "佣金结算方式不能为空，请完整输入！", trigger: "blur" }],
+        corporateAccount: [{ required: true, message: "对公账户户名不能为空，请完整输入！", trigger: "blur" }],
+        corporateBank: [
           { required: true, message: "对公银行卡号不能为空，请完整输入！", trigger: "blur" },
           { required: true, validator: validateNumber, trigger: ["blur", "change"] }
         ],
-        accountAddress: [{ required: true, message: "开户银行及支行不能为空，请完整输入！", trigger: "blur" }],
+        corporateBankBranch: [{ required: true, message: "开户银行及支行不能为空，请完整输入！", trigger: "blur" }],
       },
       props: { multiple: true },
       options: [{
@@ -289,6 +303,7 @@ export default {
     this.loadBrandOptions();
     this.loadCategoryOptions();
     this.loadSupplierOptions();
+    this.routeParamsId = this.$route.params.id
     if (this.$route.params.id) {
       this.loadData(this.$route.params.id)
     }
@@ -334,10 +349,10 @@ export default {
         return;
       }
       this.loading = true
-      const result = await fetch('/product/getByPK', { productId: productId });
+      const result = await post('/srm/sh/stores/getStoreById', { id: productId });
       this.loading = false
       if (result.code == 200) {
-        console.log(result)
+        this.dataForm = { ...result.data }
       } else {
         this.$message.error(result.msg);
       }
@@ -345,10 +360,8 @@ export default {
     save() {
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
-
           this.sending = true;
-          var url = this.dataForm.id ? '/product/update' : '/product/add'
-          const result = await post(url, params)
+          const result = await post("/srm/sh/stores/saveStores", this.dataForm)
           this.sending = false;
           if (result.code == 200) {
             this.$message.success("商品信息保存成功！");

@@ -18,18 +18,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="加盟商编号">
+            <el-form-item label="加盟商编号：">
               <p class="_text">{{ detailData.informationNo }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="加盟商名称">
+            <el-form-item label="加盟商名称：">
               <p class="_text">{{ detailData.informationName }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="授权范围">
-              <p class="_text">{{ detailData.authorityScope }}</p>
+            <el-form-item label="授权范围：">
+              <p class="_text">{{  getAuthorityScopeLabel(detailData.authorityScope) }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -37,17 +37,17 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="联系人">
+            <el-form-item label="联系人：">
               <p class="_text">{{ detailData.contacts }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="联系方式">
+            <el-form-item label="联系方式：">
               <p class="_text">{{ detailData.contactsPhone }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="加盟费">
+            <el-form-item label="加盟费：">
               <p class="_text">{{ detailData.initialFee }}</p>
             </el-form-item>
           </td>
@@ -56,12 +56,12 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="销售额">
+            <el-form-item label="销售额：">
               <p class="_text">{{ detailData.salesVolume }}</p>
             </el-form-item>
           </td>
           <td width="30%" colspan="2">
-            <el-form-item label="地址">
+            <el-form-item label="地址：">
               <p class="_text">{{ detailData.address }}</p>
             </el-form-item>
           </td>
@@ -70,8 +70,8 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="合同文件">
-              <el-button class="_text" type="text"><a>下载</a></el-button>
+            <el-form-item label="合同文件：">
+              <el-button class="_text" type="text"><a :href="detailData.contractFileUrl" target="_blank" download>下载</a></el-button>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -93,15 +93,48 @@
         <tr>
           <td width="3%"></td>
           <td width="20%">
-            <el-form-item label="审核状态" prop="status" class="item" label-position="top">
+            <el-form-item label="审核状态：" prop="status" class="item" label-position="top">
               <el-select v-model="dataForm.status" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择审核状态...">
                 <el-option v-for="item in checkStatusOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </td>
           <td width="30%" colspan="2">
-            <el-form-item label="审核意见" prop="reviewComments" class="item" label-position="top">
+            <el-form-item label="审核意见：" prop="reviewComments" class="item" label-position="top">
               <el-input size="mini" v-model="dataForm.reviewComments" placeholder="请输入审核意见..." maxlength="32" style="width:100%"></el-input>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+      </table>
+    </el-form>
+
+    <!-- 详情显示 -->
+    <el-form v-if="routeParamsType == 0 && detailData.status == 1" class="data-form" :v-loading="loading" ref="dataFormInfor" label-position="right" size="small">
+      <el-divider content-position="left" style="width:80%">
+        <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
+        <font style="color:blue">审核信息</font>
+      </el-divider>
+      <el-row style="height: 20px">
+        <el-col :span="24"></el-col>
+      </el-row>
+
+      <table width="100%">
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
+            <el-form-item label="审核状态：" prop="status" class="item" label-position="top">
+              <p class="_text">{{ getStatusLabel(dataForm.status) }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="审核意见：" prop="reviewComments" class="item" label-position="top">
+              <p class="_text">{{ dataForm.reviewComments }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="审核时间：" prop="reviewDate" class="item" label-position="top">
+              <p class="_text">{{ dataForm.reviewDate }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -136,6 +169,13 @@ export default {
         { label: "通过", value: 1 },
         { label: "不通过", value: 0 },
       ],
+      agentTypeOptions: [
+        { label: "省代", value: 1 },
+        { label: "市代", value: 2 },
+        { label: "区县代", value: 3 },
+        { label: "城乡代", value: 4 },
+        { label: "个体", value: 5 },
+      ],
       detailData: {},
       userObject: {},
       loading: false,
@@ -164,9 +204,17 @@ export default {
     }
   },
   methods: {
+    getStatusLabel(val) {
+      const res = this.checkStatusOptions.find(item => item.value == val)
+      return res ? res.label : ''
+    },
+    getAuthorityScopeLabel(val) {
+      const res = this.agentTypeOptions.find(item => item.value == val)
+      return res ? res.label : ''
+    },
     async loadData(productId) {
       this.loading = true
-      const result = await fetch('/srm/sh/information/getById', { id: productId });
+      const result = await post('/srm/sh/information/getInformationById', { id: productId });
       this.loading = false
       if (result.code == 200) {
         this.detailData = result.data
@@ -182,7 +230,11 @@ export default {
           if (this.routeParamsType) {
             this.dataForm.id = this.$route.params.id
           }
-          const result = await post("/srm/sh/information/saveInformation", this.dataForm)
+          const params = {
+            ...this.detailData,
+            ...this.dataForm
+          }
+          const result = await post("/srm/sh/information/saveInformation", params)
           this.sending = false;
           if (result.code == 200) {
             this.$message.success("加盟商数据提交审核成功！");
@@ -198,23 +250,6 @@ export default {
     back2Prev() {
       this.$router.back();
     },
-    handleAvatarSuccess(response, file) {
-      if (!response || response.code != 0) {
-        return;
-      }
-      this.dataForm.mainImgUrl = file.response.data.absoluteUrl;
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
-    }
   }
 };
 </script>

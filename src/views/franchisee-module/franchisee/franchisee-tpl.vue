@@ -18,7 +18,7 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="加盟商编号" prop="informationNo" class="item">
-              <el-input v-model="dataForm.informationNo" placeholder="请输入加盟商编号..." style="width:80%"></el-input>
+              <el-input v-model="dataForm.informationNo" :disabled="routeParamsId != -1" placeholder="请输入加盟商编号..." style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
@@ -185,9 +185,9 @@ export default {
       if (productId && productId == -1) {
         return;
       }
-      post('/srm/sh/information/getById', {id: productId}).then(res => {
+      post('/srm/sh/information/getInformationById', {id: productId}).then(res => {
         if (res.code == '200') {
-          console.log(res)
+          this.dataForm = {...res.data}
         } else {
           this.$message.error(res.msg);
         }
@@ -233,7 +233,7 @@ export default {
       if (!isLt30M) {
         this.$message.error('上传头像图片大小不能超过 30MB!');
       }
-      return isJPG && isLt30M;
+      return isLt30M;
     }
   }
 };
@@ -297,6 +297,10 @@ export default {
 }
 .item .el-form-item__label {
   height: 35px;
+}
+.el-form-item__error {
+  margin-top: 10px !important;
+  display: block !important;
 }
 ._label {
   margin-left: 25px;
