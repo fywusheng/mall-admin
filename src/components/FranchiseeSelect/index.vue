@@ -5,6 +5,7 @@
     filterable
     remote
     clearable
+    :disabled="disabled"
     reserve-keyword
     :placeholder="placeholder"
     :remote-method="remoteMethod"
@@ -33,6 +34,10 @@ import { post } from "@/utils/http-client"
       size: {
         type: String,
         default: 'size'
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -49,8 +54,10 @@ import { post } from "@/utils/http-client"
       }
     },
     mounted() {
+      this.remoteMethod(' ')
     },
     methods: {
+      // 获取所有，暂时先不用
       async loadData () {
         const result = await post("/srm/sh/information/getInformationList");
         if (result.code == 200) {

@@ -123,7 +123,11 @@ export default {
     // 审核
     check(row, type) {
       // type = 1审核 = 0详情
-      this.$router.push({ name: 'Franchisee-Examine', params: { id: row.id, type } })
+      if (type == 1) {
+        this.$router.push({ name: 'Franchisee-Examine', params: { id: row.id, type } })
+      } else if (type == 0) {
+        this.$router.push({ name: 'Franchisee-Detail', params: { id: row.id, type } })
+      }
     },
     async resetting(row) {
       const result = await post('/tms/freight-template/resetting', row);

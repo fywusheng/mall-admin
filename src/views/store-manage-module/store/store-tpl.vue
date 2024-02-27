@@ -17,60 +17,60 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="门店编号" prop="storeNo" class="item">
-              <el-input v-model="dataForm.storeNo" placeholder="请输入门店编号..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="门店编号：" prop="storeNo" class="item">
+              <el-input v-model="dataForm.storeNo" :disabled="routeParamsId != -1" placeholder="请输入门店编号..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="门店名称" prop="storeName" class="item">
+            <el-form-item label="门店名称：" prop="storeName" class="item">
               <el-input v-model="dataForm.storeName" placeholder="请输入门店名称..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="所属地区" prop="districtArea" class="item">
-              <el-select v-model="dataForm.districtArea" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择所属地区...">
-                <el-option v-for="item in agentTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-form-item label="所属地区：" prop="districtArea" class="item">
+              <el-cascader class="_cascader" v-model="dataForm.districtArea" :options="areaList" :props="{ value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="请选择所属地区..." style="width:80%"/>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
+            <el-form-item label="开店时间：" prop="openingTime" class="item">
+              <el-date-picker v-model="dataForm.openingTime" type="date" value-format="yyyy-MM-dd" placeholder="选择开店时间" style="width: 80%" >
+              </el-date-picker>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="门店有效期：" prop="periodData" class="item">
+              <el-date-picker v-model="dataForm.periodData" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 80% !important">
+              </el-date-picker>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="所属加盟商：" prop="infomationNo" class="item">
+              <franchisee-select v-model="dataForm.infomationNo" placeholder="请输入加盟商名称..." style="width: 80%" size="small"/>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
+            <el-form-item label="售卖区域：" prop="salesArea" class="item">
+              <el-cascader class="_cascader" v-model="dataForm.salesArea" :options="areaList" :props="{multiple:true, value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="请选择售卖区域..." style="width:80%"/>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="经营范围：" prop="businessScope" class="item">
+              <el-cascader class="_cascader"  v-model="dataForm.businessScope" :options="categoryOptions" placeholder="请选择经营范围..." clearable :props="{value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="经营品牌：" prop="operatingBrand" class="item">
+              <el-select v-model="dataForm.operatingBrand" collapse-tags filterable style="width:80%" clearable placeholder="请选择经营品牌...">
+                <el-option v-for="item in brandOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
-            </el-form-item>
-          </td>
-          <td width="5%"></td>
-        </tr>
-        <tr>
-          <td width="5%"></td>
-          <td width="30%">
-            <el-form-item label="开店时间" prop="openingTime" class="item">
-              <el-date-picker v-model="dataForm.openingTime" type="date" placeholder="选择开店时间" style="width: 80%">
-              </el-date-picker>
-            </el-form-item>
-          </td>
-          <td width="30%">
-            <el-form-item label="门店有效期" prop="periodData" class="item">
-              <el-date-picker v-model="dataForm.periodData" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 80% !important">
-              </el-date-picker>
-            </el-form-item>
-          </td>
-          <td width="30%">
-            <el-form-item label="所属加盟商" prop="xxxxx" class="item">
-              <el-input v-model="dataForm.xxxx" placeholder="请输入所属加盟商..." maxlength="32" style="width:80%"></el-input>
-            </el-form-item>
-          </td>
-          <td width="5%"></td>
-        </tr>
-        <tr>
-          <td width="5%"></td>
-          <td width="30%">
-            <el-form-item label="售卖区域" prop="salesArea" class="item">
-              <el-cascader class="_cascader" v-model="dataForm.salesArea" :options="options" :props="props" clearable placeholder="请选择售卖区域..." style="width:80%"/>
-            </el-form-item>
-          </td>
-          <td width="30%">
-            <el-form-item label="经营范围" prop="businessScope" class="item">
-              <el-cascader class="_cascader" v-model="dataForm.businessScope" :options="options" :props="props" clearable placeholder="请选择经营范围..." style="width:80%"/>
-            </el-form-item>
-          </td>
-          <td width="30%">
-            <el-form-item label="经营品牌" prop="operatingBrand" class="item">
-              <el-cascader class="_cascader" v-model="dataForm.operatingBrand" :options="options" :props="props" clearable placeholder="请选择经营品牌..." style="width:80%"/>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -89,12 +89,12 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="佣金计算方式" prop="commissionCalculation" class="item">
+            <el-form-item label="佣金计算方式：" prop="commissionCalculation" class="item">
               <el-input v-model="dataForm.commissionCalculation" placeholder="请输入佣金计算方式..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="佣金结算方式" prop="commissionSettlement" class="item">
+            <el-form-item label="佣金结算方式：" prop="commissionSettlement" class="item">
               <el-input v-model="dataForm.commissionSettlement" placeholder="请输入佣金结算方式..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
@@ -115,17 +115,17 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="对公账户户名" prop="corporateAccount" class="item">
+            <el-form-item label="对公账户户名：" prop="corporateAccount" class="item">
               <el-input v-model="dataForm.corporateAccount" placeholder="请输入对公账户户名..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="对公银行卡号" prop="corporateBank" class="item">
+            <el-form-item label="对公银行卡号：" prop="corporateBank" class="item">
               <el-input v-model="dataForm.corporateBank" placeholder="请输入对公银行卡号..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="开户银行及支行" prop="corporateBankBranch" class="item">
+            <el-form-item label="开户银行及支行：" prop="corporateBankBranch" class="item">
               <el-input v-model="dataForm.corporateBankBranch" placeholder="请输入开户银行及支行..." maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
@@ -169,6 +169,8 @@
 </template>
 <script>
 import { fetch, post } from "@/utils/http-client"
+import FranchiseeSelect from '@/components/FranchiseeSelect'
+import { deepClone } from '@/utils/index'
 
 export default {
   name: "",
@@ -209,6 +211,7 @@ export default {
         periodEndValidity: '', // 有效期结束
         periodData: [], // 有效期开始结束
         salesArea: '', // 销售区域
+        infomationNo: '', // 所属加盟商
         businessScope: '', //经营范围
         operatingBrand: '', // 经营品牌
         commissionCalculation: '', // 佣金计算规则
@@ -221,10 +224,10 @@ export default {
       dataRules: {
         storeNo: [{ required: true, message: "门店编号不能为空，请完整输入！", trigger: "blur" }],
         storeName: [{ required: true, message: "门店名称不能为空，请完整输入！", trigger: "blur" }],
-        area: [{ required: true, message: "所属地区不能为空，请选择！", trigger: "change" }],
+        districtArea: [{ required: true, message: "所属地区不能为空，请选择！", trigger: "change" }],
         openingTime: [{ required: true, message: "开店时间不能为空，请选择！", trigger: "change" }],
         periodData: [{ required: true, message: "门店有效期不能为空，请选择！", trigger: "change" }],
-        franchisee: [{ required: true, message: "所属加盟商不能为空，请完整输入！", trigger: "change" }],
+        infomationNo: [{ required: true, message: "所属加盟商不能为空，请完整输入！", trigger: "change" }],
         salesArea: [{ required: true, message: "售卖区域不能为空，请选择！", trigger: "change" }],
         businessScope: [{ required: true, message: "经营范围不能为空，请选择！", trigger: "change" }],
         operatingBrand: [{ required: true, message: "经营品牌不能为空，请选择！", trigger: "change" }],
@@ -287,36 +290,63 @@ export default {
       }]
     };
   },
-  async created() {
-    const result = await fetch("/area/getAreaTree", {});
-    if (result.code == 200) {
-      this.areaList = result.data;
-    } else {
-      this.$message.error(result.msg);
-    }
-  },
+  async created() {},
   components: {
+    FranchiseeSelect
   },
   async mounted() {
     const user = localStorage.getItem('userInfor')
     this.userObject = JSON.parse(user)
+    this.loadAreaTree()
     this.loadBrandOptions();
     this.loadCategoryOptions();
-    this.loadSupplierOptions();
     this.routeParamsId = this.$route.params.id
+
     if (this.$route.params.id) {
       this.loadData(this.$route.params.id)
     }
   },
   methods: {
-    compare(array) {
-      const result = array.reduce((pre, cur) => {
-        const ids = pre.map(item => item.id)
-        return ids.includes(cur.id) ? pre : [...pre, cur]
-      }, [])
-      return result
+    formatSalesArea(str) {
+      const arr = str.split(',')
+      const areaList = []
+      let item = []
+      while(arr.length) {
+        const obj = arr.shift()
+        if (item.length < 2) {
+          item.push(obj)
+        } 
+        if (item.length == 2) {
+          areaList.push(item)
+          item = []
+        }
+      }
+      return areaList
     },
 
+    addLevel(tree, level = 1) {
+      tree.forEach(node => {
+        node.level = level;
+        node.leaf = (level === 2)
+        // 删除第三层级
+        if (level === 2) {
+          delete node.children
+        }
+        if (node.children) {
+          this.addLevel(node.children, level + 1);
+        }
+      });
+    },
+
+    async loadAreaTree() {
+      const result = await fetch("/area/getAreaTree", {});
+      if (result.code == 200) {
+        this.addLevel(result.data)
+        this.areaList = result.data;
+      } else {
+        this.$message.error(result.msg);
+      }
+    },
 
     async loadBrandOptions() {
       const result = await fetch("/brand/listAll", {});
@@ -335,15 +365,7 @@ export default {
       }
     },
 
-    async loadSupplierOptions() {
-      const result = await post("/srm/supplier/listByPageNo", { pageNum: 1, pageSize: 1000 });
-      if (result.code == 200) {
-        this.supplierOptions = result.data.list;
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
-
+    // 获取详情
     async loadData(productId) {
       if (productId && productId == -1) {
         return;
@@ -352,6 +374,10 @@ export default {
       const result = await post('/srm/sh/stores/getStoreById', { id: productId });
       this.loading = false
       if (result.code == 200) {
+        result.data.periodData = [result.data.periodStartValidity, result.data.periodEndValidity]
+        result.data.districtArea = result.data.districtArea.split(',')
+        result.data.salesArea = this.formatSalesArea(result.data.salesArea)
+        result.data.businessScope = result.data.businessScope.split(',')
         this.dataForm = { ...result.data }
       } else {
         this.$message.error(result.msg);
@@ -361,10 +387,22 @@ export default {
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
           this.sending = true;
-          const result = await post("/srm/sh/stores/saveStores", this.dataForm)
+
+          if (this.$route.params.id != -1) {
+            this.dataForm.id = this.$route.params.id
+          }
+          const params = deepClone(this.dataForm)
+          params.periodStartValidity = params.periodData[0]
+          params.periodEndValidity = params.periodData[1]
+          delete params.periodData
+          params.districtArea = params.districtArea.join()
+          params.salesArea = params.salesArea.join()
+          params.businessScope = params.businessScope.join()
+
+          const result = await post("/srm/sh/stores/saveStores", params)
           this.sending = false;
           if (result.code == 200) {
-            this.$message.success("商品信息保存成功！");
+            this.$message.success("门店信息保存成功！");
             this.back2Prev()
           } else {
             this.$message.error(result.msg);

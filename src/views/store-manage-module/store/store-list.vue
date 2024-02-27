@@ -9,9 +9,6 @@
           <el-input v-model="searchParams.storeName" placeholder="请输入门店名称..." clearable size="mini"></el-input>
         </el-form-item>
         <el-form-item label="" prop="informationNo">
-          <!-- <el-select v-model="searchParams.informationNo" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择加盟商...">
-            <el-option v-for="item in agentTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select> -->
           <franchisee-select v-model="searchParams.informationNo" placeholder="请输入加盟商名称..." size="mini"/>
         </el-form-item>
         <el-form-item label="" prop="reviewStatus	">
@@ -31,25 +28,29 @@
       </div>
       <el-table-column type="index" label="序号" width="50px" align="center"></el-table-column>
       <el-table-column prop="storeNo" label="门店编号" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="storeName" label="门店名称" width="150px" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="storeName" label="门店名称" width="200px" show-overflow-tooltip></el-table-column>
       <el-table-column prop="districtArea" label="所属地区" width="150px" align="center"></el-table-column>
-      <el-table-column prop="salesArea" label="开店时间" width="100px" align="center"></el-table-column>
-      <el-table-column prop="openingTime" label="有效期" width="100px" align="center">
+      <el-table-column prop="openingTime" label="开店时间" width="200px" align="center"></el-table-column>
+      <el-table-column prop="openingTime" label="有效期" width="300px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.openingTime }}至{{ scope.row.periodEndValidity }}</span>
+          <span>{{ scope.row.periodStartValidity }} 至 {{ scope.row.periodEndValidity }}</span>
         </template>
       </el-table-column>
       <!-- 这个字段文档中没有 -->
-      <el-table-column prop="xxxx" label="所属加盟商" width="150px" align="center"></el-table-column>
-      <el-table-column prop="reviewStatus" label="审核状态" width="80px" align="center"></el-table-column>
-      <el-table-column prop="yn" label="启用状态" width="80px" align="center"></el-table-column>
+      <el-table-column prop="infomationNo" label="所属加盟商" width="250px" align="center"></el-table-column>
+      <el-table-column prop="reviewStatus" label="审核状态" width="80px" align="center" :formatter="formatStatus"></el-table-column>
+      <el-table-column prop="yn" label="启用状态" width="80px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.yn == 1 ? '启用' : '停用' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="" label="操作" align="center" width="320px" fixed="right">
         <template slot-scope="scope">
-          <el-button icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
-          <el-button icon="el-icon-turn-off" size="mini" @click="toggle(scope.row, 0)">停用</el-button>
-          <el-button icon="el-icon-open" size="mini" @click="toggle(scope.row, 1)">启用</el-button>
-          <el-button icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button>
-          <el-button icon="el-icon-folder-checked" size="mini" @click="check(scope.row, 1)">审核</el-button>
+          <el-button v-if="scope.row.reviewStatus != 1" icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 1" icon="el-icon-turn-off" size="mini" @click="toggle(scope.row, 0)">停用</el-button>
+          <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 0" icon="el-icon-open" size="mini" @click="toggle(scope.row, 1)">启用</el-button>
+          <el-button v-if="scope.row.reviewStatus == 1" icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button>
+          <el-button v-if="scope.row.reviewStatus != 1" icon="el-icon-folder-checked" size="mini" @click="check(scope.row, 1)">审核</el-button>
           <el-button icon="el-icon-document" size="mini" @click="check(scope.row, 0)">详情</el-button>
         </template>
       </el-table-column>
@@ -77,13 +78,6 @@ export default {
         reviewStatus: '' // 审核状态 0否1是
       },
       dialogList: [],
-      agentTypeOptions: [
-        { label: "省代", value: 1 },
-        { label: "市代", value: 2 },
-        { label: "区县代", value: 3 },
-        { label: "城乡代", value: 4 },
-        { label: "个体", value: 5 },
-      ],
       examineOptions: [
         { label: "审核通过", value: 1 },
         { label: "审核不通过", value: 0 },
@@ -125,7 +119,11 @@ export default {
     // 审核
     check(row, type) {
       // type = 1审核  = 0详情
-      this.$router.push({ name: 'Store-Examine', params: { id: row.id, type } })
+      if (type == 1) {
+        this.$router.push({ name: 'Store-Examine', params: { id: row.id, type } })
+      } else if (type == 0) {
+          this.$router.push({ name: 'Store-Detail', params: { id: row.id, type } })
+      }
     },
     // 续签
     renewal(row) {
@@ -170,7 +168,12 @@ export default {
       } else {
         this.$message.error(result.msg)
       }
-    }
+    },
+
+    formatStatus (row, column) {
+      const res = this.examineOptions.find(item => item.value == row.reviewStatus)
+      return res ? res.label : '--'
+    },
   }
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div class="div-layout">
-    <el-page-header @back="back2Prev" content="门店审核"></el-page-header>
+    <!-- type = 1审核  = 0详情 -->
+    <el-page-header @back="back2Prev" :content="`门店${routeParamsType == 1 ? '审核' : '详情'}`"></el-page-header>
     <el-row style="height: 30px">
       <el-col :span="24"></el-col>
     </el-row>
@@ -17,37 +18,19 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="门店编号">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="门店编号：">
+              <p class="_text">{{ dataForm.storeNo }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="门店名称">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="门店名称：">
+              <p class="_text">{{dataForm.storeName}}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="所属地区">
-              <p class="_text">asdfasfd</p>
-            </el-form-item>
-          </td>
-          <td width="5%"></td>
-        </tr>
-        <tr>
-          <td width="5%"></td>
-          <td width="30%">
-            <el-form-item label="开店时间">
-              <p class="_text">asdfasfd</p>
-            </el-form-item>
-          </td>
-          <td width="30%">
-            <el-form-item label="门店有效期">
-              <p class="_text">asdfasfd</p>
-            </el-form-item>
-          </td>
-          <td width="30%">
-            <el-form-item label="所属加盟商">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="所属地区：">
+              <!-- <p class="_text">{{ dataForm.districtArea }}</p> -->
+              <el-cascader class="_cascader _border_none" disabled v-model="dataForm.districtArea" :options="areaList" :props="{ value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="" style="width:80%"/>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -55,18 +38,43 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="售卖区域">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="开店时间：">
+              <p class="_text">{{ dataForm.openingTime }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="经营范围">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="门店有效期：">
+              <p class="_text">{{ dataForm.periodStartValidity }} 至 {{ dataForm.periodEndValidity }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="经营品牌">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="所属加盟商：">
+              <!-- <p class="_text">{{ dataForm.infomationNo }}</p> -->
+              <franchisee-select class="_border_none" disabled v-model="dataForm.infomationNo" placeholder=" " style="width: 80%" size="small"/>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
+            <el-form-item label="售卖区域：">
+              <!-- <p class="_text">{{ dataForm.salesArea }}</p> -->
+              <el-cascader class="_cascader _border_none" disabled v-model="dataForm.salesArea" :options="areaList" :props="{multiple:true, value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="" style="width:80%"/>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="经营范围：">
+              <!-- <p class="_text">{{ dataForm.businessScope }}</p> -->
+              <el-cascader class="_cascader _border_none" disabled v-model="dataForm.businessScope" :options="categoryOptions" placeholder="" clearable :props="{value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="经营品牌：">
+              <!-- <p class="_text">{{ dataForm.operatingBrand }}</p> -->
+              <el-select class="_border_none" v-model="dataForm.operatingBrand" disabled collapse-tags filterable style="width:80%" clearable placeholder="">
+                <el-option v-for="item in brandOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -85,13 +93,13 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="佣金计算方式">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="佣金计算方式：">
+              <p class="_text">{{ dataForm.commissionCalculation }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="佣金结算方式">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="佣金结算方式：">
+              <p class="_text">{{ dataForm.commissionSettlement }}</p>
             </el-form-item>
           </td>
           <td width="30%"></td>
@@ -111,18 +119,18 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="对公账户户名">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="对公账户户名：">
+              <p class="_text">{{ dataForm.corporateAccount }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="对公银行卡号">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="对公银行卡号：">
+              <p class="_text">{{ dataForm.corporateBank }}</p>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="开户银行及支行">
-              <p class="_text">asdfasfd</p>
+            <el-form-item label="开户银行及支行：">
+              <p class="_text">{{ dataForm.corporateBankBranch }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -142,7 +150,7 @@
           <td width="5%"></td>
           <td width="90%" colspan="3">
             <el-form-item label="" prop="name" class="item">
-              <p class="_text">asdfasfd</p>
+              <p class="_text">{{ dataForm.enterpriseInformation }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -150,7 +158,8 @@
       </table>
     </el-form>
 
-    <el-form class="data-form" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor" label-position="top" size="small">
+    <!-- 审核显示 -->
+    <el-form class="data-form" v-if="routeParamsType == 1" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor" label-position="top" size="small">
       <el-divider content-position="left" style="width:80%">
         <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
         <font style="color:blue">审核信息</font>
@@ -163,15 +172,48 @@
         <tr>
           <td width="3%"></td>
           <td width="20%">
-            <el-form-item label="审核状态" prop="name" class="item" label-position="top">
-              <el-select v-model="dataForm.supplierId" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择授权范围...">
+            <el-form-item label="审核状态：" prop="reviewStatus" class="item" label-position="top">
+              <el-select v-model="dataForm.reviewStatus" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择审核状态...">
                 <el-option v-for="item in checkStatusOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </td>
           <td width="30%" colspan="2">
-            <el-form-item label="审核意见" prop="name" class="item" label-position="top">
-              <el-input :disabled="dataForm.saleState==5" size="mini" v-model="dataForm.name" placeholder="请输入加盟地址..." maxlength="32" style="width:100%"></el-input>
+            <el-form-item label="审核意见：" prop="reviewComments" class="item" label-position="top">
+              <el-input size="mini" v-model="dataForm.reviewComments" placeholder="请输入审核意见..." maxlength="32" style="width:100%"></el-input>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+      </table>
+    </el-form>
+
+    <!-- 详情显示 -->
+    <el-form class="data-form" v-if="routeParamsType == 0 && dataForm.reviewStatus == 1" ref="dataFormInfor" label-position="right" size="small">
+      <el-divider content-position="left" style="width:80%">
+        <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
+        <font style="color:blue">审核信息</font>
+      </el-divider>
+      <el-row style="height: 20px">
+        <el-col :span="24"></el-col>
+      </el-row>
+
+      <table width="100%">
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
+            <el-form-item label="审核状态：" prop="reviewStatus" class="item" label-position="top">
+              <p class="_text">{{ getStatusLabel(dataForm.reviewStatus) }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="审核意见：" prop="reviewComments" class="item" label-position="top">
+              <p class="_text">{{ dataForm.reviewComments }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="审核时间：" prop="reviewDate" class="item" label-position="top">
+              <p class="_text">{{ dataForm.reviewDate }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -183,10 +225,10 @@
     <el-row style="height: 30px">
       <el-col :span="24"></el-col>
     </el-row>
-    <el-row type="flex" style="height:30px;text-align:center">
+    <el-row type="flex" style="height:30px;text-align:center" v-if="routeParamsType == 1">
       <el-col :span="24" style="align:center">
         <el-button @click="back2Prev">返回列表</el-button>
-        <el-button v-if="dataForm.saleState!=5" type="primary" :loading="sending"
+        <el-button type="primary" :loading="sending"
           :disabled="sending" @click="save">{{ sending ? '正在保存...' : '提交审核' }}</el-button>
       </el-col>
     </el-row>
@@ -195,34 +237,17 @@
 <script>
 import Vue from 'vue'
 import { fetch, post } from "@/utils/http-client"
+import { deepClone } from '@/utils/index'
+import FranchiseeSelect from '@/components/FranchiseeSelect'
 
 export default {
   name: "",
   data() {
-    const validateParam = (rule, value, callback) => {
-      if (Object.keys(value).length == 0) {
-        this.$message.warning('商品属性参数不能为空，请选择！')
-      } else {
-        callback()
-      }
-    }
-    const validateAttributes = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('商品计量值不能为空,请输入'))
-      } else {
-        const patter = /^\d+$/
-        if (!patter.test(value)) {
-          callback(new Error('商品计量值只能为数字'))
-        } else {
-          callback()
-        }
-      }
-    }
-
     return {
+      routeParamsType: '-1',
       checkStatusOptions: [
         { label: "通过", value: 1 },
-        { label: "不通过", value: 2 },
+        { label: "不通过", value: 0 },
       ],
       agentTypeOptions: [
         { label: "省代", value: 1 },
@@ -239,49 +264,95 @@ export default {
       categoryOptions: [],
       supplierOptions: [],
       dataForm: {
-        id: "",
-        name: "",
+        // reviewStatus: '1', // 审核状态
+        // reviewComments: '通过', // 审核意见
+        storeNo: "", // 门店编号
+        storeName: "", // 门店名称
+        districtArea: '', // 所属区域
+        openingTime: '', // 开店时间
+        periodStartValidity: '', // 有效期开始
+        periodEndValidity: '', // 有效期结束
+        periodData: [], // 有效期开始结束
+        salesArea: '', // 销售区域
+        infomationNo: '', // 所属加盟商
+        businessScope: '', //经营范围
+        operatingBrand: '', // 经营品牌
+        commissionCalculation: '', // 佣金计算规则
+        commissionSettlement: '', // 佣金结算方式
+        corporateAccount: '', // 对公账户名
+        corporateBank: '', // 对公银行卡号
+        corporateBankBranch: '', // 对公银行卡开户行
+        enterpriseInformation: '', // 企业信息
       },
       dataRules: {
-        name: [{ required: true, message: "商品名称不能为空，请完整输入！", trigger: "blur" }],
-        subName: [{ required: true, message: "商品简称不能为空，请完整输入！", trigger: "blur" }],
-        brandId: [{ required: true, message: "商品品牌不能为空，请选择品牌！", trigger: "change" }],
-        categoryNode: [{ required: true, message: "商品类目不能为空，请选择类目！", trigger: "change" }],
-        valuationUnit: [{ required: true, message: "计量单位不能为空，请选择！", trigger: "change" }],
-        unitVal: [{ required: true, validator: validateAttributes, trigger: "blur" }],
-        attributeMap: [{ required: true, trigger: "blur", validator: validateParam }]
+        reviewStatus: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
+        reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
       },
     };
   },
   async created() {
-    const result = await fetch("/area/getAreaTree", {});
-    if (result.code == 200) {
-      this.areaList = result.data;
-    } else {
-      this.$message.error(result.msg);
-    }
   },
   components: {
+    FranchiseeSelect
   },
   async mounted() {
     const user = localStorage.getItem('userInfor')
     this.userObject = JSON.parse(user)
+    this.loadAreaTree()
     this.loadBrandOptions();
     this.loadCategoryOptions();
-    this.loadSupplierOptions();
+    this.routeParamsType = this.$route.params.type
+
     if (this.$route.params.id) {
       this.loadData(this.$route.params.id)
     }
   },
   methods: {
-    compare(array) {
-      const result = array.reduce((pre, cur) => {
-        const ids = pre.map(item => item.id)
-        return ids.includes(cur.id) ? pre : [...pre, cur]
-      }, [])
-      return result
+    getStatusLabel(val) {
+      const res = this.checkStatusOptions.find(item => item.value == val)
+      return res ? res.label : ''
     },
 
+    formatSalesArea(str) {
+      const arr = str.split(',')
+      const areaList = []
+      let item = []
+      while(arr.length) {
+        const obj = arr.shift()
+        if (item.length < 2) {
+          item.push(obj)
+        } 
+        if (item.length == 2) {
+          areaList.push(item)
+          item = []
+        }
+      }
+      return areaList
+    },
+
+    addLevel(tree, level = 1) {
+      tree.forEach(node => {
+        node.level = level;
+        node.leaf = (level === 2)
+        // 删除第三层级
+        if (level === 2) {
+          delete node.children
+        }
+        if (node.children) {
+          this.addLevel(node.children, level + 1);
+        }
+      });
+    },
+
+    async loadAreaTree() {
+      const result = await fetch("/area/getAreaTree", {});
+      if (result.code == 200) {
+        this.addLevel(result.data)
+        this.areaList = result.data;
+      } else {
+        this.$message.error(result.msg);
+      }
+    },
 
     async loadBrandOptions() {
       const result = await fetch("/brand/listAll", {});
@@ -300,24 +371,25 @@ export default {
       }
     },
 
-    async loadSupplierOptions() {
-      const result = await post("/srm/supplier/listByPageNo", { pageNum: 1, pageSize: 1000 });
-      if (result.code == 200) {
-        this.supplierOptions = result.data.list;
-      } else {
-        this.$message.error(result.msg);
-      }
-    },
-
     async loadData(productId) {
       if (productId && productId == -1) {
         return;
       }
       this.loading = true
-      const result = await fetch('/product/getByPK', { productId: productId });
+      const result = await post('/srm/sh/stores/getStoreById', { id: productId });
       this.loading = false
       if (result.code == 200) {
-        console.log(result)
+        // 审核
+        if (this.routeParamsType == 1) {
+          result.data.reviewStatus = 1 // 审核状态
+          result.data.reviewComments ='通过'  // 审核意见
+        }
+        result.data.periodData = [result.data.periodStartValidity, result.data.periodEndValidity]
+        result.data.districtArea = result.data.districtArea.split(',')
+        result.data.salesArea = this.formatSalesArea(result.data.salesArea)
+        result.data.businessScope = result.data.businessScope.split(',')
+
+        this.dataForm = { ...result.data }
       } else {
         this.$message.error(result.msg);
       }
@@ -325,17 +397,23 @@ export default {
     save() {
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
-          if (this.productDetail.length == 0) {
-            this.$message.warning('商品详情不能为空！')
-            return
-          }
-
           this.sending = true;
-          var url = this.dataForm.id ? '/product/update' : '/product/add'
-          const result = await post(url, params)
+          
+          if (this.$route.params.id != -1) {
+            this.dataForm.id = this.$route.params.id
+          }
+          const params = deepClone(this.dataForm)
+          params.periodStartValidity = params.periodData[0]
+          params.periodEndValidity = params.periodData[1]
+          delete params.periodData
+          params.districtArea = params.districtArea.join()
+          params.salesArea = params.salesArea.join()
+          params.businessScope = params.businessScope.join()
+
+          const result = await post("/srm/sh/stores/saveStores", params)
           this.sending = false;
           if (result.code == 200) {
-            this.$message.success("商品信息保存成功！");
+            this.$message.success("审核信息提交成功！");
             this.back2Prev()
           } else {
             this.$message.error(result.msg);
@@ -433,5 +511,25 @@ export default {
 }
 ._text {
   transform: translateY(-5px);
+}
+._border_none {
+  transform: translate(-10px, -5px);
+  .el-input.is-disabled .el-input__inner {
+    background-color: #ffffff;
+    color: #383838;
+    cursor: default;
+  }
+  .el-input__suffix {
+    display: none;
+  }
+  .el-input__inner {
+    border: none !important;
+  }
+  .el-cascader__tags {
+    .el-tag {
+      background-color: #ffffff;
+      color: #383838;
+    }
+  }
 }
 </style>

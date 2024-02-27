@@ -356,7 +356,7 @@ export const constantRoutes = [
         meta: { title: '商城 / 加盟商管理 / 新增或编辑加盟商' }
       },
       {
-        path: 'franchisee-detail/:id',
+        path: 'franchisee-detail/:id/:type',
         component: resolve => require(['../views/franchisee-module/franchisee/franchisee-detail.vue'], resolve),
         name: 'Franchisee-Detail',
         meta: { title: '商城 / 加盟商管理 / 加盟商详情' }
@@ -389,7 +389,7 @@ export const constantRoutes = [
         meta: { title: '商城  / 门店管理 / 门店新增或编辑' }
       },
       {
-        path: 'store-detail/:id',
+        path: 'store-detail/:id/:type',
         component: resolve => require(['../views/store-manage-module/store/store-detail.vue'], resolve),
         name: 'Store-Detail',
         meta: { title: '商城  / 门店管理 / 门店详情' }
