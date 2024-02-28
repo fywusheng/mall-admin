@@ -1,9 +1,8 @@
 <template>
   <div class="login-container">
     <div class="header">
-      <!-- <img class="logo" :src="logo"> -->
-      <img class="logo" src="" alt="">
-      <h2 class="title">智慧康复平台业务管理系统</h2>
+      <img class="logo" :src="logo">
+      <h2 class="title">松辉云康平台业务管理系统</h2>
       <!-- <div class="header-right">商家帮助中心</div> -->
     </div>
     <div class="center">
@@ -80,7 +79,7 @@ export default {
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
-      logo: require('@/assets/imgs/login-logo.png'),
+      logo: require('@/assets/imgs/login-logo.jpg'),
       capsTooltip: false,
       loading: false,
       showDialog: false,

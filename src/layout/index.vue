@@ -4,7 +4,7 @@
       <div class="logo-warpper">
         <el-image class="logoImg" :src="imgsrc" fit="fill"></el-image>
         <div class="left_title">
-          <div class="comy-name">智慧康复平台业务管理系统</div>
+          <div class="comy-name">松辉云康平台业务管理系统</div>
         </div>
         <!-- <div class="left_title">
           <div class="comy">{{userObject.supplierName}}</div>
@@ -74,8 +74,7 @@ export default {
     return {
       autoObj: { 0: '供应商', 1: '合伙人', 9: '平台自营' },
       userObject: {},
-      // imgsrc: require('../layout/static/logo.png')
-      imgsrc: ''
+      imgsrc: require('../layout/static/logo.jpg')
     }
   },
   mounted() {

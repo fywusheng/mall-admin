@@ -46,6 +46,20 @@ module.exports = {
           '^/nepsp-api': '/nepsp-api'
         }
       },
+      // 从老龄服务平台迁移过来接口代理
+      '/nepsp-api-server/api': {
+        // 开发环境地址: 192.168.1.206:28800
+        // 测试环境地址: http://192.168.1.187:28800
+        target: 'http://192.168.1.187:28800', // 这里是目标服务器地址
+        // target: 'https://api.hpgjzlinfo.com/nepsp-api',
+        // target: 'http://192.168.1.187:10000',
+        // target: 'https://mall.hling168.com',
+        changeOrigin: true, // 是否改变源地址
+        ws: false, // 代理websockets
+        pathRewrite: {
+          '^/nepsp-api-server/api': '/'
+        }
+      },
       '/nepsp-api-server/': {
         // 开发环境地址: 192.168.1.206:28800
         // 测试环境地址: http://192.168.1.187:28800

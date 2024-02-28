@@ -589,18 +589,21 @@ export const constantRoutes = [
     path: '/apps/system/org/',
     component: Layout,
     children: [
+      // 系统管理中 需要的菜单
       {
         path: 'hierarchy',
         component: resolve => require(['../views/system-module/org/hierarchy/list'], resolve),
         name: 'Hierarchy',
         meta: { title: '设置  / 组织架构' }
       },
+      // 系统管理中 需要的菜单
       {
         path: 'position',
         component: resolve => require(['../views/system-module/org/position/position-list'], resolve),
         name: 'Position',
         meta: { title: '设置  / 岗位管理' }
       },
+      // 系统管理中 需要的菜单
       {
         path: 'administrator',
         component: resolve => require(['../views/system-module/org/administrator/list'], resolve),
@@ -613,6 +616,72 @@ export const constantRoutes = [
         name: 'Authorization2User',
         meta: { title: '设置 / 组织管理 / 用户授权' }
       }
+    ]
+  },
+
+  // 从老龄服务平台迁移过来的系统管理 - 账号、角色、菜单 管理
+  {
+    path: '/apps/system-manage',
+    component: Layout,
+    meta: { title: '系统管理' },
+    children: [
+      {
+        path: 'user-center',
+        component: resolve => require(['../views/system-manage-module/user-center/user-center.vue'], resolve),
+        name: 'UserCenter',
+        meta: { title: '权限管理 / 账号管理' }
+      },
+      {
+        path: 'role-center',
+        component: resolve => require(['../views/system-manage-module/role-center/role-center.vue'], resolve),
+        name: 'RoleCenter',
+        meta: { title: '权限管理 / 角色管理' }
+      },
+      {
+        path: 'menu-center',
+        component: resolve => require(['../views/system-manage-module/menu-center/menu-center.vue'], resolve),
+        name: 'MenuCenter',
+        meta: { title: '权限管理 / 菜单管理' }
+      },
+    ]
+  },
+
+  // 从老龄服务平台迁移过来的系统管理 - 消息中心整个模块
+  {
+    path: '/apps/message-module',
+    component: Layout,
+    // meta: { title: '消息中心' },
+    children: [
+      {
+        path: 'notice-manage',
+        component: resolve => require(['../views/message-module/notice-manage/notice-manage.vue'], resolve),
+        name: 'NoticeManage',
+        meta: { title: '消息中心 / 公告管理' }
+      },
+      {
+        path: 'short-message-manage',
+        component: resolve => require(['../views/message-module/short-message-manage/short-message-manage.vue'], resolve),
+        name: 'ShortMessageManage',
+        meta: { title: '消息中心 / 短信管理' }
+      },
+      {
+        path: 'inside-message-manage',
+        component: resolve => require(['../views/message-module/inside-message-manage/inside-message-manage.vue'], resolve),
+        name: 'InsideMessageManage',
+        meta: { title: '消息中心 / 站内消息管理' }
+      },
+      {
+        path: 'template-manage',
+        component: resolve => require(['../views/message-module/template-manage/template-manage.vue'], resolve),
+        name: 'TemplateManage',
+        meta: { title: '消息中心 / 模板管理' }
+      },
+      {
+        path: 'system-remind',
+        component: resolve => require(['../views/message-module/system-remind/system-remind.vue'], resolve),
+        name: 'SystemRemind',
+        meta: { title: '消息中心 / 系统管理' }
+      },
     ]
   },
 
