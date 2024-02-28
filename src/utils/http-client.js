@@ -39,7 +39,6 @@ HttpService.interceptors.request.use(
 
 //响应拦截器即异常处理
 HttpService.interceptors.response.use(response => {
-  console.log(response)
   if (response.data.code === '1001') {
     router.push('/login')
   }

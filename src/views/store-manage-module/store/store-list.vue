@@ -122,7 +122,7 @@ export default {
       if (type == 1) {
         this.$router.push({ name: 'Store-Examine', params: { id: row.id, type } })
       } else if (type == 0) {
-          this.$router.push({ name: 'Store-Detail', params: { id: row.id, type } })
+        this.$router.push({ name: 'Store-Detail', params: { id: row.id, type } })
       }
     },
     // 续签
