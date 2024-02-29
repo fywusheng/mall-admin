@@ -27,8 +27,9 @@
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="所属地区：" prop="districtArea" class="item">
-              <el-cascader class="_cascader" v-model="dataForm.districtArea" :options="areaList" :props="{ value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="请选择所属地区..." style="width:80%"/>
+            <el-form-item label="门店地址：" prop="districtArea" class="item">
+              <el-cascader class="_cascader" v-model="dataForm.districtArea" :options="areaList" :props="{ value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="请选择所属地区..." style="width:40%"/>
+              <el-input v-model="dataForm.address" placeholder="请输入详细地址..." style="width: 40%" />
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -206,6 +207,7 @@ export default {
         storeNo: "", // 门店编号
         storeName: "", // 门店名称
         districtArea: '', // 所属区域
+        address: '', // 详细地址
         openingTime: '', // 开店时间
         periodStartValidity: '', // 有效期开始
         periodEndValidity: '', // 有效期结束
@@ -224,7 +226,7 @@ export default {
       dataRules: {
         storeNo: [{ required: true, message: "门店编号不能为空，请完整输入！", trigger: "blur" }],
         storeName: [{ required: true, message: "门店名称不能为空，请完整输入！", trigger: "blur" }],
-        districtArea: [{ required: true, message: "所属地区不能为空，请选择！", trigger: "change" }],
+        districtArea: [{ required: true, message: "门店地区不能为空，请选择！", trigger: "change" }],
         openingTime: [{ required: true, message: "开店时间不能为空，请选择！", trigger: "change" }],
         periodData: [{ required: true, message: "门店有效期不能为空，请选择！", trigger: "change" }],
         infomationNo: [{ required: true, message: "所属加盟商不能为空，请完整输入！", trigger: "change" }],
@@ -386,11 +388,15 @@ export default {
     save() {
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
+          
+          if (!this.dataForm.address) return this.$message.warning('门店详细地址不能为空，请输入！')
+
           this.sending = true;
 
           if (this.$route.params.id != -1) {
             this.dataForm.id = this.$route.params.id
           }
+
           const params = deepClone(this.dataForm)
           params.periodStartValidity = params.periodData[0]
           params.periodEndValidity = params.periodData[1]

@@ -50,7 +50,7 @@
         <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
       </div>
       <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
-      <el-table-column prop="orderId" label="订单编号" width="160px" align="center"></el-table-column>
+      <el-table-column prop="orderId" label="订单编号"  align="center"></el-table-column>
       <!-- TODO 新增订单类型字段 -->
       <el-table-column v-if="activeType == 1" prop="orderType" label="订单类型" width="160px" align="center"></el-table-column>
 
@@ -143,7 +143,6 @@ export default {
         queryObject: this.searchParams
       }
       const result = await post('/order/listByPageNo', params)
-      this.loading = false
       if (result.code == 200) {
         this.$nextTick(() => {
           this.dataList = result.data.list
@@ -153,6 +152,7 @@ export default {
       } else {
         this.$message.error(result.msg)
       }
+      this.loading = false
     },
     forward2DetailsPage(row) {
       this.$router.push({ name: 'Order-Detail', params: { orderCode: row.orderId, orderType: this.activeType } })
