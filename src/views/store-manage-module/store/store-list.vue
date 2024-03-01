@@ -8,8 +8,8 @@
         <el-form-item label="" prop="storeName">
           <el-input v-model="searchParams.storeName" placeholder="请输入门店名称..." clearable size="mini"></el-input>
         </el-form-item>
-        <el-form-item label="" prop="informationNo">
-          <franchisee-select v-model="searchParams.informationNo" placeholder="请输入加盟商名称..." size="mini"/>
+        <el-form-item label="" prop="infomationNo">
+          <franchisee-select v-model="searchParams.infomationNo" placeholder="请输入加盟商名称..." size="mini"/>
         </el-form-item>
         <el-form-item label="" prop="reviewStatus	">
           <el-select v-model="searchParams.reviewStatus" collapse-tags filterable style="width:100%" size="mini" clearable placeholder="请选择审核状态...">
@@ -74,7 +74,7 @@ export default {
       searchParams: {
         storeNo: '',
         storeName: '',
-        informationNo: '',
+        infomationNo: '',
         reviewStatus: '', // 审核状态 0否1是
       },
       dialogList: [],
@@ -159,8 +159,7 @@ export default {
       const params = {
         pageNum: this.pageNo,
         pageSize: this.pageSize,
-        // queryObject: this.searchParams
-        ...this.searchParams
+        queryObject: this.searchParams
       }
       const result = await post('/srm/sh/stores/listByPageNo', params)
       this.loading = false
