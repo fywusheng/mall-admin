@@ -29,7 +29,7 @@
       <el-table-column type="index" label="序号" width="50px" align="center"></el-table-column>
       <el-table-column prop="storeNo" label="门店编号" show-overflow-tooltip></el-table-column>
       <el-table-column prop="storeName" label="门店名称" width="200px" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="districtArea" label="所属地区" width="150px" align="center"></el-table-column>
+      <el-table-column prop="districtAreaStr" label="所属地区" width="150px" align="center"></el-table-column>
       <el-table-column prop="openingTime" label="开店时间" width="200px" align="center"></el-table-column>
       <el-table-column prop="openingTime" label="有效期" width="300px" align="center">
         <template slot-scope="scope">
@@ -37,7 +37,7 @@
         </template>
       </el-table-column>
       <!-- 这个字段文档中没有 -->
-      <el-table-column prop="infomationNo" label="所属加盟商" width="250px" align="center"></el-table-column>
+      <el-table-column prop="informationName" label="所属加盟商" width="250px" align="center"></el-table-column>
       <el-table-column prop="reviewStatus" label="审核状态" width="80px" align="center" :formatter="formatStatus"></el-table-column>
       <el-table-column prop="yn" label="启用状态" width="80px" align="center">
         <template slot-scope="scope">
@@ -75,7 +75,7 @@ export default {
         storeNo: '',
         storeName: '',
         informationNo: '',
-        reviewStatus: '' // 审核状态 0否1是
+        reviewStatus: '', // 审核状态 0否1是
       },
       dialogList: [],
       examineOptions: [
@@ -131,17 +131,22 @@ export default {
     },
     // 停用 | 启用 type=0停用  =1启用
     toggle(row, type) {
-      this.$confirm(`确认要${type === 1 ? '启用' : '停用'}此门店吗？`, "提示", {
+      this.$confirm(`确认要${type == 1 ? '启用' : '停用'}此门店吗？`, "提示", {
         type: "warning",
         distinguishCancelAndClose: true,
         confirmButtonText: "确定",
         cancelButtonText: "取消"
       }).then((res) => {
-        if (type === 1) {
-
-        } else if (type === 0) {
-          
+        const params = {
+          id: row.id,
+          yn: type
         }
+        post('/srm/sh/stores/saveStores', params).then(res => {
+          if (res.code == 200) {
+            this.$message.success(`${type == 1 ? '启用' : '停用'}此门店成功！`)
+            this.loadData()
+          }
+        })
         console.log(res)
       }).catch((action) => { })
     },
