@@ -680,7 +680,7 @@ export const constantRoutes = [
         path: 'system-remind',
         component: resolve => require(['../views/message-module/system-remind/system-remind.vue'], resolve),
         name: 'SystemRemind',
-        meta: { title: '消息中心 / 系统管理' }
+        meta: { title: '消息中心 / 系统提醒' }
       },
     ]
   },

@@ -205,7 +205,7 @@ export default {
       this.listLoading = true
       const params = { ...this.searchData, msgType: 1 }
       try {
-        const { type, data } = await post(path + "/wbst/msg/getWbstMsgListByParam", params)
+        const { type, data } = await post(path + "/wbst/msg/getWbstMsgListByParam", {data: params})
         if (type === "success") {
           this.insideMsgList = data.list
           this.total = data.total
@@ -239,7 +239,7 @@ export default {
         msgType: 1
       }
       try {
-        const { type } = await post(path + "/wbst/send/singlemsg", params)
+        const { type } = await post(path + "/wbst/send/singlemsg", {data: params})
         if (type === "success") {
           this.$message({
             type: "success",

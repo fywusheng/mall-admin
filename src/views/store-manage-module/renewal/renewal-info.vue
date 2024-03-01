@@ -27,9 +27,10 @@
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="所属地区：">
+            <el-form-item label="门店地址：">
               <!-- <p class="_text">{{ dataForm.districtArea }}</p> -->
-              <el-cascader class="_cascader _border_none" disabled v-model="dataForm.districtArea" :options="areaList" :props="{ value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="" style="width:80%"/>
+              <el-cascader class="_cascader _border_none" disabled v-model="dataForm.districtArea" :options="areaList" :props="{ value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="" style="width:40%; float: left"/>
+              <p class="_text" style="width: 40%; float: left">{{ dataForm.address }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>

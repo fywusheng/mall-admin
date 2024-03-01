@@ -126,7 +126,7 @@ export default {
      */
     async loadMessageTypeList() {
       try {
-        const { type, data } = await post(path + "/iep/api/msc/tmpl/getTmplOptionsByType", { tmplType: 3 })
+        const { type, data } = await post(path + "/iep/api/msc/tmpl/getTmplOptionsByType", {data: { tmplType: 3 }})
         if (type === "success") {
           this.messageTypeList = data
         }
@@ -142,7 +142,7 @@ export default {
       this.listLoading = true
       const params = { ...this.searchData, msgType: 2 }
       try {
-        const { type, data } = await post(path + "/wbst/msg/getWbstMsgListByParam", params)
+        const { type, data } = await post(path + "/wbst/msg/getWbstMsgListByParam", {data: params})
         if (type === "success") {
           this.remindList = data.list
           this.total = data.total

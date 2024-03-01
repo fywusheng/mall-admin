@@ -202,7 +202,7 @@ export default {
     async loadShortMessageList() {
       this.loading = true
       try {
-        const { type, data } = await post(path + "/sms/selectSendSmsList", this.searchData)
+        const { type, data } = await post(path + "/sms/selectSendSmsList", {data: this.searchData})
         if (type === "success") {
           this.messageList = data.list
           this.total = data.total
@@ -232,7 +232,7 @@ export default {
     async handleDeleteMsg(id) {
       this.loading = true
       try {
-        const { type } = await post(path + "/sms/deleteSendSms", { pshId: id })
+        const { type } = await post(path + "/sms/deleteSendSms", {data: { pshId: id }})
         if (type === "success") {
           this.$message({
             type: "success",
@@ -262,7 +262,7 @@ export default {
     async handleSendMessage() {
       try {
         // 平台系统中么有找到这个接口
-        const { type } = await post(path + '/send/message', this.messageInfo)
+        const { type } = await post(path + '/send/message', {data: this.messageInfo})
         if (type === "success") {
           this.dialogFormVisible = false
           this.$message({

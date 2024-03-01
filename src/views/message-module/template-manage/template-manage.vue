@@ -188,7 +188,7 @@ export default {
     async loadTemplateList() {
       this.listLoading = true
       try {
-        const { type, data } = await post(path + "/iep/api/msc/tmpl/selectTmpl", this.searchData)
+        const { type, data } = await post(path + "/iep/api/msc/tmpl/selectTmpl", {data: this.searchData})
         if (type === "success") {
           this.templateList = data.list
           this.total = data.total
@@ -227,7 +227,7 @@ export default {
      */
     async handleAddOrEditTemplate() {
       try {
-        const { type } = await post(path + "/iep/api/msc/tmpl/saveTmpl", this.templateInfo)
+        const { type } = await post(path + "/iep/api/msc/tmpl/saveTmpl", {data: this.templateInfo})
         // 操作成功后提示并关闭弹窗, 同时重新加载数据
         if (type === "success") {
           this.$message({
@@ -261,7 +261,7 @@ export default {
     async handleDeleteTemplate(id) {
       this.listLoading = true
       try {
-        const { type } = await post(path + "/iep/api/msc/tmpl/deleteTmpl", { tmplId: id })
+        const { type } = await post(path + "/iep/api/msc/tmpl/deleteTmpl", {data: { tmplId: id }})
         if (type === "success") {
           this.$message({
             type: "success",
