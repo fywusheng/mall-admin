@@ -51,7 +51,7 @@
         </el-table-column>
         <el-table-column align="center" label="图标" prop="absoluteUrl" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-link type="primary" @click="handleImg(scope.row)">缩略图</el-link>
+            <el-button icon="el-icon-document" @click="handleImg(scope.row)" size="mini">缩略图</el-button>
           </template>
         </el-table-column>
         <el-table-column align="center" label="发布时间" prop="crteTime" show-overflow-tooltip>
@@ -66,8 +66,8 @@
         </el-table-column>
         <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="250">
           <template slot-scope="scope">
-            <el-link type="primary" size="small" @click="handleEditor(scope.row)">修改</el-link>
-            <el-link type="danger" size="small" @click="handleDelete(scope.row)">删除</el-link>
+            <el-button  size="mini" icon="el-icon-edit" @click="handleEditor(scope.row)">修改</el-button>
+            <el-button  size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -120,15 +120,10 @@
   </div>
 </template>
 <script>
-// import { operatingApi } from "@/api"
-import { post } from "@/utils/http-client"
+
+import { post } from "@/utils/http-nepsp"
 import { parseTime } from "@/utils/index.js"
 
-// const {
-//   selectCmsColByDTO,
-//   insertOrUpdateCmsCol,
-//   deleteCmsCol
-// } = operatingApi.specialCategoryApi
 export default {
   name: "operatingSpecialCategory",
   data() {
@@ -329,7 +324,8 @@ export default {
     async _selectCmsColByDTO() {
       try {
         this.listLoading = true
-        const { data } = await post("/iep/web/cms/cmscol/selectCmsColByDTO", this.formSearch)
+        const { data } = await post("/cms/iep/web/cms/cmscol/selectCmsColByDTO", {data: this.formSearch})
+        console.log(data)
         this.formData = data.list
         this.total = data.total
         data.total &&
@@ -352,7 +348,7 @@ export default {
     async _insertOrUpdateCmsCol(data) {
       const msg = !this.addFlag ? "编辑成功" : "新增成功"
       try {
-        await post("/iep/web/cms/cmscol/insertOrUpdateCmsCol", data)
+        await post("/cms/iep/web/cms/cmscol/insertOrUpdateCmsCol", {data: data})
         this._selectCmsColByDTO()
         this.$message.success(msg)
       } catch (error) {
@@ -372,7 +368,7 @@ export default {
         accountId: this.$store.getters.id
       }
       try {
-        await post("/iep/web/cms/cmscol/deleteCmsCol", data)
+        await post("/cms/iep/web/cms/cmscol/deleteCmsCol", {data: data})
         this._selectCmsColByDTO()
         this.$message.success("删除成功")
       } catch (error) {

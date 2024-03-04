@@ -97,7 +97,7 @@
 
 <script>
 // import { appUserManageApi, commonApi } from "@/api"
-import { fetch, post } from "@/utils/http-client"
+import { fetch, post } from "@/utils/http-nepsp"
 import YUnitedSelect from "@/components/y-united-select/index"
 import SotreSelect from "@/components/StoreSelect/index"
 export default {

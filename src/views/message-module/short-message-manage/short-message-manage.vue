@@ -100,8 +100,7 @@
 <script>
 // import { msgManageApi as msgApi } from "@/api"
 import { parseTime } from "@/utils/index.js"
-import { fetch, post } from "@/utils/http-client"
-const path = eval(process.env.VUE_APP_TEST_LOCAL) ? "/api/ngcmn" : "/nepsp-api/ngcmn"
+import { fetch, post } from "@/utils/http-nepsp"
 
 export default {
   name: "messageShortMessageManage",
@@ -202,7 +201,7 @@ export default {
     async loadShortMessageList() {
       this.loading = true
       try {
-        const { type, data } = await post(path + "/sms/selectSendSmsList", {data: this.searchData})
+        const { type, data } = await post("/ngcmn/sms/selectSendSmsList", {data: this.searchData})
         if (type === "success") {
           this.messageList = data.list
           this.total = data.total
@@ -232,7 +231,7 @@ export default {
     async handleDeleteMsg(id) {
       this.loading = true
       try {
-        const { type } = await post(path + "/sms/deleteSendSms", {data: { pshId: id }})
+        const { type } = await post("/ngcmn/sms/deleteSendSms", {data: { pshId: id }})
         if (type === "success") {
           this.$message({
             type: "success",
@@ -262,7 +261,7 @@ export default {
     async handleSendMessage() {
       try {
         // 平台系统中么有找到这个接口
-        const { type } = await post(path + '/send/message', {data: this.messageInfo})
+        const { type } = await post('/ngcmn/send/message', {data: this.messageInfo})
         if (type === "success") {
           this.dialogFormVisible = false
           this.$message({

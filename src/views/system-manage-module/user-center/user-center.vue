@@ -102,10 +102,9 @@
 <script>
 import md5 from "js-md5"
 // import { systemApi } from "@/api"
-import { fetch, post } from "@/utils/http-client"
+import { fetch, post } from "@/utils/http-nepsp"
 
-const uscPath = eval(process.env.VUE_APP_TEST_LOCAL) ? "api/common" : "/nepsp-api/common"
-const kbcPath = eval(process.env.VUE_APP_TEST_LOCAL) ? "api/kbc" : "/nepsp-api/kbc"
+// const uscPath = eval(process.env.VUE_APP_TEST_LOCAL) ? "api/common" : "/nepsp-api/common"
 
 export default {
   name: "systemUserCenter",
@@ -224,7 +223,7 @@ export default {
      * @author: syx
      */
     getAllRoleList() {
-      post(uscPath + "/web/acct/getRoles").then(data => {
+      post("/common/web/acct/getRoles").then(data => {
         this.rolesList = data.data
       })
     },
@@ -237,7 +236,7 @@ export default {
     async addOrEdit(data = {}) {
       this.addFlag = !data.acctId
       if (data.acctId) {
-        const resData = await post(uscPath + "/web/acct/getAcctById", { queryId: data.acctId })
+        const resData = await post("/common/web/acct/getAcctById", {data: { queryId: data.acctId }})
         const res = resData.data
         for (const key in this.formAdd) {
           this.formAdd[key] = res[key] || this.formAdd[key]
@@ -268,7 +267,7 @@ export default {
         if (valid) {
           const msg = this.addFlag ? "新增完成" : "修改完成"
           this.formAdd.pwd = this.formAdd.pwd && md5(this.formAdd.pwd)
-          post(uscPath + "/web/acct/addAccount", this.formAdd).then(data => {
+          post("/common/web/acct/addAccount", {data: this.formAdd}).then(data => {
             this.$message.success(msg)
             this.handleSearch()
             this.dialogFormVisible = false
@@ -299,7 +298,7 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post(uscPath + "/web/acct/delectAccount", { acctId }).then(data => {
+        post("/common/web/acct/delectAccount", {data: { acctId }}).then(data => {
           this.$message.success("删除成功")
           this.handleSearch()
         })
@@ -313,7 +312,7 @@ export default {
      */
     fetchData() {
       this.listLoading = true
-      post(uscPath + "/web/acct/getMyAddAccts", this.formSearch).then(data => {
+      post("/common/web/acct/getMyAddAccts", {data: this.formSearch}).then(data => {
         const res = data.data
         this.list = res.list
         this.total = res.total

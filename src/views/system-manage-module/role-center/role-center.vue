@@ -106,10 +106,7 @@
 </template>
 <script>
 // import { systemApi } from "@/api"
-import { fetch, post } from "@/utils/http-client"
-
-const uscPath = eval(process.env.VUE_APP_TEST_LOCAL) ? "api/common" : "/nepsp-api/common"
-const kbcPath = eval(process.env.VUE_APP_TEST_LOCAL) ? "api/kbc" : "/nepsp-api/kbc"
+import { fetch, post } from "@/utils/http-nepsp"
 
 import YTree from "@/components/y-tree"
 
@@ -274,7 +271,7 @@ export default {
      * @author: syx
      */
     getAllMenuList() {
-      post(uscPath + "/api/rbac/menu").then(data => {
+      post("/common/api/rbac/menu").then(data => {
         this.menuList = data.data
       })
     },
@@ -325,7 +322,7 @@ export default {
      */
     fetchData() {
       this.listLoading = true
-      post(uscPath + "/api/rbac/roles", this.formSearch).then(data => {
+      post("/common/api/rbac/roles", {data: this.formSearch}).then(data => {
         this.listLoading = false
         const res = data.data
         this.total = res.total
@@ -341,7 +338,7 @@ export default {
     addOrEdit(data = {}) {
       this.addFlag = !data.roleId
       if (data.roleId) {
-        post(uscPath + "/api/rbac/getRoleInfo", { roleId: data.roleId }).then(res => {
+        post("/common/api/rbac/getRoleInfo", {data: { roleId: data.roleId }}).then(res => {
           for (const key in this.formAdd) {
             this.formAdd[key] = res.data[key] || this.formAdd[key]
           }
@@ -359,7 +356,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const msg = !this.addFlag ? "编辑成功" : "新增成功"
-          post(uscPath + "/api/rbac/addEditRole", this.formAdd).then(data => {
+          post("/common/api/rbac/addEditRole", {data: this.formAdd}).then(data => {
             this.$message.success(msg)
             this.handleSearch()
             this.dialogFormVisible = false
@@ -374,7 +371,7 @@ export default {
      * @author: syx
      */
     fnRoleDelete(roleId) {
-      post(uscPath + "/api/rbac/delRole", { roleId }).then(data => {
+      post("/common/api/rbac/delRole", {data: { roleId }}).then(data => {
         this.$message.success("删除角色成功")
         this.handleSearch()
       })
@@ -427,7 +424,7 @@ export default {
     handleMenuList(roleId) {
       this.dialogFormPreviewVisible = true
       this.selectRoleId = roleId
-      post(uscPath + "/api/rbac/roleMenuList", { roleId }).then(data => {
+      post("/common/api/rbac/roleMenuList", {data: { roleId }}).then(data => {
         this.$refs.tree.getTree().setCheckedKeys([...data.data])
       })
     },
@@ -446,7 +443,7 @@ export default {
         })
         return
       }
-      post(uscPath + "/api/rbac/perms", { roleId: this.selectRoleId, menuIdList }).then(data => {
+      post("/common/api/rbac/perms", {data: { roleId: this.selectRoleId, menuIdList }}).then(data => {
         this.$message({
           type: "success",
           message: "设置权限成功"

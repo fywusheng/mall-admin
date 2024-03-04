@@ -147,10 +147,7 @@
 
 <script>
 // import { systemApi } from "@api"
-import { fetch, post } from "@/utils/http-client"
-
-const uscPath = eval(process.env.VUE_APP_TEST_LOCAL) ? "api/common" : "/nepsp-api/common"
-const kbcPath = eval(process.env.VUE_APP_TEST_LOCAL) ? "api/kbc" : "/nepsp-api/kbc"
+import { fetch, post } from "@/utils/http-nepsp"
 
 import menuComponentList from "@/assets/data/menu-component-data"
 import YComTree from "@/components/y-com-tree/index"
@@ -284,7 +281,7 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post(uscPath + "/api/rbac/updateMenuStas", { menuId: data.menuId }).then(() => {
+        post("/common/api/rbac/updateMenuStas", {data: { menuId: data.menuId }}).then(() => {
           this.$message.success(resMsg)
           this.init()
           //刷新菜单列表
@@ -335,7 +332,7 @@ export default {
           this.formAdd.noCache = this.isRedirect ? false : this.formAdd.noCache
           this.formAdd.redirect = this.isRedirect ? this.formAdd.redirect : ""
           const msg = !this.addFlag ? "编辑成功" : "新增成功"
-          post(uscPath + "/api/rbac/addEditMenu", this.formAdd).then(data => {
+          post("/common/api/rbac/addEditMenu", {data: this.formAdd}).then(data => {
             this.dialogFormVisible = false
             this.$message.success(msg)
             this.init()
@@ -353,7 +350,7 @@ export default {
      * @author: syx
      */
     getAllLeavesNodePath() {
-      post(uscPath + "/api/rbac/getAllLeavesNodePath").then(data => {
+      post("/common/api/rbac/getAllLeavesNodePath").then(data => {
         this.allMenuUrl = data.data
       })
     },
@@ -368,7 +365,7 @@ export default {
         this.formSearch.pageNum = 1
       }
       this.listLoading = true
-      post(uscPath + "/api/rbac/subMenu", this.formSearch).then(data => {
+      post("/common/api/rbac/subMenu", {data: this.formSearch}).then(data => {
         this.listLoading = false
         const res = data.data
         this.total = res.total
@@ -383,7 +380,7 @@ export default {
      */
     getAllMenuList() {
       this.selectmenuList = []
-      post(uscPath + "/api/rbac/menu").then(data => {
+      post("/common/api/rbac/menu").then(data => {
         // this.menuList = data.data
         const filterData = this.filterData2(data.data)
         this.menuList = this.recursion(filterData)
@@ -542,7 +539,7 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post(uscPath + "/api/rbac/delMenu", { menuId: data.menuId }).then(() => {
+        post("/common/api/rbac/delMenu", {data: { menuId: data.menuId }}).then(() => {
           this.$message.success("删除菜单成功")
           this.init()
           this.$store.dispatch("user/reloadMenu")

@@ -102,12 +102,14 @@ export const constantRoutes = [
     component: Layout,
     children: [
       // TODO 动态权限菜单需要添加该路由， 老的商品审核注释掉了，从老龄服务平台复制过来新文件修改
+      // 该文件的接口还没检测，后续再说，可能代理地址还不一样
       {
         path: 'examine',
         component: resolve => require(['../views/commodity-module/examine/examined-list.vue'], resolve),
         name: 'Examine',
         meta: { title: '商城 / 商品管理 / 商品审核' }
       },
+      // 本项目中就有，没有从老龄服务平台迁移
       // TODO 动态权限菜单需要添加该路由
       {
         path: 'brand',
@@ -116,6 +118,7 @@ export const constantRoutes = [
         // meta: { title: '商城 / 商品管理 / 品牌信息' }
         meta: { title: '商城 / 商品管理 / 品牌管理' }
       },
+      // 本项目中就有，没有从老龄服务平台迁移
       // TODO 动态权限菜单需要添加该路由
       {
         path: 'category',
@@ -130,6 +133,7 @@ export const constantRoutes = [
         name: 'CategoryAttribute',
         meta: { title: '商城 / 商品管理 / 配置类目规格' }
       },
+      // 本项目中就有，没有从老龄服务平台迁移
       // TODO 动态权限菜单需要添加该路由
       {
         path: 'attribute',
@@ -185,6 +189,7 @@ export const constantRoutes = [
         name: 'InventoryPriceDetails',
         meta: { title: '商城 / 商品管理 / 价格、库存变更明细' }
       },
+      // 本项目中就有，没有从老龄服务平台迁移
       // TODO 动态权限菜单需要添加该路由
       {
         path: 'salescategory',
@@ -289,6 +294,7 @@ export const constantRoutes = [
     path: '/apps/user',
     component: Layout,
     children: [
+      // 接口未检测
       {
         path: 'user-list',
         component: resolve => require(['../views/user-module/user/user-list.vue'], resolve),
@@ -301,6 +307,7 @@ export const constantRoutes = [
         name: 'User-Details',
         meta: { title: '商城 / 用户管理 / 用户详情' }
       },
+      // 接口地址应该是需要更换，因为是从 用户列表复制过来改的
       {
         path: 'vip-list',
         component: resolve => require(['../views/user-module/vip/vip-list.vue'], resolve),
@@ -316,7 +323,7 @@ export const constantRoutes = [
     ]
   },
 
-  // 内容管理
+  // 内容管理，从老龄服务平台迁移过来的
   // TODO 下边路由 动态权限菜单需要添加
   {
     path: '/apps/content',
@@ -647,6 +654,7 @@ export const constantRoutes = [
   },
 
   // 从老龄服务平台迁移过来的系统管理 - 消息中心整个模块
+  // 接口还没检查
   {
     path: '/apps/message-module',
     component: Layout,

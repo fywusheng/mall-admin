@@ -4,29 +4,27 @@
       <el-form ref="formSearch" :model="formSearch" :inline="true" class="search-form clearfix"
         size="small">
         <el-form-item label="所属栏目" class="search-field fl" prop="printId">
-          <el-select v-model="formSearch.printId" @change="handleSearch" clearable placeholder="全部">
+          <el-select size="mini" v-model="formSearch.printId" @change="handleSearch" clearable placeholder="全部">
             <el-option v-for="item in categoryTypeOPt" :key="item.value" :label="item.label"
               :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="起止日期" class="search-field fl" prop="startTime">
-          <el-date-picker v-model="time" :picker-options="pickerOptions" @change="dateChange"
+          <el-date-picker size="mini" v-model="time" :picker-options="pickerOptions" @change="dateChange"
             type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
             value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item label="标题查找" class="search-field fl" prop="ttl">
-          <el-input v-model="formSearch.ttl" placeholder="请输入标题查找" clearable />
+          <el-input size="mini" v-model="formSearch.ttl" placeholder="请输入标题查找" clearable />
         </el-form-item>
         <el-form-item label="所属地区" class="search-field fl" prop="region">
-          <y-cascader ref="yCascaderArea" placeholder="请选择所属地区" maxLevel="1" :delChildren="true"
+          <y-cascader size="mini" ref="yCascaderArea" placeholder="请选择所属地区" maxLevel="1" :delChildren="true"
             :settings="{'checkStrictly': false,'level': 'admdvsLv','value':'regnCode','label':'regnName'}"
             @change="cityChange" :data="cityList" clearable v-model="city" />
         </el-form-item>
-        <el-form-item class="fr">
-          <el-button class="two-words" plain size="small" @click="onReset('formSearch')">重置
-          </el-button>
-          <el-button class="two-words" type="primary" size="small" @click="handleSearch">查询
-          </el-button>
+        <el-form-item class="">
+          <!-- <el-button class="two-words" plain size="mini" @click="onReset('formSearch')">重置</el-button> -->
+          <el-button class="two-words" type="primary" icon="el-icon-search" size="mini" @click="handleSearch">查询</el-button>
         </el-form-item>
       </el-form>
       <div class="table-wrap">
@@ -103,8 +101,9 @@
           </el-table-column>
         </el-table>
         <!-- 分页 -->
-        <y-pagination v-show="total>0" @pagination="fetchData" class="pageBox" :total="total"
-          :page.sync="formSearch.pageNum" :limit.sync="formSearch.pageSize" />
+        <!-- <y-pagination v-show="total>0" @pagination="fetchData" class="pageBox" :total="total"
+          :page.sync="formSearch.pageNum" :limit.sync="formSearch.pageSize" /> -->
+        <el-pagination background v-show="total > 10" @size-change="changeSize" @current-change="changePage" :page-size="formSearch.pageSize" layout="total, slot, jumper, prev, pager, next" :total="total"></el-pagination>
       </div>
     </div>
 
@@ -281,12 +280,13 @@
 
 // import { commonApi, operationApi } from "@api"
 
-import { fetch, post } from "@/utils/http-client"
+import { fetch, post } from "@/utils/http-nepsp"
 import YCascader from "@/components/y-cascader/index"
 import YUploadImg from "@/components/y-upload-img"
 import YUploadFile from "@/components/y-upload-file"
 import { convertUrlToBase64, fileToBase64 } from "@/utils/downloadImg"
 import { deepClone } from "@/utils/index"
+import { dayFormat } from '@/utils/dayjs'
 const chkStasList = [
   {
     label: "待提交",
@@ -424,6 +424,7 @@ export default {
       }
     }
     return {
+      dayFormat,
       flag: "",
       hanUrl: "0",
       handleJudgeCont,
@@ -1292,7 +1293,16 @@ export default {
  */
     handleEdit(info) {
       this.dialogFormVisible = true
-    }
+    },
+    changeSize(pageSize) {
+      this.formSearch.pageSize = pageSize
+      this.formSearch.pageNum = 1
+      this.fetchData()
+    },
+    changePage(pageNum) {
+      this.formSearch.pageNum = pageNum
+      this.fetchData()
+    },
   }
 }
 </script>

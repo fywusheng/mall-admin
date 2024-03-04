@@ -107,10 +107,7 @@
 <script>
 // import { msgManageApi as msgApi } from "@/api"
 import { parseTime } from "@/utils/index.js"
-import { fetch, post } from "@/utils/http-client"
-const path = eval(process.env.VUE_APP_TEST_LOCAL) ? "/api/ngcmn" : "/nepsp-api/ngcmn"
-
-
+import { fetch, post } from "@/utils/http-nepsp"
 
 export default {
   name: "MessageInsideMessageManage",
@@ -205,7 +202,7 @@ export default {
       this.listLoading = true
       const params = { ...this.searchData, msgType: 1 }
       try {
-        const { type, data } = await post(path + "/wbst/msg/getWbstMsgListByParam", {data: params})
+        const { type, data } = await post("/ngcmn/wbst/msg/getWbstMsgListByParam", {data: params})
         if (type === "success") {
           this.insideMsgList = data.list
           this.total = data.total
@@ -239,7 +236,7 @@ export default {
         msgType: 1
       }
       try {
-        const { type } = await post(path + "/wbst/send/singlemsg", {data: params})
+        const { type } = await post("/ngcmn/wbst/send/singlemsg", {data: params})
         if (type === "success") {
           this.$message({
             type: "success",
