@@ -262,11 +262,17 @@ export const constantRoutes = [
         meta: { title: '商城 / 交易管理 / 订单信息' }
       },
       {
-        path: 'order-detail/:orderCode/:orderType',
+        path: 'order-detail/:orderCode',
         component: resolve => require(['../views/trade-module/oms/order-template'], resolve),
         name: 'Order-Detail',
-        meta: { title: '商城 / 订单中心 / 订单详情' }
-      }
+        meta: { title: '商城 / 订单中心 / 订单详情' } // 交易订单
+      },
+      {
+        path: 'order-vip-detail/:orderCode',
+        component: resolve => require(['../views/trade-module/oms/order-vip-template'], resolve),
+        name: 'Order-Vip-Detail',
+        meta: { title: '商城 / 订单中心 / 订单详情' } // 会员订单
+      },
     ]
   },
   {

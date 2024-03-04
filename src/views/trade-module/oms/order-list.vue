@@ -66,7 +66,7 @@
           <el-table-column prop="" label="操作" align="center" width="120px">
             <template slot-scope="scope">
               <el-button type="default" icon="el-icon-document" size="mini"
-                @click="forward2DetailsPage(scope.row)">详情</el-button>
+                @click="forward2DetailsPage(scope.row, 1)">详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -127,7 +127,7 @@
           <el-table-column prop="" label="操作" align="center" width="120px">
             <template slot-scope="scope">
               <el-button type="default" icon="el-icon-document" size="mini"
-                @click="forward2DetailsPage(scope.row)">详情</el-button>
+                @click="forward2DetailsPage(scope.row, 2)">详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -174,6 +174,7 @@ export default {
       searchParams: {},
       vipSearchParams: {
         orderSource: 6,
+        // orderId: '202403049510001925', // 测试数据
         orderId: '',
         userPhone: '',
         orderStatus: '',
@@ -263,8 +264,14 @@ export default {
       }
       this.vipLoading = false
     },
-    forward2DetailsPage(row) {
-      this.$router.push({ name: 'Order-Detail', params: { orderCode: row.orderId, orderType: this.activeType } })
+    forward2DetailsPage(row, type) {
+      // 交易订单
+      if (type == 1) {
+        this.$router.push({ name: 'Order-Detail', params: { orderCode: row.orderId } })
+        // 会员订单
+      } else if (type == 2) {
+        this.$router.push({ name: 'Order-Vip-Detail', params: { orderCode: row.orderId } })
+      }
     }
   }
 }

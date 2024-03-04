@@ -4,8 +4,7 @@
     <el-row style="height:30px"><el-col :span="24"></el-col></el-row>
     <el-divider content-position="left">&nbsp;订单状态</el-divider>
     <el-row style="height:30px"><el-col :span="24"></el-col></el-row>
-    <!-- 交易订单 状态 -->
-    <el-row style="height:80px" align="middle" v-if="orderType == 1">
+    <el-row style="height:80px" align="middle">
       <el-col :span="24">
         <el-steps v-if="orderStatus!=90" :space="350" :active="orderState" process-status="success"
           finish-status="finish" align-center style="justify-content: center">
@@ -37,34 +36,6 @@
         </el-steps>
       </el-col>
     </el-row>
-    <!-- 会员订单 状态 -->
-    <el-row style="height:80px" align="middle" v-if="orderType == 2">
-      <el-col :span="24">
-        <el-steps v-if="orderStatus!=90" :space="350" :active="orderState" process-status="success"
-          finish-status="finish" align-center style="justify-content: center">
-          <el-step title="已创建/待支付"></el-step>
-          <el-step title="交易完成"></el-step>
-          <el-step title="已取消"></el-step>
-          <el-step title="已关闭"></el-step>
-        </el-steps>
-        <el-steps v-if="orderStatus==90&&paymentState==0" :space="280" :active="orderState"
-          process-status="success" finish-status="finish" align-center
-          style="justify-content: center">
-          <el-step title="已创建/待支付"></el-step>
-          <el-step title="交易完成"></el-step>
-          <el-step title="已取消"></el-step>
-          <el-step title="已关闭"></el-step>
-        </el-steps>
-        <el-steps v-if="orderStatus==90&&paymentState==1" :space="280" :active="orderState"
-          process-status="success" finish-status="finish" align-center
-          style="justify-content: center">
-          <el-step title="已创建/待支付"></el-step>
-          <el-step title="交易完成"></el-step>
-          <el-step title="已取消"></el-step>
-          <el-step title="已关闭"></el-step>
-        </el-steps>
-      </el-col>
-    </el-row>
     <el-divider content-position="left">&nbsp;基本信息</el-divider>
     <el-row style="height:30px"><el-col :span="24"></el-col></el-row>
     <table width="100%">
@@ -74,10 +45,8 @@
         <td width="20%" class="td-colspan-value">{{orderCode}}</td>
         <td width="10%" class="td-colspan-label">订单ID：</td>
         <td width="20%" class="td-colspan-value">{{id}}</td>
-        <template v-if="orderType === 1">
-          <td width="10%" class="td-colspan-label">父订单号：</td>
-          <td width="25%" class="td-colspan-value">{{parentOrderCode}}</td>
-        </template>
+        <td width="10%" class="td-colspan-label">父订单号：</td>
+        <td width="25%" class="td-colspan-value">{{parentOrderCode}}</td>
       </tr>
       <tr style="height:40px">
         <td width="5%"></td>
@@ -102,10 +71,8 @@
         <td width="10%" class="td-colspan-label">当前状态：</td>
         <td width="20%" class="td-colspan-value">{{orderStatusLabel}}</td>
         <!-- TODO  订单类型包括【商品购买和积分兑换】两种。并且只有交易订单显示-->
-        <template v-if="orderType == 1">
-          <td width="10%" class="td-colspan-label">订单类型：</td>
-          <td width="20%" class="td-colspan-value">XXX</td>
-        </template>
+        <td width="10%" class="td-colspan-label">订单类型：</td>
+        <td width="20%" class="td-colspan-value">XXX</td>
         <!-- <td width="10%" class="td-colspan-label">创建时间：</td>
         <td width="25%" class="td-colspan-value">{{createdTime}}</td> -->
       </tr>
@@ -114,7 +81,7 @@
     <el-row style="height:30px"><el-col :span="24"></el-col></el-row>
     <div style="width: 100%; overflow: hidden">
       <!-- 交易订单 -->
-      <table width="100%" v-if="orderType == 1">
+      <table width="100%">
         <tr style="height:40px">
           <td width="8%"></td>
           <td>
@@ -160,31 +127,6 @@
           </td>
         </tr>
       </table>
-      
-      <!-- 会员订单 -->
-      <table width="100%" v-if="orderType == 2">
-        <tr style="height:40px">
-          <td width="8%"></td>
-          <td>
-            <el-table class="custom-table" :data="dataList"
-              :header-cell-style="{background:'#F9F9F9',color:'#000000'}" size="mini"
-              v-loading="loading" style="width:90%">
-              <div slot="empty" class="empty-wrap">
-                <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
-              </div>
-              <el-table-column prop="productName" label="商品名称"  width="150px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="productId" label="商品ID" width="150px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="productNo" label="商品编码" width="150px" show-overflow-tooltip></el-table-column>
-              <!-- TODO start -->
-              <el-table-column prop="xxxx" label="卡类型" width="150px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="xxxx" label="价格" width="150px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="xxxx" label="开通时间" width="150px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="xxxx" label="有效期至" width="150px" show-overflow-tooltip></el-table-column>
-              <!-- TODO end -->
-            </el-table>
-          </td>
-        </tr>
-      </table>
     </div>
     <el-row style="height:30px"><el-col :span="24"></el-col></el-row>
     <el-divider content-position="left">&nbsp;收货信息</el-divider>
@@ -196,10 +138,8 @@
         <td width="20%" class="td-colspan-value">{{receiveName}}</td>
         <td width="10%" class="td-colspan-label">联系电话：</td>
         <td width="20%" class="td-colspan-value">{{receivePhone}}</td>
-        <template v-if="orderType == 1">
-          <td width="10%" class="td-colspan-label">收货地址：</td>
-          <td width="25%" class="td-colspan-value">{{receiveAddress}}</td>
-        </template>
+        <td width="10%" class="td-colspan-label">收货地址：</td>
+        <td width="25%" class="td-colspan-value">{{receiveAddress}}</td>
       </tr>
     </table>
 
@@ -269,7 +209,6 @@ export default {
   async mounted() {
     this.$loading = true;
     this.loadOrderInfo(this.$route.params.orderCode);
-    this.orderType = this.$route.params.orderType
     this.$loading = false;
   },
 
@@ -353,7 +292,6 @@ export default {
       orderStatus: 10,
       orderState: 0,
       orderExpressList: [],
-      orderType: '1', // 订单类型： 1=交易订单 2=会员订单
     };
   },
 };
