@@ -39,7 +39,7 @@
         <el-table-column label="创建时间" prop="crterTime" show-overflow-tooltip align="center" />
         <el-table-column align="center" fixed="right" prop="created_at" label="操作" width="250">
           <template slot-scope="scope">
-            <el-link
+            <!-- <el-link
               :title="$store.getters.roleIdList.includes(scope.row.roleId) ? '不可修改自身拥有的角色' : ''"
               :disabled="$store.getters.roleIdList.includes(scope.row.roleId)" type="primary"
               size="small" @click="addOrEdit(scope.row)">修改</el-link>
@@ -50,7 +50,10 @@
             <el-link
               :title="$store.getters.roleIdList.includes(scope.row.roleId) ? '不可删除自身拥有的角色' : ''"
               :disabled="$store.getters.roleIdList.includes(scope.row.roleId)" type="danger"
-              size="small" @click="handleDelete(scope.row.roleId)">删除</el-link>
+              size="small" @click="handleDelete(scope.row.roleId)">删除</el-link> -->
+            <el-link type="primary" size="small" @click="addOrEdit(scope.row)">修改</el-link>
+            <el-link size="small" @click="handleMenuList(scope.row.roleId)">权限</el-link>
+            <el-link type="danger" size="small" @click="handleDelete(scope.row.roleId)">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
