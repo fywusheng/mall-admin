@@ -147,7 +147,7 @@ export default {
       showDialog: false,
       sending: false,
       dialogVisible: false,
-      supplierOptions: [{ label: "会员用户", value: 1 }, { label: "注册用户", value: 2 }],
+      supplierOptions: [{ label: "所有用户", value: 0 }, { label: "会员用户", value: 1 }, { label: "注册用户", value: 2 }],
       valuationUnitOptions: [
         { key: 1, label: "件" },
         { key: 2, label: "重量" },
