@@ -208,7 +208,7 @@
           <td width="45%">
             <el-form-item label="" prop="goodsScope">
               <template>
-                <el-radio-group v-model="dataForm.scopeUserType" :disabled="dataForm.approveState==1">
+                <el-radio-group v-model="dataForm.applicableUser" :disabled="dataForm.approveState==1">
                   <el-radio :label="0">全部用户</el-radio>
                   <el-radio :label="1">所有会员用户</el-radio>
                   <el-radio :label="2">所有注册用户</el-radio>
@@ -308,7 +308,8 @@ export default {
         approveStateLabel: '',
         shareState: 1,
         goodsScope: 0,
-        scopeUserType: 0, // TODO 适用用户，字段需和后端核对
+        /** 适用用户 0：适用所有用户、1：会员、2：新注册用户**/
+        applicableUser: 0,
         productList: []
       },
       dataRules: {
@@ -390,8 +391,9 @@ export default {
         this.dataForm.goodsScope = result.data.goodsScope
         this.oldGoodsScope = result.data.goodsScope
         this.dataForm.approveStateLabel = this.formatApproveState(result.data, null)
-        this.dataForm.productList = result.data.productList,
-          this.addGoodsList(this.dataForm.productList);
+        this.dataForm.productList = result.data.productList
+        this.dataForm.applicableUser = result.data.applicableUser
+        this.addGoodsList(this.dataForm.productList)
       }
       else {
         this.$message.error(result.msg);

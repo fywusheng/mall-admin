@@ -11,9 +11,8 @@
         <tr>
           <td width="5%"></td>
           <td width="40%">
-            <!-- TODO 字段需和后端确认-->
-            <el-form-item label="适用用户" prop="supplierId">
-              <el-select v-model="dataForm.xxxxx" collapse-tags filterable
+            <el-form-item label="适用用户" prop="applicableUser">
+              <el-select v-model="dataForm.applicableUser" collapse-tags filterable
                 style="width:90%" placeholder="请选择适用用户...">
                 <el-option v-for="item in supplierOptions" :key="item.value" :label="item.label"
                   :value="item.value"></el-option>
@@ -155,7 +154,7 @@ export default {
         { key: 3, label: "体积" }
       ],
       dataForm: {
-        supplierId: '',
+        applicableUser: '',
         tempName: '',
         type: '',
         postage: '',
@@ -169,7 +168,7 @@ export default {
         renewPrice: ''
       },
       dataRules: {
-        supplierId: [{ required: true, message: "适用用户不能为空，请选择！", valtrigger: "blur" }],
+        applicableUser: [{ required: true, message: "适用用户不能为空，请选择！", trigger: "blur" }],
         tempName: [{ required: true, message: "运费模板不能为空，请输入！", trigger: "blur" }],
         type: [{ required: true, message: "计价单位不能为空，请选择！", trigger: "blur" }],
         postage: [{ required: true, validator: validatorPostage, trigger: "blur" }]
@@ -184,7 +183,7 @@ export default {
   async mounted() {
     const userinfor = localStorage.getItem('userInfor')
     const userinforObject = JSON.parse(userinfor)
-    this.dataForm.supplierId = userinforObject.supplierId + ''
+    // this.dataForm.supplierId = userinforObject.supplierId + ''
     // this.loadSupplierOptions()
     this.id = this.$route.params.id
     if (!this.$route.params.id) return
@@ -205,7 +204,7 @@ export default {
       const result = await fetch("/tms/freight-template/loading", { templateId: id });
       if (result.code == 200) {
         this.dataForm.id = result.data.id
-        this.dataForm.supplierId = result.data.supplierId
+        this.dataForm.applicableUser = result.data.applicableUser
         this.dataForm.tempName = result.data.tempName
         this.dataForm.type = result.data.type
         this.dataForm.isPostage = result.data.isPostage == 1 ? true : false

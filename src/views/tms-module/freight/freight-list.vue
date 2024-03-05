@@ -10,9 +10,8 @@
           <el-input v-model="searchParams.tempCode" placeholder="请输入模板编码..." clearable
             size="mini"></el-input>
         </el-form-item>
-        <!-- TODO 适用用户字段需和后端确认-->
-        <el-form-item label="" prop="searchParams.supplierId">
-          <el-select v-model="searchParams.supplierId" collapse-tags filterable style="width:100%"
+        <el-form-item label="" prop="applicableUser">
+          <el-select v-model="searchParams.applicableUser" collapse-tags filterable style="width:100%"
             size="mini" clearable placeholder="请选择适用用户...">
             <el-option v-for="item in supplierOptions" :key="item.value" :label="item.label"
               :value="item.value"></el-option>
@@ -35,9 +34,7 @@
       <el-table-column prop="tempName" label="模板名称" show-overflow-tooltip></el-table-column>
       <el-table-column prop="tempCode" label="模板编码" width="150px"
         show-overflow-tooltip></el-table-column>
-        <!-- TODO 适用用户包括【会员用户和注册用户】字段需和后端确认-->
-      <el-table-column prop="supplierId" label="适用用户" width="150px"
-        align="center"></el-table-column>
+      <el-table-column prop="applicableUser" label="适用用户" width="150px" align="center" :formatter="formatApplicableUser"></el-table-column>
       <el-table-column prop="type" label="计价方式" width="100px" align="center"
         :formatter="formatType"></el-table-column>
       <el-table-column prop="isPostage" label="是否包邮" width="100px" align="center"
@@ -78,9 +75,11 @@ export default {
       dataList: [],
       totalCount: 20,
       loading: false,
-      searchParams: {},
+      searchParams: {
+        applicableUser: 0
+      },
       dialogList: [],
-      supplierOptions: [{ label: "会员用户", value: 1 }, { label: "注册用户", value: 2 }],
+      supplierOptions: [{ label: "所有用户", value: 0 }, { label: "会员用户", value: 1 }, { label: "注册用户", value: 2 }],
       showDialog: false
     }
   },
@@ -101,6 +100,10 @@ export default {
     //     this.$message.error(result.msg);
     //   }
     // },
+    formatApplicableUser (row) {
+      const res = this.supplierOptions.find(item => item.value == row.applicableUser)
+      return res ? res.label : '--'
+    },
     changePage(pageNo) {
       this.pageNo = pageNo
       this.loadData()
