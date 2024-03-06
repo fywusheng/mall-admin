@@ -15,6 +15,7 @@
               v-model="searchParams.code"
               placeholder="请输入商品编码..."
               clearable
+              size="mini"
             ></el-input>
           </el-form-item>
            <el-form-item label="">
@@ -22,6 +23,7 @@
               v-model="searchParams.id"
               placeholder="请输入商品ID..."
               clearable
+              size="mini"
             ></el-input>
           </el-form-item>
           <el-form-item label="">
@@ -30,6 +32,7 @@
               placeholder="请输入商品名称..."
               maxlength="50"
               clearable
+              size="mini"
             ></el-input>
           </el-form-item>
            <!-- <el-form-item label="商家名称">
@@ -40,7 +43,7 @@
             ></el-input>
           </el-form-item> -->
           <el-form-item label="">
-            <el-select v-model="searchParams.brandId" collapse-tags filterable clearable placeholder="请选择所属品牌...">
+            <el-select v-model="searchParams.brandId" collapse-tags filterable clearable placeholder="请选择所属品牌..." size="mini">
               <el-option
                 v-for="item in brandOptions"
                 :key="item.id"
@@ -54,6 +57,7 @@
                 v-model="searchParams.categoryId"
                 :options="categoryOptions"
                 clearable
+                size="mini"
                 placeholder="请选择所属基础类目..."
                 :props="{value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover',emitPath:false}"
               ></el-cascader>
@@ -62,6 +66,7 @@
             <el-select
               v-model="searchParams.auditState"
               clearable
+              size="mini"
               placeholder="请选择审核状态...">
               <el-option value="1" label="草稿中"></el-option>
               <el-option value="2" label="待审核"></el-option>
@@ -115,7 +120,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="name" label="商品名称" width="120px" align="center" show-overflow-tooltip/>
-        <el-table-column prop="categoryNode" label="所属类目" width="150px" show-overflow-tooltip align="center">
+        <el-table-column prop="categoryNode" label="所属类目" show-overflow-tooltip align="center">
            <template slot-scope="scope">
             <span >{{scope.row.categoryNode.split(',').join('>')}}</span>
           </template>
@@ -133,10 +138,10 @@
         <el-table-column prop="createdTime" label="提交审核时间" width="170px" align="center" />
         <el-table-column prop="auditTime" label="审核时间" width="170px" align="center" />
        
-        <el-table-column prop="" label="操作" align="center" width="170px" fixed="right">
+        <el-table-column prop="" label="操作" align="center" width="200px">
           <template slot-scope="scope">
-            <el-button size="small" type="text" v-if="activeType==2" @click="handleExamined(0, scope.row)">审核</el-button>
-            <el-button size="small" type="text"  @click="lookDetail(scope.row)">详情</el-button>
+            <el-button size="mini" icon="el-icon-tickets" v-if="activeType==2" @click="handleExamined(0, scope.row)">审核</el-button>
+            <el-button size="mini" icon="el-icon-tickets" @click="lookDetail(scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>

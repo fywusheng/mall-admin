@@ -48,15 +48,15 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="200px">
+      <el-table-column prop="" label="操作" align="center" width="300px">
         <template slot-scope="scope">
-          <el-link icon="el-icon-collection" :underline="false"
+          <el-button icon="el-icon-collection" :underline="false" size="mini"
             @click="forward2AttributeValPage(scope.row)" :disabled="scope.row.type==2"
-            style="font-size:13px">属性值&nbsp;</el-link>
-          <el-link icon="el-icon-edit" :underline="false" style="font-size:13px"
-            @click="edit(scope.row)">编辑&nbsp;</el-link>
-          <el-link icon="el-icon-delete" :underline="false" @click="del(scope.row)"
-            style="font-size:13px">删除&nbsp;</el-link>
+          >属性值&nbsp;</el-button>
+          <el-button icon="el-icon-edit" :underline="false" size="mini"
+            @click="edit(scope.row)">编辑&nbsp;</el-button>
+          <el-button icon="el-icon-delete" size="mini" :underline="false" @click="del(scope.row)"
+          >删除&nbsp;</el-button>
         </template>
       </el-table-column>
     </el-table>

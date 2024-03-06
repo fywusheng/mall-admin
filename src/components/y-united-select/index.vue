@@ -1,5 +1,5 @@
 <template>
-  <el-cascader ref="select" class="united-select-component" size="small" :props="props" v-on="$listeners" :options="options" v-bind="$attrs" @change="change">
+  <el-cascader ref="select" class="united-select-component" :size="size" :props="props" v-on="$listeners" :options="options" v-bind="$attrs" @change="change">
     <template slot-scope="{ data }">
       <div :class="{'united-select-component-span':true, 'disabled': data.disabled}" @click.prevent="change(data[props.value])">
         <span>{{ data[props.label] }}</span>
@@ -14,6 +14,10 @@
 export default {
   name: "united-select",
   props: {
+    size: {
+      type: String,
+      default: "mini"
+    },
     //最大层级  1 最大2层  2  最大3层
     maxLevel: {
       type: String,

@@ -3,34 +3,17 @@
     <!-- 查询条件区开始 -->
     <el-form ref="formSearch" :model="formSearch" :inline="true" class="search-form clearfix"
       size="small">
-      <el-form-item class="search-field fl" label="所在地市" prop="uactAttribution">
-        <y-united-select maxLevel="1" :delChildren="true"
-          :settings="{'value':'regnCode','label':'regnName'}" @codeChange="handdleSearch"
-          :data="cityList" clearable v-model="formSearch.uactAttribution"></y-united-select>
+      <el-form-item class="search-field fl" label="所在地市" prop="districtArea">
+        <y-united-select size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="handdleSearch" :data="cityList" clearable v-model="formSearch.districtArea"></y-united-select>
       </el-form-item>
-      <!-- TODO -->
-      <el-form-item class="search-field fl" label="所属门店" prop="eleCradStas">
-        <sotre-select/>
-        <!-- <el-select @change="handdleSearch" clearable v-model="formSearch.eleCradStas"
-          placeholder="请选择领卡状态">
-          <el-option value="0" label="未领取"></el-option>
-          <el-option value="1" label="已领取"></el-option>
-        </el-select> -->
+      <el-form-item class="search-field fl" label="所属门店" prop="storeNo">
+        <sotre-select v-model="formSearch.storeNo" placeholder="请输入所属门店..." size="mini"/>
       </el-form-item>
-
-      <!-- <el-form-item class="search-field fl" label="认证状态" prop="crtfStas">
-        <el-select @change="handdleSearch" clearable v-model="formSearch.crtfStas"
-          placeholder="请选择认证状态">
-          <el-option value="0" label="未认证"></el-option>
-          <el-option value="2" label="已认证"></el-option>
-        </el-select>
-      </el-form-item> -->
-
-      <el-form-item class="search-field fl" label="手机号" prop="mobile">
-        <el-input clearable v-model="formSearch.mobile" placeholder="请输入手机号" />
+      <el-form-item class="search-field fl" label="手机号" prop="phone">
+        <el-input clearable v-model="formSearch.phone" size="mini" placeholder="请输入手机号" />
       </el-form-item>
-      <el-form-item class="search-field fl" label="注册日期" prop="startDate">
-        <el-date-picker value-format="yyyy-MM-dd" @change="dateChange" v-model="daterange"
+      <el-form-item class="search-field fl" label="注册日期" prop="daterange">
+        <el-date-picker value-format="yyyy-MM-dd" @change="dateChange" size="mini" v-model="daterange"
           type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
@@ -52,30 +35,16 @@
         </el-table-column>
         <el-table-column align="center" label="姓名" prop="psnName" show-overflow-tooltip />
         <el-table-column align="center" label="身份证号" prop="idCard" show-overflow-tooltip />
-        <el-table-column align="center" label="所在地" prop="uactAttributionName"
+        <el-table-column align="center" label="所在地" prop="districtArea"
           show-overflow-tooltip />
-        <el-table-column align="center" label="手机号" prop="uact" show-overflow-tooltip />
-        <!-- TODO -->
-        <el-table-column align="center" label="所属门店" prop="eleCradStas" show-overflow-tooltip>
-          <template slot-scope="scope">
+        <el-table-column align="center" label="手机号" prop="phone" show-overflow-tooltip />
+        <el-table-column align="center" label="所属门店" prop="storeName" show-overflow-tooltip>
+          <!-- <template slot-scope="scope">
             <span>xxxxx{{ scope }}</span>
-            <!-- <el-tag :type="scope.row.eleCradStas === '0' ? 'info' : 'success'" size="small">
-              {{scope.row.eleCradStas === "0" ? "未领取" : "已领取" }}</el-tag> -->
-          </template>
+          </template> -->
         </el-table-column>
-        <!-- TODO -->
-        <el-table-column align="center" label="门店地址" prop="crtfStas" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span>xxxxx{{ scope }}</span>
-            <!-- <el-tag :type="scope.row.crtfStas === '0' ? 'info' : 'success'" size="small">
-              {{scope.row.crtfStas === "0" ? "未认证" : "已认证" }}</el-tag> -->
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="注册时间" prop="crteTime" show-overflow-tooltip
-          width="180">
-          <template slot-scope="scope">
-            {{scope.row.crteTime | parseTimeFilter }}
-          </template>
+        <el-table-column align="center" label="门店地址" prop="address" show-overflow-tooltip></el-table-column>
+        <el-table-column align="center" label="注册时间" prop="idCardTime" show-overflow-tooltip width="180">
         </el-table-column>
         <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="250">
           <template slot-scope="scope">
@@ -97,7 +66,8 @@
 
 <script>
 // import { appUserManageApi, commonApi } from "@/api"
-import { fetch, post } from "@/utils/http-nepsp"
+import { post } from "@/utils/http-nepsp"
+import { fetch as clientFetch } from "@/utils/http-client"
 import YUnitedSelect from "@/components/y-united-select/index"
 import SotreSelect from "@/components/StoreSelect/index"
 export default {
@@ -108,9 +78,10 @@ export default {
       daterange: "", //选择的日期范围
       activateState: "", //激活状态
       formSearch: { //查询表单
-        name: "", //昵称
-        account: "", //手机号
-        activateState: "", //实名认证
+        storeNo: "", // 门店编号
+        phone: "", // 手机号
+        districtArea: "", // 城市
+        memberType: "0", // 0 用户 1会员
         startDate: "", //开始日期
         endDate: "", //截止日期
         pageNum: 1,
@@ -133,8 +104,7 @@ export default {
     //查询数据
     this.handdleSearch()
     //获取城市列表
-    // TODO 暂时先注释
-    // this.getCityList()
+    this.getCityList()
   },
   methods: {
     /**
@@ -182,7 +152,7 @@ export default {
      * @author: syx
      */
     getCityList() {
-      post('/common/cusc/api/usersearch/getRegnAreaTree').then(res => {
+      clientFetch("/area/getAreaTree").then(res => {
         this.cityList = res.data  
       }).catch(e => {
         console.log(e)
@@ -207,9 +177,7 @@ export default {
     // 前往用户详情
     goDetail(data) {
       const psnId = data.soucId
-      console.log("goDetail -> psnId", psnId)
       const acctId = data.uactId
-      console.log("goDetail -> acctId", acctId)
       this.$router.push({ name: "appUserCitizenUserDetail", params: { psnId: psnId, acctId: acctId } })
     },
     // 重置表单
@@ -242,7 +210,8 @@ export default {
      */
     fetchData() {
       this.listLoading = false
-      post('/nun/api/userWeb/findUserPage', this.formSearch).then(data => {
+      post('/api/userPerson/getPageUserInfoList', {data: this.formSearch}).then(data => {
+      // post('/nun/api/userWeb/findUserPage', this.formSearch).then(data => {
         this.listLoading = false
         if (data.data) {
           this.list = data.data.list || []

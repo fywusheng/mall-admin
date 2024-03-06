@@ -1,67 +1,89 @@
 <template>
   <el-select
-    v-model="value"
+    v-model="val"
+    :size="size"
     filterable
     remote
+    clearable
+    :disabled="disabled"
     reserve-keyword
-    placeholder="请输入"
+    :placeholder="placeholder"
     :remote-method="remoteMethod"
-    :loading="loading">
+    :loading="loading"
+    @change="change">
     <el-option
       v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+      :key="item.storeNo"
+      :label="item.storeName"
+      :value="item.storeNo">
     </el-option>
   </el-select>
 </template>
 
 <script>
+import { post } from "@/utils/http-client"
   export default {
+    props: {
+      value: {
+        type: [String, Array, Number]
+      },
+      placeholder: {
+        type: String,
+        default: ''
+      },
+      size: {
+        type: String,
+        default: 'size'
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      }
+    },
     data() {
       return {
+        val: '',
         options: [],
-        value: [],
         list: [],
         loading: false,
-        states: ["Alabama", "Alaska", "Arizona",
-        "Arkansas", "California", "Colorado",
-        "Connecticut", "Delaware", "Florida",
-        "Georgia", "Hawaii", "Idaho", "Illinois",
-        "Indiana", "Iowa", "Kansas", "Kentucky",
-        "Louisiana", "Maine", "Maryland",
-        "Massachusetts", "Michigan", "Minnesota",
-        "Mississippi", "Missouri", "Montana",
-        "Nebraska", "Nevada", "New Hampshire",
-        "New Jersey", "New Mexico", "New York",
-        "North Carolina", "North Dakota", "Ohio",
-        "Oklahoma", "Oregon", "Pennsylvania",
-        "Rhode Island", "South Carolina",
-        "South Dakota", "Tennessee", "Texas",
-        "Utah", "Vermont", "Virginia",
-        "Washington", "West Virginia", "Wisconsin",
-        "Wyoming"]
+      }
+    },
+    watch: {
+      value (nVal) {
+        this.val = nVal
       }
     },
     mounted() {
-      this.list = this.states.map(item => {
-        return { value: `value:${item}`, label: `label:${item}` };
-      });
+      this.remoteMethod(' ')
     },
     methods: {
+      // 获取所有，暂时先不用
+      // async loadData () {
+      //   const result = await post("/srm/sh/information/getInformationList");
+      //   if (result.code == 200) {
+      //     this.sourceData = result.data.list;
+      //   } else {
+      //     this.$message.error(result.msg);
+      //   }
+      // },
       remoteMethod(query) {
         if (query !== '') {
           this.loading = true;
-          setTimeout(() => {
-            this.loading = false;
-            this.options = this.list.filter(item => {
-              return item.label.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1;
-            });
-          }, 200);
+          post("/srm/sh/stores/listByPageNo", {storeName: query}).then(res => {
+            if (res.code === '200') {
+              this.loading = false;
+              this.options = res.data?.list || []
+            }
+          })
         } else {
           this.options = [];
         }
+      },
+      change(val) {
+        console.log(val)
+        const res = this.options.find(item => item.storeNo == val)
+        this.$emit('input', val)
+        this.$emit('change', res)
       }
     }
   }

@@ -39,7 +39,7 @@
 <script>
 // import { getAllArr} from "@utils/getRouterList"
 // import {appUserManageApi} from "@/api"
-import { post } from "@/utils/http-client"
+import { post } from "@/utils/http-nepsp"
 
 export default {
   name: "",
@@ -62,7 +62,7 @@ export default {
           value: "证件号码"
         },
         {
-          key: "tel",
+          key: "phone",
           value: "绑定手机"
         },
         {
@@ -157,7 +157,7 @@ export default {
      * @author: syx
      */
     getUserDetail(){
-      post("/nun/api/userWeb/userDetail", {acctId: this.acctId}).then(data => {
+      post("/api/userPerson/getPageUserInfoList", {data: {memberType: 0, memberId: this.acctId}}).then(data => {
         this.info = data.data&&data.data.userDetail
         this.info.gend = this.info.gend === "1" ? "男" : "女"
       })
