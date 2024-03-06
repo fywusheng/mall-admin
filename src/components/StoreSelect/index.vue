@@ -69,7 +69,7 @@ import { post } from "@/utils/http-client"
       remoteMethod(query) {
         if (query !== '') {
           this.loading = true;
-          post("/srm/sh/stores/listByPageNo", {storeName: query}).then(res => {
+          post("/srm/sh/stores/listByPageNo", {storeName: query, pageNum: 1, pageSize: 20}).then(res => {
             if (res.code === '200') {
               this.loading = false;
               this.options = res.data?.list || []

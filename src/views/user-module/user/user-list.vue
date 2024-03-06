@@ -46,13 +46,12 @@
         <el-table-column align="center" label="门店地址" prop="address" show-overflow-tooltip></el-table-column>
         <el-table-column align="center" label="注册时间" prop="idCardTime" show-overflow-tooltip width="180">
         </el-table-column>
-        <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="250">
+        <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="300">
           <template slot-scope="scope">
-            <el-link type="primary" size="small" @click="goDetail(scope.row)">详情</el-link>
-            <el-link type="warning" size="small" @click="resetPwd(scope.row.uactId)">重置密码</el-link>
+            <el-button type="primary" size="mini" @click="goDetail(scope.row)">详情</el-button>
+            <el-button type="warning" size="mini" @click="resetPwd(scope.row.uactId)">重置密码</el-button>
             <!-- <el-link type="warning" v-if="false" size="small" @click="goDetail(scope.row)">禁用</el-link> -->
-            <el-link type="danger" size="small" @click="deleteAccount(scope.row.uactId)">删除
-            </el-link>
+            <el-button type="danger" size="mini" @click="deleteAccount(scope.row.uactId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
