@@ -158,7 +158,7 @@ export default {
      */
     getUserDetail(){
       const params = {memberType: this.$route.params.memberType, memberId: this.memberId}
-      post("/nun/api/userPerson/getPageUserInfoList", {data: {data: params}}).then(data => {
+      post("/nun/api/userPerson/getPageUserInfoList", {data: params}).then(data => {
         this.info = data.data&&data.data.userDetail
         this.info.gend = this.info.gend === "1" ? "男" : "女"
       })
