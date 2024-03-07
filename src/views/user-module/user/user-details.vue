@@ -157,7 +157,8 @@ export default {
      * @author: syx
      */
     getUserDetail(){
-      post("/nun/api/userPerson/getPageUserInfoList", {data: {memberType: this.$route.params.memberType, memberId: this.memberId}}).then(data => {
+      const params = {memberType: this.$route.params.memberType, memberId: this.memberId}
+      post("/nun/api/userPerson/getPageUserInfoList", {data: {data: params}}).then(data => {
         this.info = data.data&&data.data.userDetail
         this.info.gend = this.info.gend === "1" ? "男" : "女"
       })
