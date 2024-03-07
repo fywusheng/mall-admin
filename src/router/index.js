@@ -72,7 +72,7 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/login',
+    redirect: '/apps/dashboard',
     children: [
       {
         path: '/apps/dashboard',
@@ -308,7 +308,7 @@ export const constantRoutes = [
         meta: { title: '商城  / 用户管理 / 用户列表' }
       },
       {
-        path: 'user-details/:psnId/:acctId',
+        path: 'user-details/:memberId/:memberType',
         component: resolve => require(['../views/user-module/user/user-details.vue'], resolve),
         name: 'User-Details',
         meta: { title: '商城 / 用户管理 / 用户详情' }
@@ -321,7 +321,7 @@ export const constantRoutes = [
         meta: { title: '商城  / 用户管理 / 会员列表' }
       },
       {
-        path: 'vip-details/:psnId/:acctId',
+        path: 'vip-details/:memberId/:memberType',
         component: resolve => require(['../views/user-module/vip/vip-details.vue'], resolve),
         name: 'Vip-Details',
         meta: { title: '商城 / 用户管理 / 会员详情' }

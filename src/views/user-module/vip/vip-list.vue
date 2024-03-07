@@ -23,8 +23,8 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item class="fl">
-        <!-- <el-button class="two-words" plain size="mini" @click="onReset('formSearch')">重置</el-button> -->
         <el-button type="primary" icon="el-icon-search" size="mini" @click="onSubmit('formSearch')">查询</el-button>
+        <el-button class="two-words" icon="el-icon-refresh" size="mini" @click="onReset('formSearch')">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 查询条件区结束 -->
@@ -33,7 +33,7 @@
     <div class="table-wrap ">
       <el-table ref="table" v-loading="listLoading" height="446px" :data="list"
         element-loading-text="加载中..." highlight-current-row>
-        <el-table-column align="center" label="序号" prop="id" min-width="75">
+        <el-table-column align="center" label="序号" prop="id" width="50px">
           <template slot-scope="scope">
             {{ (scope.$index + 1 )+ (formSearch.pageNum - 1) * formSearch.pageSize }}
           </template>
@@ -45,10 +45,10 @@
         <el-table-column align="center" label="手机号" prop="phone" show-overflow-tooltip />
         <el-table-column align="center" label="会员使用状态" prop="cardStatus" show-overflow-tooltip/>
         <el-table-column align="center" label="开通时间" prop="idCardTime" show-overflow-tooltip width="180"/>
-        <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="250">
+        <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="200">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="goDetail(scope.row)">详情</el-button>
-            <el-button type="warning" size="mini" @click="resetPwd(scope.row.uactId)">重置密码</el-button>
+            <el-button size="mini" @click="goDetail(scope.row)">详情</el-button>
+            <el-button size="mini" @click="resetPwd(scope.row.memberId)">重置密码</el-button>
             <!-- <el-link type="warning" v-if="false" size="small" @click="goDetail(scope.row)">禁用</el-link> -->
             <!-- 删除功能去掉 -->
             <!-- <el-link type="danger" size="small" @click="deleteAccount(scope.row.uactId)">删除</el-link> -->
@@ -174,11 +174,7 @@ export default {
     },
     // 前往用户详情
     goDetail(data) {
-      const psnId = data.soucId
-      console.log("goDetail -> psnId", psnId)
-      const acctId = data.uactId
-      console.log("goDetail -> acctId", acctId)
-      this.$router.push({ name: "appUserCitizenUserDetail", params: { psnId: psnId, acctId: acctId } })
+      this.$router.push({ name: "Vip-Details", params: { memberId: data.memberId, memberType: this.formSearch.memberType } })
     },
     // 重置表单
     onReset(formName) {
@@ -210,7 +206,7 @@ export default {
      */
     fetchData() {
       this.listLoading = false
-      post('/api/userPerson/getPageUserInfoList', {data: this.formSearch}).then(data => {
+      post('/nun/api/userPerson/getPageUserInfoList', {data: { data: this.formSearch }}).then(data => {
       // post('/nun/api/userWeb/findUserPage', this.formSearch).then(data => {
         this.listLoading = false
         if (data.data) {

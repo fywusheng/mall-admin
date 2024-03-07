@@ -18,8 +18,8 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item class="fl">
-        <!-- <el-button class="two-words" plain size="mini" @click="onReset('formSearch')">重置</el-button> -->
         <el-button type="primary" icon="el-icon-search" size="mini" @click="onSubmit('formSearch')">查询</el-button>
+        <el-button class="two-words" icon="el-icon-refresh" size="mini" @click="onReset('formSearch')">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 查询条件区结束 -->
@@ -28,30 +28,25 @@
     <div class="table-wrap ">
       <el-table ref="table" v-loading="listLoading" height="446px" :data="list"
         element-loading-text="加载中..." highlight-current-row>
-        <el-table-column align="center" label="序号" prop="id" min-width="75">
+        <el-table-column align="center" label="序号" prop="id"  width="50px">
           <template slot-scope="scope">
             {{ (scope.$index + 1 )+ (formSearch.pageNum - 1) * formSearch.pageSize }}
           </template>
         </el-table-column>
         <el-table-column align="center" label="姓名" prop="psnName" show-overflow-tooltip />
         <el-table-column align="center" label="身份证号" prop="idCard" show-overflow-tooltip />
-        <el-table-column align="center" label="所在地" prop="districtArea"
-          show-overflow-tooltip />
+        <el-table-column align="center" label="所在地" prop="districtArea" show-overflow-tooltip />
         <el-table-column align="center" label="手机号" prop="phone" show-overflow-tooltip />
-        <el-table-column align="center" label="所属门店" prop="storeName" show-overflow-tooltip>
-          <!-- <template slot-scope="scope">
-            <span>xxxxx{{ scope }}</span>
-          </template> -->
-        </el-table-column>
+        <el-table-column align="center" label="所属门店" prop="storeName" show-overflow-tooltip></el-table-column>
         <el-table-column align="center" label="门店地址" prop="address" show-overflow-tooltip></el-table-column>
-        <el-table-column align="center" label="注册时间" prop="idCardTime" show-overflow-tooltip width="180">
+        <el-table-column align="center" label="注册时间" prop="crteTime" show-overflow-tooltip width="180">
         </el-table-column>
         <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="300">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="goDetail(scope.row)">详情</el-button>
-            <el-button type="warning" size="mini" @click="resetPwd(scope.row.uactId)">重置密码</el-button>
+            <el-button size="mini" @click="goDetail(scope.row)">详情</el-button>
+            <el-button size="mini" @click="resetPwd(scope.row.uactId)">重置密码</el-button>
             <!-- <el-link type="warning" v-if="false" size="small" @click="goDetail(scope.row)">禁用</el-link> -->
-            <el-button type="danger" size="mini" @click="deleteAccount(scope.row.uactId)">删除</el-button>
+            <el-button size="mini" @click="deleteAccount(scope.row.uactId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -175,9 +170,7 @@ export default {
     },
     // 前往用户详情
     goDetail(data) {
-      const psnId = data.soucId
-      const acctId = data.uactId
-      this.$router.push({ name: "appUserCitizenUserDetail", params: { psnId: psnId, acctId: acctId } })
+      this.$router.push({ name: "User-Details", params: { memberId: data.memberId, memberType: this.formSearch.memberType } })
     },
     // 重置表单
     onReset(formName) {
@@ -209,7 +202,7 @@ export default {
      */
     fetchData() {
       this.listLoading = false
-      post('/api/userPerson/getPageUserInfoList', {data: this.formSearch}).then(data => {
+      post('/nun/api/userPerson/getPageUserInfoList', {data: { data: this.formSearch }}).then(data => {
       // post('/nun/api/userWeb/findUserPage', this.formSearch).then(data => {
         this.listLoading = false
         if (data.data) {

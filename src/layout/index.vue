@@ -39,6 +39,7 @@
 import { AppMain, Navbar, Sidebar, TopSidebar } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
+import { removeToken } from '@/utils/auth' // get token from cookie
 
 export default {
   name: 'Layout',
@@ -83,6 +84,8 @@ export default {
   },
   methods: {
     loginOut() {
+      // 退出清空 token
+      removeToken()
       this.$router.push(`/login`);
     },
     handleClickOutside() {

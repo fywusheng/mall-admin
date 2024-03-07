@@ -129,7 +129,7 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
-      acctId: "", //用户ID
+      memberId: "", //用户ID
       total: 0
     }
   },
@@ -142,7 +142,7 @@ export default {
   },
   async created() {
     // await this.checkPermission()
-    this.acctId = this.$route.params.acctId
+    this.memberId = this.$route.params.memberId
     this.formSearch.psnId = this.$route.params.psnId
     const len = (14 - this.fiedlList.length) > 0 ? (14 - this.fiedlList.length) : 0
     console.log("created -> len", len)
@@ -180,7 +180,7 @@ export default {
      * @author: syx
      */
     getUserDetail(){
-      post("/api/userPerson/getPageUserInfoList", {data: {memberType: 1, memberId: this.acctId}}).then(data => {
+      post("/api/userPerson/getPageUserInfoList", {data: {memberType: this.$route.params.memberType, memberId: this.memberId}}).then(data => {
       // post("/nun/api/userWeb/userDetail", {acctId: this.acctId}).then(data => {
         this.info = data.data&&data.data.userDetail
         this.info.gend = this.info.gend === "1" ? "男" : "女"
