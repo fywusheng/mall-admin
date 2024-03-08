@@ -94,7 +94,7 @@
             </el-form-item>
           </td>
           <td width="50%">
-            <el-form-item label="基础类目" prop="categoryNode" class="item">
+            <el-form-item label="基础类目" prop="categoryNode" class="item _custom_cascader">
               <el-cascader v-model="dataForm.categoryNode" :options="categoryOptions"
                 placeholder="请选择商品所属类目信息..." :disabled="dataForm.saleState==5"
                 @change="categorySelectionOnChange"
@@ -120,6 +120,19 @@
                 :disabled="dataForm.saleState==5" maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
+        </tr>
+        <tr>
+          <td width="5%"></td>
+          <td width="45%">
+            <el-form-item label="适用人群" prop="targetAudience" class="item">
+              <el-select v-model="dataForm.targetAudience" multiple :multiple-limit="4" clearable placeholder="请选择最多不超过4个适用人群标签..."
+                :disabled="dataForm.saleState==5" style="width:80%">
+                <el-option v-for="item in targetAudienceOptions" :key="item.key" :label="item.label"
+                  :value="item.key"></el-option>
+              </el-select>
+            </el-form-item>
+          </td>
+          <td width="50%"></td>
         </tr>
       </table>
 
@@ -201,12 +214,12 @@
     <!-- 校验规则处理 -->
     <el-form label-width="160px" class="data-form" :model="oldMoneyForm" :rules="oldMoneyFormRule"
       :v-loading="loading" ref="oldMoneyForm" label-position="right" size="small">
-      <el-form-item label="是否支持会员优惠:" prop="huiyuanyouhui">
-        <el-radio-group v-model="oldMoneyForm.huiyuanyouhui">
+      <el-form-item label="是否支持会员优惠:" prop="memberDiscount">
+        <el-radio-group v-model="oldMoneyForm.memberDiscount">
           <el-radio label="1">是</el-radio>
           <el-radio label="0">否</el-radio>
         </el-radio-group>
-        <el-input v-if="oldMoneyForm.huiyuanyouhui == 1" v-model="huiyuanyouhuijine"
+        <el-input v-if="oldMoneyForm.memberDiscount == 1" v-model="oldMoneyForm.discountAmount"
           placeholder="请输入会员优惠金额">
           <template slot="append">元</template>
         </el-input>
@@ -219,14 +232,14 @@
         </el-radio-group>
         <template v-if="oldMoneyForm.isCreditPoints == 1">
           <span class="_label">会员用户积分抵扣</span>
-          <el-input v-model="pointValue"
+          <el-input v-model="oldMoneyForm.pointDiscountPoint"
             placeholder="请输入会员用户抵扣积分">
             <template slot="append">元</template>
           </el-input>
         </template>
         <template v-if="oldMoneyForm.isCreditPoints == 1">
           <span class="_label">注册用户积分抵扣</span>
-          <el-input v-model="pointValue2"
+          <el-input v-model="oldMoneyForm.registerPoint"
             placeholder="请输入注册用户抵扣积分">
             <template slot="append">元</template>
           </el-input>
@@ -451,6 +464,14 @@ export default {
         { key: 2, label: "重量" },
         { key: 3, label: "体积" }
       ],
+      targetAudienceOptions: [
+        { key: 1, label: "高血压" },
+        { key: 2, label: "高血脂" },
+        { key: 3, label: "高血糖" },
+        { key: 4, label: "高尿酸" },
+        { key: 5, label: "脂肪肝" },
+        { key: 6, label: "肾囊肿" },
+      ],
       SuppliedTypeOptions: [
         { key: 0, label: "平台自营" },
         { key: 1, label: "商家供货" }
@@ -460,24 +481,21 @@ export default {
         { key: 1, label: "香港发货" },
         { key: 2, label: "海外发货" }
       ],
-      pointValue: '',//积分值
-      pointValue2: '', // 注册用户积分
       oldMoneyForm: {
         money: '0',
         shop: '0',
         isCreditPoints: '0',
-        // TODO
-        huiyuanyouhui: '1'
+        memberDiscount: '1', // 是否支持会员优惠 0 否 1 是
+        discountAmount: '', // 会员优惠金额
+        pointDiscountPoint: '',//会员积分抵扣
+        registerPoint: '', // 注册用户积分
       },
       moneyValue: '',//输入金额
-      // TODO
-      huiyuanyouhuijine: '', // 会员优惠金额
       oldMoneyFormRule: {
         money: [{ required: true, trigger: "blur" }],
         shop: [{ required: true, trigger: "blur" }],
         isCreditPoints: [{ required: true, trigger: "blur" }],
-        // TODO
-        huiyuanyouhui: [{ required: true, trigger: "blur" }]
+        memberDiscount: [{ required: true, trigger: "blur" }]
       },
       shopForm: {
         area: '0',
@@ -525,7 +543,8 @@ export default {
         mainImgUrl: "",
         delFlag: "",
         saleState: '',
-        attributeMap: new Map()
+        attributeMap: new Map(),
+        targetAudience: [],
       },
       dataRules: {
         name: [{ required: true, message: "商品名称不能为空，请完整输入！", trigger: "blur" }],
@@ -533,6 +552,7 @@ export default {
         brandId: [{ required: true, message: "商品品牌不能为空，请选择品牌！", trigger: "change" }],
         categoryNode: [{ required: true, message: "商品类目不能为空，请选择类目！", trigger: "change" }],
         valuationUnit: [{ required: true, message: "计量单位不能为空，请选择！", trigger: "change" }],
+        targetAudience: [{ required: true, message: "适用人群不能为空，请选择！", trigger: "change" }],
         unitVal: [{ required: true, validator: validateAttributes, trigger: "blur" }],
         attributeMap: [{ required: true, trigger: "blur", validator: validateParam }]
       },
@@ -865,10 +885,12 @@ export default {
           delFlag: result.data.delFlag,
           attributes: result.data.attributes,
           saleState: result.data.saleState,
-          attributeMap: new Map
+          attributeMap: new Map,
+          targetAudience: result.data.targetAudience?.split(',')
         };
         this.oldMoneyForm.isCreditPoints = result.data.isCreditPoints + '',
-          this.pointValue = result.data.creditPoints,
+          this.oldMoneyForm.pointDiscountPoint = result.data.pointDiscountPoint,
+          this.oldMoneyForm.registerPoint = result.data.registerPoint,
           this.productDetail = result.data.productDetail,
           this.dataForm = dataForm,
           this.oldMoneyForm.money = result.data.isRebate + '',
@@ -933,22 +955,21 @@ export default {
           }
           if (this.oldMoneyForm.isCreditPoints == 1) {
             const patter = /^-?\d+\.?\d{0,2}$/
-            if (!this.pointValue) {
+            if (!this.oldMoneyForm.pointDiscountPoint) {
               this.$message.warning('输入的会员用户积分不能为空！')
               return
             }
-            if (!patter.test(this.pointValue)) {
+            if (!patter.test(this.oldMoneyForm.pointDiscountPoint)) {
               this.$message.warning('输入的会员用户积分为数字或者数字保留2位小数！')
               return
             }
-            // TODO
             // 会员用户抵扣积分 & 注册用户抵扣积分，两项都必须填写，如只写其中一项，需要提示： 积分抵扣设置不完整，请重新设置
             // 最后需要替换字段
-            if (!this.pointValue2) {
+            if (!this.oldMoneyForm.registerPoint) {
               this.$message.warning('输入的注册用户积分不能为空！')
               return
             }
-            if (!patter.test(this.pointValue2)) {
+            if (!patter.test(this.oldMoneyForm.registerPoint)) {
               this.$message.warning('输入的注册用户积分为数字或者数字保留2位小数！')
               return
             }
@@ -973,11 +994,15 @@ export default {
             this.dataForm.categoryNode = '1,' + this.dataForm.categoryNode.join(',')
           }
           let points = {
-            isCreditPoints: this.oldMoneyForm.isCreditPoints
+            isCreditPoints: this.oldMoneyForm.isCreditPoints,
+            memberDiscount: this.oldMoneyForm.memberDiscount,
+            discountAmount: this.oldMoneyForm.discountAmount,
+            pointDiscountPoint: this.oldMoneyForm.pointDiscountPoint,
+            registerPoint: this.oldMoneyForm.registerPoint
           }
-          if (this.oldMoneyForm.isCreditPoints == 1) {
-            points['creditPoints'] = this.pointValue
-          }
+          // if (this.oldMoneyForm.isCreditPoints == 1) {
+          //   points['pointDiscountPoint'] = this.oldMoneyForm.pointDiscountPoint
+          // }
           var shopData = {}
           let params = Object.assign(points, { productDetail: this.productDetail, productType: this.oldMoneyForm.shop })
           if (this.userObject.accountType == 9) {
@@ -1078,6 +1103,9 @@ export default {
             }
             params = Object.assign(params, this.dataForm, serviceData)
           }
+          const targetAudience = this.dataForm.targetAudience.join()
+          params.targetAudience = targetAudience
+
           var url = this.dataForm.id ? '/product/update' : '/product/add'
           const result = await post(url, params)
           this.sending = false;
@@ -1177,5 +1205,10 @@ export default {
 }
 ._label {
   margin-left: 25px;
+}
+._custom_cascader {
+  .el-input {
+    width: 100%;
+  }
 }
 </style>
