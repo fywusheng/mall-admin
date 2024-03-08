@@ -70,32 +70,27 @@ export default {
           value: "性别"
         },
         {
-          key: "brdy",
+          key: "BRDY",
           value: "出生年月"
         },
-        // TODO 字段调整，需要核对
         {
-          key: "hsregAddr",
+          key: "address",
           value: "默认地址"
         },
-        // TODO 字段调整，需要核对
         {
-          key: "email",
+          key: "age",
           value: "年龄"
         },
-        // TODO 字段调整，需要核对
         {
-          key: "email",
+          key: "storeName",
           value: "所属门店"
         },
-        // TODO 字段调整，需要核对
         {
-          key: "email",
+          key: "address",
           value: "门店地址"
         },
-        // TODO 字段调整，需要核对
         {
-          key: "email",
+          key: "disease",
           value: "疾病情况"
         }
       ],
@@ -158,8 +153,8 @@ export default {
      */
     getUserDetail(){
       const params = {memberType: this.$route.params.memberType, memberId: this.memberId}
-      post("/nun/api/userPerson/getPageUserInfoList", {data: params}).then(data => {
-        this.info = data.data&&data.data.userDetail
+      post("/nun/api/userPerson/getUserInfoById", {data: {data: params}}).then(data => {
+        this.info = data.data
         this.info.gend = this.info.gend === "1" ? "男" : "女"
       })
     },

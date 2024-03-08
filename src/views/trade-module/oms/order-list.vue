@@ -21,9 +21,8 @@
                   :value="item.code"></el-option>
               </el-select>
             </el-form-item>
-            <!-- TODO 新增订单类型 -->
             <el-form-item label="">
-              <el-select v-model="searchParams.orderStatus" size="mini" clearable collapse-tags
+              <el-select v-model="searchParams.sceneType" size="mini" clearable collapse-tags
                 filterable style="width:100%" placeholder="请选择订单类型...">
                 <el-option v-for="item in orderTypeOptions" :key="item.code" :label="item.name"
                   :value="item.code"></el-option>
@@ -42,8 +41,7 @@
           </div>
           <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
           <el-table-column prop="orderId" label="订单编号"  align="center"></el-table-column>
-          <!-- TODO 新增订单类型字段 -->
-          <el-table-column v-if="activeType == 1" prop="orderType" label="订单类型" width="160px" align="center"></el-table-column>
+          <el-table-column prop="sceneType" label="订单类型" width="160px" align="center"></el-table-column>
 
           <el-table-column prop="orderAmount" label="订单金额" width="70px"
             align="center"></el-table-column>
@@ -58,8 +56,7 @@
             show-overflow-tooltip></el-table-column>
           <el-table-column prop="userLoginName" label="下单账号" align="center"
             width="120px"></el-table-column>
-          <!-- 收货地址字段，会员订单不显示 -->
-          <el-table-column v-if="activeType == 1" prop="userName" label="收货地址" :formatter="formatReceiveAddress"
+          <el-table-column prop="userName" label="收货地址" :formatter="formatReceiveAddress"
             show-overflow-tooltip></el-table-column>
           <el-table-column prop="createdTime" label="下单时间" align="center"
             width="150px"></el-table-column>
@@ -142,6 +139,7 @@
 <script>
 import { fetch, post } from '@/utils/http-client'
 import { post as nepspPost } from '@/utils/http-nepsp'
+import { deepClone } from '@/utils/index'
 export default {
   name: '',
   data() {
@@ -170,7 +168,7 @@ export default {
         { name: '已退款', code: '6' },
         { name: '退款中', code: '7' },
       ],
-      orderTypeOptions: [{ name: '商品购买', code: '1' }, { name: '积分兑换', code: '2' }],
+      orderTypeOptions: [{ name: '商品购买', code: '商品购买' }, { name: '积分兑换', code: '积分兑换' }],
       searchParams: {},
       vipSearchParams: {
         orderSource: 6,
@@ -221,8 +219,9 @@ export default {
       const params = {
         pageNum: this.pageNo,
         pageSize: this.pageSize,
-        queryObject: this.searchParams
+        queryObject: deepClone(this.searchParams)
       }
+      params.queryObject.sceneType = params.queryObject.sceneType || undefined
       const result = await post('/order/listByPageNo', params)
       if (result.code == 200) {
         this.$nextTick(() => {

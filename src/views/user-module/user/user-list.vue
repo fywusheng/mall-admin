@@ -44,9 +44,9 @@
         <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="300">
           <template slot-scope="scope">
             <el-button size="mini" @click="goDetail(scope.row)">详情</el-button>
-            <el-button size="mini" @click="resetPwd(scope.row.uactId)">重置密码</el-button>
+            <el-button size="mini" @click="resetPwd(scope.row.memberId)">重置密码</el-button>
             <!-- <el-link type="warning" v-if="false" size="small" @click="goDetail(scope.row)">禁用</el-link> -->
-            <el-button size="mini" @click="deleteAccount(scope.row.uactId)">删除</el-button>
+            <el-button size="mini" @click="deleteAccount(scope.row.memberId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -76,8 +76,8 @@ export default {
         phone: "", // 手机号
         districtArea: "", // 城市
         memberType: "0", // 0 用户 1会员
-        startDate: "", //开始日期
-        endDate: "", //截止日期
+        crteStartTime: "", //开始日期
+        crteEndTime: "", //截止日期
         pageNum: 1,
         pageSize: 10
       },
@@ -114,7 +114,7 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post('/nun/api/userWeb/alterLoginPwd', { uactId }).then(data => {
+        post('/nun/api/userWeb/alterLoginPwd', {data: {data: { uactId }}}).then(data => {
           this.$message.success("重置密码成功")
           console.log("resetPwd -> data", data)
         })
@@ -164,8 +164,8 @@ export default {
      * @author: syx
      */
     dateChange(val) {
-      this.formSearch.startDate = val && val[0] || ""
-      this.formSearch.endDate = val && val[1] || ""
+      this.formSearch.crteStartTime = val && val[0] || ""
+      this.formSearch.crteEndTime = val && val[1] || ""
       this.handdleSearch()
     },
     // 前往用户详情
@@ -174,8 +174,8 @@ export default {
     },
     // 重置表单
     onReset(formName) {
-      // this.formSearch.startDate = "" 让resetFields清除
-      this.formSearch.endDate = ""
+      // this.formSearch.crteStartTime = "" 让resetFields清除
+      // this.formSearch.crteEndTime = ""
       this.daterange = ""
       this.$refs[formName].resetFields()
       this.handdleSearch()

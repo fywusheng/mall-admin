@@ -72,7 +72,7 @@
         <td width="20%" class="td-colspan-value">{{orderStatusLabel}}</td>
         <!-- TODO  订单类型包括【商品购买和积分兑换】两种。并且只有交易订单显示-->
         <td width="10%" class="td-colspan-label">订单类型：</td>
-        <td width="20%" class="td-colspan-value">XXX</td>
+        <td width="20%" class="td-colspan-value">{{sceneType}}</td>
         <!-- <td width="10%" class="td-colspan-label">创建时间：</td>
         <td width="25%" class="td-colspan-value">{{createdTime}}</td> -->
       </tr>
@@ -107,9 +107,7 @@
               <el-table-column prop="productId" label="商品ID" width="150px"
                 show-overflow-tooltip></el-table-column>
               <el-table-column prop="productNo" label="商品编码" width="150px" show-overflow-tooltip></el-table-column>
-                <!-- TODO -->
-              <el-table-column prop="xxxx" label="商品品牌" width="150px"
-                show-overflow-tooltip></el-table-column>
+              <el-table-column prop="brandName" label="商品品牌" width="150px" show-overflow-tooltip></el-table-column>
               <el-table-column prop="sellingPrice" label="单价" width="80px" align="center"></el-table-column>
                 <!-- TODO start -->
               <el-table-column prop="xxxxx" label="购买数量" width="80px" show-overflow-tooltip></el-table-column>
@@ -232,6 +230,7 @@ export default {
           this.receiveName = result.data.receiveName,
           this.receivePhone = result.data.receivePhone,
           this.orderStatusLabel = result.data.orderStatusLabel,
+          this.sceneType = result.data.sceneType,
           this.receiveAddress = result.data.receiveProvinceName + result.data.receiveCityName + result.data.receiveAreaName + result.data.receiveAddress,
           this.paymentMethod = this.formatPaymentMethod(result.data.paymentMethod),
           this.paymentTime = result.data.paymentTime,
@@ -284,6 +283,7 @@ export default {
       receiveAddress: '',
       dataList: [],
       orderStatusLabel: '',
+      sceneType: '',
       paymentMethod: '',
       paymentTime: '',
       paymentState: '',
