@@ -51,9 +51,9 @@
               :title="$store.getters.roleIdList.includes(scope.row.roleId) ? '不可删除自身拥有的角色' : ''"
               :disabled="$store.getters.roleIdList.includes(scope.row.roleId)" type="danger"
               size="small" @click="handleDelete(scope.row.roleId)">删除</el-link> -->
-            <el-link type="primary" size="small" @click="addOrEdit(scope.row)">修改</el-link>
-            <el-link size="small" @click="handleMenuList(scope.row.roleId)">权限</el-link>
-            <el-link type="danger" size="small" @click="handleDelete(scope.row.roleId)">删除</el-link>
+            <el-button size="mini" @click="addOrEdit(scope.row)">修改</el-button>
+            <el-button size="mini" @click="handleMenuList(scope.row.roleId)">权限</el-button>
+            <el-button size="mini" @click="handleDelete(scope.row.roleId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

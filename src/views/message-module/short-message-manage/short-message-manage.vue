@@ -43,7 +43,7 @@
               <div>接受对象: <span style="text-decoration:underline;color:#0066FF;">{{ item.recerList ? item.recerList.split(",").length : 0 }}</span>人</div>
             </div>
             <div class="short-msg-item-head-right">
-              <el-button type="text" @click="onClickDeleteMsg(item)">删除</el-button>
+              <el-button size="mini" @click="onClickDeleteMsg(item)">删除</el-button>
             </div>
           </div>
           <div class="short-msg-item-body">
@@ -201,7 +201,7 @@ export default {
     async loadShortMessageList() {
       this.loading = true
       try {
-        const { type, data } = await post("/ngcmn/sms/selectSendSmsList", {data: this.searchData})
+        const { type, data } = await post("/ngcmn/sms/selectSendSmsList", {data: {data: this.searchData}})
         if (type === "success") {
           this.messageList = data.list
           this.total = data.total
@@ -231,7 +231,7 @@ export default {
     async handleDeleteMsg(id) {
       this.loading = true
       try {
-        const { type } = await post("/ngcmn/sms/deleteSendSms", {data: { pshId: id }})
+        const { type } = await post("/ngcmn/sms/deleteSendSms", {data: {data: { pshId: id }}})
         if (type === "success") {
           this.$message({
             type: "success",
@@ -261,7 +261,7 @@ export default {
     async handleSendMessage() {
       try {
         // 平台系统中么有找到这个接口
-        const { type } = await post('/ngcmn/send/message', {data: this.messageInfo})
+        const { type } = await post('/ngcmn/send/message', {data: {data: this.messageInfo}})
         if (type === "success") {
           this.dialogFormVisible = false
           this.$message({
@@ -273,6 +273,11 @@ export default {
             mobile: "",
             content: ""
           }
+        } else {
+           this.$message({
+              type: "error",
+              message: "短信发送失败!"
+            })
         }
       } catch (e) {
         this.$message({
@@ -287,11 +292,15 @@ export default {
 
 <style lang="scss" scoped>
 .short-msg-container {
+  padding: 0 !important;
+  background-color: #F7F8FA;
+  .short-msg-search-box-body {
+    background: #ffffff;
+  }
   .short-msg-center {
     width: 100%;
     &-head {
       padding: 15px 30px;
-      background-color: #ffffff;
       &-left {
         display: flex;
         font-size: 18px;
@@ -313,6 +322,7 @@ export default {
 
     &-body {
       width: 100%;
+      background: #f3f3f3;
       &-item {
         background-color: #ffffff;
         position: relative;
@@ -328,6 +338,9 @@ export default {
           margin-left: 45px;
           border-bottom: 1px solid #f3f3f3;
           font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
           &-left {
             display: flex;
           }
@@ -354,6 +367,9 @@ export default {
       background-color: #ffffff;
       font-size: 24px;
       color: #999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 

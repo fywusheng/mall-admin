@@ -40,16 +40,16 @@
             </el-table-column>
             <el-table-column label="最后更新人" prop="opterName" width="120" show-overflow-tooltip
               align="center" />
-            <el-table-column align="center" fixed="right" prop="created_at" label="操作" width="200">
+            <el-table-column align="center" fixed="right" prop="created_at" label="操作" width="250">
               <template slot-scope="scope">
-                <el-link type="primary" size="small" @click="addOrEdit(scope.row)">修改</el-link>
-                <el-link :title="scope.row.isSystemMenu ? '系统菜单不可停用' : ''"
+                <el-button size="mini" @click="addOrEdit(scope.row)">修改</el-button>
+                <el-button :title="scope.row.isSystemMenu ? '系统菜单不可停用' : ''"
                   :disabled="scope.row.isSystemMenu"
-                  :type="scope.row.status ? 'warning' : 'success'" size="small"
-                  @click="updateMenuStas(scope.row)">{{scope.row.status ? "停用" : "启用"}}</el-link>
-                <el-link :title="scope.row.isSystemMenu ? '系统菜单不可删除' : ''"
-                  :disabled="scope.row.isSystemMenu" type="danger" size="small"
-                  @click="handleDelete(scope.row)">删除</el-link>
+                  size="mini"
+                  @click="updateMenuStas(scope.row)">{{scope.row.status ? "停用" : "启用"}}</el-button>
+                <el-button :title="scope.row.isSystemMenu ? '系统菜单不可删除' : ''"
+                  :disabled="scope.row.isSystemMenu" size="mini"
+                  @click="handleDelete(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -281,7 +281,7 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post("/common/api/rbac/updateMenuStas", {data: { menuId: data.menuId }}).then(() => {
+        post("/common/api/rbac/updateMenuStas", {data: {data: { menuId: data.menuId }}}).then(() => {
           this.$message.success(resMsg)
           this.init()
           //刷新菜单列表
@@ -332,7 +332,7 @@ export default {
           this.formAdd.noCache = this.isRedirect ? false : this.formAdd.noCache
           this.formAdd.redirect = this.isRedirect ? this.formAdd.redirect : ""
           const msg = !this.addFlag ? "编辑成功" : "新增成功"
-          post("/common/api/rbac/addEditMenu", {data: this.formAdd}).then(data => {
+          post("/common/api/rbac/addEditMenu", {data: {data: this.formAdd}}).then(data => {
             this.dialogFormVisible = false
             this.$message.success(msg)
             this.init()
@@ -539,7 +539,7 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post("/common/api/rbac/delMenu", {data: { menuId: data.menuId }}).then(() => {
+        post("/common/api/rbac/delMenu", {data: {data: { menuId: data.menuId }}}).then(() => {
           this.$message.success("删除菜单成功")
           this.init()
           this.$store.dispatch("user/reloadMenu")

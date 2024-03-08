@@ -273,7 +273,7 @@ export default {
     async loadNoticeList() {
       this.listLoading = true
       try {
-        const { type, data } = await post("/ngcmn/notice/sys/selectNotice", {data: this.searchData})
+        const { type, data } = await post("/ngcmn/notice/sys/selectNotice", {data: {data: this.searchData}})
         if (type === "success") {
           this.noticeList = data.list
           this.total = data.total
@@ -317,7 +317,7 @@ export default {
       // 修改状态时显示loading效果, 防止重复操作
       this.listLoading = true
       try {
-        const { type } = await post("/ngcmn/notice/sys/updtNotcRunStas", {data: { notcId: row.notcId, runStas: row.runStas ? 0 : 1 }})
+        const { type } = await post("/ngcmn/notice/sys/updtNotcRunStas", {data: {data: { notcId: row.notcId, runStas: row.runStas ? 0 : 1 }}})
         if (type === "success") {
           this.listLoading = false
           this.$message({
@@ -346,7 +346,7 @@ export default {
     async handleEditNotice() {
       const params = Object.assign({}, this.noticeInfo, { runStas: this.noticeInfo.runStas ? 0 : 1 })
       try {
-        const { type } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: params})
+        const { type } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: {data: params}})
         if (type === "success") {
           this.addEditDialogVisible = false
           this.$message({
@@ -382,7 +382,7 @@ export default {
     async handleDeleteNotice(id) {
       this.listLoading = true
       try {
-        const { type } = await post("/ngcmn/notice/sys/deleteNoticeService", {data: { notcId: id }})
+        const { type } = await post("/ngcmn/notice/sys/deleteNoticeService", {data: {data: { notcId: id }}})
         if (type === "success") {
           this.$message({
             type: "success",
@@ -413,7 +413,7 @@ export default {
     async handleAddNotice() {
       const params = Object.assign({}, this.noticeInfo, { runStas: this.noticeInfo.runStas ? 0 : 1 })
       try {
-        const { type } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: params})
+        const { type } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: {data: params}})
         if (type === "success") {
           this.addEditDialogVisible = false
           this.$message({
@@ -434,7 +434,7 @@ export default {
     async onClickSendNotice(row) {
       this.listLoading = true
       try {
-        const { type } = await post("/ngcmn/mock/api/notice/push", {data: { id: row.id }})
+        const { type } = await post("/ngcmn/mock/api/notice/push", {data: {data: { id: row.id }}})
         if (type === "success") {
           this.$message({
             type: "success",
