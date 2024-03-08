@@ -70,7 +70,7 @@
         <td width="5%"></td>
         <td width="10%" class="td-colspan-label">当前状态：</td>
         <td width="20%" class="td-colspan-value">{{orderStatusLabel}}</td>
-        <!-- TODO  订单类型包括【商品购买和积分兑换】两种。并且只有交易订单显示-->
+        <!-- 订单类型包括【商品购买和积分兑换】两种。并且只有交易订单显示-->
         <td width="10%" class="td-colspan-label">订单类型：</td>
         <td width="20%" class="td-colspan-value">{{sceneType}}</td>
         <!-- <td width="10%" class="td-colspan-label">创建时间：</td>
@@ -109,17 +109,15 @@
               <el-table-column prop="productNo" label="商品编码" width="150px" show-overflow-tooltip></el-table-column>
               <el-table-column prop="brandName" label="商品品牌" width="150px" show-overflow-tooltip></el-table-column>
               <el-table-column prop="sellingPrice" label="单价" width="80px" align="center"></el-table-column>
-                <!-- TODO start -->
-              <el-table-column prop="xxxxx" label="购买数量" width="80px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="xxxxx" label="商品金额" width="80px" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="skuQuantity" label="购买数量" width="80px" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="unitPrice" label="商品金额" width="80px" show-overflow-tooltip></el-table-column>
               <!-- 2.7、积分抵扣：若该商品支持积分抵扣，则【会员优惠】字段为【——】，反之亦然，同一个商品不可会员优惠和积分兑换同时存在； -->
-              <el-table-column prop="xxxxx" label="会员优惠" width="80px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="xxxxx" label="优惠券" width="80px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="xxxxx" label="总优惠" width="80px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="xxxxx" label="实付金额" width="80px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="xxxxx" label="积分抵扣" width="80px" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="xxxxx" label="退款金额" width="80px" show-overflow-tooltip></el-table-column>
-                <!-- TODO end -->
+              <el-table-column prop="memberDiscountAmount" label="会员优惠" width="80px" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="discountAmount" label="优惠券" width="80px" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="totalDiscountAmount" label="总优惠" width="80px" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="totalAmount" label="实付金额" width="80px" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="discountScore" label="积分抵扣" width="80px" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="returnsPrice" label="退款金额" width="80px" show-overflow-tooltip></el-table-column>
               <el-table-column prop="skuQuantity" label="购买数量" width="80px" align="center"></el-table-column>
             </el-table>
           </td>
@@ -183,10 +181,8 @@
       </tr>
       <tr style="height:40px">
         <td width="5%"></td>
-        <!-- TODO -->
         <td width="10%" class="td-colspan-label">支付单号：</td>
-        <!-- <td width="20%" class="td-colspan-value">{{receiveName}}</td> -->
-        <td width="20%" class="td-colspan-value">XXX</td>
+        <td width="20%" class="td-colspan-value">{{receiveName}}</td>
         <td width="10%" class="td-colspan-label">实付金额：</td>
         <td width="20%" class="td-colspan-value">{{paidAmount}}</td>
         <td width="10%" class="td-colspan-label">获得积分：</td>
