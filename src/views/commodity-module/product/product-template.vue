@@ -888,6 +888,7 @@ export default {
           attributeMap: new Map,
           targetAudience: result.data.targetAudience?.split(',')
         };
+        
         this.oldMoneyForm.isCreditPoints = result.data.isCreditPoints + '',
           this.oldMoneyForm.pointDiscountPoint = result.data.pointDiscountPoint,
           this.oldMoneyForm.registerPoint = result.data.registerPoint,
