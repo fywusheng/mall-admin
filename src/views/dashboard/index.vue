@@ -552,11 +552,10 @@ export default {
           data.orderGmv,
           data.refundOrderCount,
           data.refundAmount,
-          // TODO
-          data.orderNum,
-          data.orderGmv,
-          data.refundOrderCount,
-          data.refundAmount,
+          data.orderAmount,
+          data.registerCount,
+          data.memberCount,
+          data.orderAmountAvg,
         ];
       } else {
         this.$message.warning(res.msg);
@@ -887,7 +886,7 @@ export default {
         height: 0.5px;
         margin-top: 13px;
         margin-left: 15px;
-        width: 90%;
+        width: 100%;
       }
     }
     .datePicker {

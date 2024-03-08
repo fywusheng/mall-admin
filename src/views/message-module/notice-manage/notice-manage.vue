@@ -76,6 +76,14 @@
           <el-option label="APP" value="app"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="公告图片：">
+        <el-upload class="avatar-uploader"
+          :show-file-list="false" :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload" :auto-upload="true">
+          <img v-if="noticeInfo.imgUrl" :src="noticeInfo.imgUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
       <el-form-item label="运行状态：">
         <el-switch v-model="noticeInfo.runStas"></el-switch>
       </el-form-item>
@@ -187,7 +195,8 @@ export default {
         rediAddr: "", // 重定向地址
         rlsChnl: "app", // 发布渠道
         rlsChnlStr: "APP", // 发布渠道字段
-        runStas: true // 公告运行状态(0 开启 1 关闭)
+        runStas: true, // 公告运行状态(0 开启 1 关闭)
+        imgUrl: '', // 公告图片
       },
       noticeList: [], // 公告列表
       total: 0, // 公告数量
@@ -460,6 +469,23 @@ export default {
       this.searchData.pageNum = pageNum
       this.loadNoticeList()
     },
+      handleAvatarSuccess(response, file) {
+      if (!response || response.code != 0) {
+        return;
+      }
+      this.noticeInfo.imgUrl = file.response.data.imgUrl;
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    }
   }
 }
 </script>
@@ -491,10 +517,34 @@ export default {
   ::v-deep .el-dialog {
     .el-dialog__body {
       height: 350px;
-      overflow: hidden;
-      // overflow-y: auto;
+      // overflow: hidden;
+      overflow-y: auto;
     }
   }
+}
+
+.avatar-uploader .el-upload {
+  border: 0.5px dashed #DCDFE6;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #609df3;
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  text-align: center;
+  border: 0.5px dashed #DCDFE6;
+  border-radius: 10px;
+}
+.avatar {
+  width: 150px;
+  height: 150px;
+  display: block;
 }
 
 .check-notice-dialog {
