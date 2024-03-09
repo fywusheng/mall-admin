@@ -133,7 +133,7 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post('/nun/api/userWeb/deleteUser', { uactId }).then(data => {
+        post('/nun/api/userWeb/deleteUser', {data: { data: { uactId }}}).then(data => {
           this.$message.success("删除用户成功")
           this.handdleSearch()
         })
