@@ -636,7 +636,7 @@ export const constantRoutes = [
   {
     path: '/apps/system-manage',
     component: Layout,
-  meta: { title: '系统管理' },
+    meta: { title: '系统管理' },
     children: [
       {
         path: 'user-center',

@@ -48,9 +48,9 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="250">
         <template slot-scope="scope">
-          <el-link type="primary" :underline="false" size="small" @click="onClickEditNotice(scope.row)">修改</el-link>
-          <el-link type="primary" :underline="false" size="small" @click="onClickSendNotice(scope.row)">推送</el-link>
-          <el-link type="primary" :underline="false" size="small" @click="onClickDeleteNotice(scope.row)">删除</el-link>
+          <el-button :underline="false" size="mini" @click="onClickEditNotice(scope.row)">修改</el-button>
+          <el-button :underline="false" size="mini" @click="onClickSendNotice(scope.row)">推送</el-button>
+          <el-button :underline="false" size="mini" @click="onClickDeleteNotice(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -13,7 +13,7 @@ const HttpService = axios.create({
   timeout: 60000 // request timeout
 })
 const BlobHttpService = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: process.env.VUE_APP_BASE_NEPSP_API,
   // withCredentials: true, // send cookies when cross-domain requests
   responseType: 'blob',
   headers: {
