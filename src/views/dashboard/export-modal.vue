@@ -129,7 +129,7 @@
     },
     data() {
       return {
-        dialogVisible: true,
+        dialogVisible: false,
         orderLoading: false,
         detailLoading: false,
         saleLoading: false,
@@ -157,7 +157,6 @@
     },
     watch: {
       value (nVal) {
-        console.log(nVal)
         if (nVal) {
           this.dialogVisible = nVal
         }
