@@ -166,13 +166,13 @@
             </div>
             <div class="_table">
               <el-table
-                :data="tableData"
+                :data="franchiseeSalePrice"
                 height="800"
                 stripe
                 style="width: 100%">
-                <el-table-column prop="date" label="排名" width="60"/>
-                <el-table-column prop="name" label="加盟商名称"/>
-                <el-table-column prop="address" label="销售额" width="140"/>
+                <el-table-column type="index" label="排名" width="60"/>
+                <el-table-column prop="franchisee" label="加盟商名称"/>
+                <el-table-column prop="salePrice" label="销售额" width="140"/>
               </el-table>
             </div>
           </div>
@@ -185,13 +185,13 @@
             </div>
             <div class="_table">
               <el-table
-                :data="tableData"
+                :data="franchiseeRegisterCount"
                 height="800"
                 stripe
                 style="width: 100%">
-                <el-table-column prop="date" label="排名" width="60"/>
-                <el-table-column prop="name" label="加盟商名称"/>
-                <el-table-column prop="address" label="注册数" width="140"/>
+                <el-table-column type="index" label="排名" width="60"/>
+                <el-table-column prop="franchisee" label="加盟商名称"/>
+                <el-table-column prop="registerCount" label="注册数" width="140"/>
               </el-table>
             </div>
           </div>
@@ -204,13 +204,13 @@
             </div>
             <div class="_table">
               <el-table
-                :data="tableData"
+                :data="franchiseeMemberCount"
                 height="800"
                 stripe
                 style="width: 100%">
-                <el-table-column prop="date" label="排名" width="60"/>
-                <el-table-column prop="name" label="加盟商名称"/>
-                <el-table-column prop="address" label="会员数" width="140"/>
+                <el-table-column type="index" label="排名" width="60"/>
+                <el-table-column prop="franchisee" label="加盟商名称"/>
+                <el-table-column prop="memberCount" label="会员数" width="140"/>
               </el-table>
             </div>
           </div>
@@ -460,57 +460,10 @@ export default {
         { number: "", url: "" },
       ],
       visibleExportModal: false,
-      tableData: [{
-          date: '1',
-          name: '王小虎',
-          address: '1518'
-        }, {
-          date: '2',
-          name: '王小虎',
-          address: '1517'
-        }, {
-          date: '3',
-          name: '王小虎',
-          address: '1519'
-        }, {
-          date: '4',
-          name: '王小虎',
-          address: '1516'
-        },{
-          date: '1',
-          name: '王小虎',
-          address: '1518'
-        }, {
-          date: '2',
-          name: '王小虎',
-          address: '1517'
-        }, {
-          date: '3',
-          name: '王小虎',
-          address: '1519'
-        }, {
-          date: '4',
-          name: '王小虎',
-          address: '1516'
-        },
-        {
-          date: '1',
-          name: '王小虎',
-          address: '1518'
-        }, {
-          date: '2',
-          name: '王小虎',
-          address: '1517'
-        }, {
-          date: '3',
-          name: '王小虎',
-          address: '1519'
-        }, {
-          date: '4',
-          name: '王小虎',
-          address: '1516'
-        }]
-
+      tableData: [],
+      franchiseeSalePrice: [], // 销售排行
+      franchiseeRegisterCount: [], // 注册排行
+      franchiseeMemberCount: [], // 会员排行
     };
   },
   components: {
@@ -557,6 +510,9 @@ export default {
           data.memberCount,
           data.orderAmountAvg,
         ];
+        this.franchiseeSalePrice = res.data.franchiseeSalePrice || []
+        this.franchiseeRegisterCount = res.data.franchiseeRegisterCount || []
+        this.franchiseeMemberCount = res.data.franchiseeMemberCount || []
       } else {
         this.$message.warning(res.msg);
       }

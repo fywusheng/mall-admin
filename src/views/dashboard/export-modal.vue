@@ -168,7 +168,7 @@
         if (!this.orderParams.startTime) return this.$message.warning('请选择下单开始日期')
         if (!this.orderParams.endTime) return this.$message.warning('请选择下单结束日期')
         const params = {...this.orderParams, status}
-        const fileName = status == 40 ? '已完成订单列表' : '已退款订单列表'
+        const fileName = (status == 40 ? '已完成订单' : '已退款订单') + `-下单时间-${params.startTime}-${params.endTime}`
         this.orderLoading = true
         await downloadByPost('/order/exportOrderInfo', fileName, params).then(res => {
           this.orderLoading = false
