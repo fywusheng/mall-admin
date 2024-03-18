@@ -101,7 +101,7 @@
           </td>
           <td width="30%" colspan="2">
             <el-form-item label="审核意见：" prop="reviewComments" class="item" label-position="top">
-              <el-input size="mini" v-model="dataForm.reviewComments" placeholder="请输入审核意见..." maxlength="32" style="width:100%"></el-input>
+              <el-input size="mini" v-model="dataForm.reviewComments" placeholder="请输入审核意见..." maxlength="50" style="width:100%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -218,6 +218,9 @@ export default {
       this.loading = false
       if (result.code == 200) {
         this.detailData = result.data
+        if (this.routeParamsType == 0) {
+          this.dataForm = result.data
+        }
       } else {
         this.$message.error(result.msg);
       }

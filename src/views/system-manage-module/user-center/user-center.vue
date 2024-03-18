@@ -40,12 +40,12 @@
         </el-table-column>
         <el-table-column align="center" fixed="right" prop="created_at" label="操作" width="250">
           <template slot-scope="scope">
-            <el-link type="primary" size="small" @click="addOrEdit(scope.row)">修改</el-link>
+            <el-button size="mini" @click="addOrEdit(scope.row)">修改</el-button>
             <!-- <el-link :type="scope.row.accountStatus | accountStatusFilter('reverse')" size="small" @click="handleUpdate(scope.row.menuId)">{{scope.row.accountStatus | accountStatusFilterName('reverse')}}</el-link> -->
-            <el-link type="danger"
+            <el-button
               :title="scope.row.acctId === $store.getters.id ? '不可删除自己的账号' : ''"
-              :disabled="scope.row.acctId === $store.getters.id" size="small"
-              @click="remove(scope.row.acctId)">删除</el-link>
+              :disabled="scope.row.acctId === $store.getters.id" size="mini"
+              @click="remove(scope.row.acctId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -219,8 +219,8 @@
           <el-radio label="1">是</el-radio>
           <el-radio label="0">否</el-radio>
         </el-radio-group>
-        <el-input v-if="oldMoneyForm.memberDiscount == 1" v-model="oldMoneyForm.discountAmount"
-          placeholder="请输入会员优惠金额">
+        <el-input v-if="oldMoneyForm.memberDiscount == 1" v-model="oldMoneyForm.discountAmount" maxlength="5"
+          placeholder="请输入会员优惠金额" @blur="limitFiveStr">
           <template slot="append">元</template>
         </el-input>
       </el-form-item>
@@ -232,14 +232,14 @@
         </el-radio-group>
         <template v-if="oldMoneyForm.isCreditPoints == 1">
           <span class="_label">会员用户积分抵扣</span>
-          <el-input v-model="oldMoneyForm.pointDiscountPoint"
+          <el-input v-model="oldMoneyForm.pointDiscountPoint" maxlength="5"  @blur="limitFiveStr"
             placeholder="请输入会员用户抵扣积分">
             <template slot="append">元</template>
           </el-input>
         </template>
         <template v-if="oldMoneyForm.isCreditPoints == 1">
           <span class="_label">注册用户积分抵扣</span>
-          <el-input v-model="oldMoneyForm.registerPoint"
+          <el-input v-model="oldMoneyForm.registerPoint" maxlength="5" @blur="limitFiveStr"
             placeholder="请输入注册用户抵扣积分">
             <template slot="append">元</template>
           </el-input>
@@ -289,7 +289,7 @@
       </el-form-item>
       <el-form-item label="发货地类型:" prop="deliveryType" class="item">
         <el-select v-model="shopForm.deliveryType" style="width:80%" placeholder="请选择商品发货地类型..."
-          :disabled="dataForm.saleState==5">
+          :disabled="dataForm.saleState==5" maxlength="100">
           <el-option v-for="item in DeliveryTypeOptions" :key="item.key" :label="item.label"
             :value="item.key"></el-option>
         </el-select>
@@ -300,11 +300,11 @@
       </el-form-item>
       <el-form-item label="发货时长(N1至N2天送达):" prop="deliveryMinDays" class="item">
         <div class="lineFlex">
-          <el-input v-model="shopForm.deliveryMinDays" placeholder="请输入最小送达天数..."
-            :disabled="dataForm.saleState==5" maxlength="32" style="width:38%"></el-input>
+          <el-input-number v-model="shopForm.deliveryMinDays" controls-position="right" placeholder="请输入最小送达天数..."
+            :disabled="dataForm.saleState==5" :min="1" maxlength="32" style="width:38%; text-align:left;"></el-input-number>
           -至-
-          <el-input v-model="shopForm.deliveryMaxDays" placeholder="请输入最大送达天数..."
-            :disabled="dataForm.saleState==5" maxlength="32" style="width:38%"></el-input>
+          <el-input-number v-model="shopForm.deliveryMaxDays" controls-position="right" placeholder="请输入最大送达天数..."
+            :disabled="dataForm.saleState==5" :max="100" maxlength="32" style="width:38%; text-align:left;"></el-input-number>
         </div>
 
       </el-form-item>
@@ -600,6 +600,16 @@ export default {
     }
   },
   methods: {
+    limitFiveStr (e) {
+      const val = e.target.value
+      console.log(val)
+      // const regex = /^\d{0,5}$/
+      const regex = /^\d+$/
+      if (!regex.test(val)) {
+        this.$message.warning('请输入数字！')
+        e.target.value = ''
+      }
+    },
     fwAutoChange(value) {
       if (this.serviceForm.store == '1') {
         this.listItem = []
@@ -1210,6 +1220,13 @@ export default {
 ._custom_cascader {
   .el-input {
     width: 100%;
+  }
+}
+.lineFlex {
+  .el-input-number {
+    .el-input__inner {
+      text-align: left;
+    }
   }
 }
 </style>

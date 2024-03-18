@@ -17,13 +17,13 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="加盟商编号" prop="informationNo" class="item">
-              <el-input v-model="dataForm.informationNo" :disabled="routeParamsId != -1" placeholder="请输入加盟商编号..." style="width:80%"></el-input>
+            <el-form-item label="加盟商编号" prop="" class="item required-item">
+              <el-input v-model="dataForm.informationNo" disabled :placeholder="`${routeParamsId != -1 ? '请输入加盟商编号...' : '无需手工录入，后台自动生成...'}`" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="加盟商名称" prop="informationName" class="item">
-              <el-input v-model="dataForm.informationName" placeholder="请输入加盟商名称..." style="width:80%"></el-input>
+              <el-input v-model="dataForm.informationName" maxlength="30" placeholder="请输入加盟商名称..." style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
@@ -39,17 +39,18 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="联系人" prop="contacts" class="item">
-              <el-input v-model="dataForm.contacts" placeholder="请输入联系人姓名..." maxlength="32" style="width:80%"></el-input>
+              <el-input v-model="dataForm.contacts"  placeholder="请输入联系人姓名..." maxlength="20" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="联系方式" prop="contactsPhone" class="item">
-              <el-input v-model="dataForm.contactsPhone" placeholder="请输入联系方式..." maxlength="32" style="width:80%"></el-input>
+              <el-input v-model="dataForm.contactsPhone" placeholder="请输入联系方式..." style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="加盟费" prop="initialFee" class="item">
-              <el-input v-model="dataForm.initialFee" placeholder="请输入加盟费..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="加盟费" prop="initialFee" class="item custom-input-number">
+              <!-- <el-input v-model="dataForm.initialFee" placeholder="请输入加盟费..." maxlength="10" style="width:80%"></el-input> -->
+              <el-input-number v-model="dataForm.initialFee" controls-position="right" :min="0" :max="9999999999" :precision="2" style="width:80%"></el-input-number>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -57,13 +58,14 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="销售额" prop="salesVolume" class="item">
-              <el-input v-model="dataForm.salesVolume" placeholder="请输入销售额..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="销售额" prop="salesVolume" class="item custom-input-number">
+              <!-- <el-input v-model="dataForm.salesVolume" placeholder="请输入销售额..." maxlength="10" style="width:80%"></el-input> -->
+                <el-input-number v-model="dataForm.salesVolume" controls-position="right" :min="0" :max="9999999999" :precision="2" style="width:80%"></el-input-number>
             </el-form-item>
           </td>
           <td width="30%" colspan="2">
             <el-form-item label="地址" prop="address" class="item">
-              <el-input v-model="dataForm.address" placeholder="请输入加盟地址..." maxlength="32" style="width:90%"></el-input>
+              <el-input v-model="dataForm.address" placeholder="请输入加盟地址..." maxlength="150" style="width:90%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -109,15 +111,28 @@ export default {
   name: "",
   data() {
     const validateNumber = (rule, value, callback) => {
-      const patter = /^\d+$/
+      let str = ''
+      if (rule.field === 'initialFee') {
+        str = '加盟费'
+      } else if (rule.field === 'salesVolume') {
+        str = '销售额'
+      }
+      if (value == 0) {
+        callback(new Error(`${str}数值需要大于零！`))
+      }
+      const patter = /^[-+]?\d*\.?\d{0,2}$/
       if (!patter.test(value)) {
-        let str = ''
-        if (rule.field === 'initialFee') {
-          str = '加盟费'
-        } else if (rule.field === 'salesVolume') {
-          str = '销售额'
-        }
-        callback(new Error(`${str}值只能为数字`))
+        callback(new Error(`${str}数值只能为整数或者两位小数！`))
+      } else {
+        callback()
+      }
+    }
+
+    // 手机 或者 座机号码
+    const isPhoneNumber = (rule, value, callback) => {
+      const patter = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,1,2,5-9]))\d{8}$|^0\d{2,3}-\d{7,8}(-\d{1,4})?$/
+      if (!patter.test(value)) {
+        callback(new Error(`请输入正确的手机号码或者座机号码！`))
       } else {
         callback()
       }
@@ -154,7 +169,10 @@ export default {
         informationName: [{ required: true, message: "加盟商名称不能为空，请完整输入！", trigger: "blur" }],
         authorityScope: [{ required: true, message: "授权范围不能为空，请选择！", trigger: "change" }],
         contacts: [{ required: true, message: "联系人不能为空，请完整输入！", trigger: "change" }],
-        contactsPhone: [{ required: true, message: "联系方式不能为空，请完整输入！", trigger: "change" }],
+        contactsPhone: [
+          { required: true, message: "联系方式不能为空，请完整输入！", trigger: "change" },
+          { required: true, validator: isPhoneNumber, trigger: "change" }
+        ],
         initialFee: [
           { required: true, message: "加盟费不能为空，请完整输入！", trigger: "change" },
           { required: true, validator: validateNumber, trigger: "change" }
@@ -163,7 +181,7 @@ export default {
           { required: true, message: "销售额不能为空，请完整输入！", trigger: "change" },
           { required: true, validator: validateNumber, trigger: "change" }  
         ],
-        contractFileUrl: [{ required: true, message: "合同文件不能为空，请上传！", trigger: ["change", "blur"] }],
+        // contractFileUrl: [{ required: true, message: "合同文件不能为空，请上传！", trigger: ["change", "blur"] }],
       },
     };
   },
@@ -304,5 +322,20 @@ export default {
 }
 ._label {
   margin-left: 25px;
+}
+.required-item {
+  .el-form-item__label::before {
+    content: "*";
+    color: #ff4949;
+    margin-right: 4px;
+  }
+}
+.custom-input-number {
+  .el-input {
+    width: 100%;
+    .el-input__inner {
+      text-align: left;
+    }
+  }
 }
 </style>

@@ -39,7 +39,7 @@ HttpService.interceptors.request.use(
 
 //响应拦截器即异常处理
 HttpService.interceptors.response.use(response => {
-  if (response.data.code === '1001' || response.data.code == '1021') {
+  if (response.data.code === '1001') {
     removeToken()
     router.push('/login')
   }

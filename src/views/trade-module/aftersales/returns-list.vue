@@ -105,7 +105,7 @@
         align="center"></el-table-column>
       <el-table-column prop="returnsTypeLabel" label="售后类型" width="80px"
         align="center"></el-table-column>
-      <el-table-column prop="returnsDesc" label="售后状态" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="returnsDesc" label="售后状态" width="200px" show-overflow-tooltip></el-table-column>
       <el-table-column prop="orderCode" label="归属订单" width="200px" align="center">
         <template slot-scope="scope">
           <el-link :underline="false"
@@ -115,9 +115,9 @@
       <el-table-column prop="returnsPrice" label="实付金额" width="80px"
         align="center"></el-table-column>
       <el-table-column prop="paidPrice" label="退款金额" width="80px" align="center"></el-table-column>
-      <el-table-column prop="createdTime" label="申请时间" width="150px"
+      <el-table-column prop="createdTime" label="申请时间"
         align="center"></el-table-column>
-      <el-table-column prop="" label="操作" width="290px" align="center">
+      <el-table-column prop="" label="操作" width="290px" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" :disabled="Number(scope.row.returnsStatus)!=-1"
             @click="audit(scope.row)">售后审核</el-button>

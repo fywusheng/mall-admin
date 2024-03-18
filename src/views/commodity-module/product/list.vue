@@ -105,7 +105,7 @@
           </el-switch>
         </template>
       </el-table-column-->
-      <el-table-column prop="" label="操作" align="center" width="280px">
+      <el-table-column prop="" label="操作" align="center" width="200px" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" v-if="activeType==2 || activeType==3"
             @click="forward2SpecPage(scope.row)">SKU管理</el-button>

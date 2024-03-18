@@ -570,6 +570,7 @@ export default {
       }
     },
     goPath(url, name) {
+      console.log(name)
       const queryParam = {
         在售商品: "1",
         待上架商品: "2",
@@ -577,6 +578,9 @@ export default {
         已有供应商: "3",
         待审核供应商: "2",
         审核未通过供应商: "4",
+        已有加盟商: "1",
+        待审核加盟商: "2",
+        审核未通过加盟商: "0",
       };
       if (!url) return;
       if (queryParam[name]) {

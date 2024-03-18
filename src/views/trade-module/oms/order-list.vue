@@ -40,8 +40,8 @@
             <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
           </div>
           <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
-          <el-table-column prop="orderId" label="订单编号"  align="center"></el-table-column>
-          <el-table-column prop="sceneType" label="订单类型" width="160px" align="center"></el-table-column>
+          <el-table-column prop="orderId" label="订单编号" width="200px" show-overflow-tooltip  align="center"></el-table-column>
+          <el-table-column prop="sceneType" label="订单类型" width="160px" show-overflow-tooltip align="center"></el-table-column>
 
           <el-table-column prop="orderAmount" label="订单金额" width="70px"
             align="center"></el-table-column>
@@ -105,8 +105,8 @@
             <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
           </div>
           <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
-          <el-table-column prop="orderId" label="订单编号"  align="center"></el-table-column>
-          <el-table-column prop="orderAmount" label="订单金额" width="70px"
+          <el-table-column prop="orderId" label="订单编号" width="200px" show-overflow-tooltip  align="center"></el-table-column>
+          <el-table-column prop="orderAmount" label="订单金额" width="70px" show-overflow-tooltip
             align="center"></el-table-column>
           <el-table-column prop="payAmount" label="应付金额" width="70px"
             align="center"></el-table-column>
@@ -120,7 +120,7 @@
           <el-table-column prop="updterName" label="下单账号" align="center"
             width="120px"></el-table-column>
           <el-table-column prop="orderTime" label="下单时间" align="center"
-            width="150px"></el-table-column>
+            ></el-table-column>
           <el-table-column prop="" label="操作" align="center" width="120px">
             <template slot-scope="scope">
               <el-button type="default" icon="el-icon-document" size="mini"
@@ -189,9 +189,10 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      this.dataList = []
-      this.pageNo = 1
-      this.searchParams = {}
+      console.log(this.activeType)
+      // this.dataList = []
+      // this.pageNo = 1
+      // this.searchParams = {}
       // this.searchParams.queryType = this.activeType
       // this.loadData();
     },

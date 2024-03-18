@@ -35,10 +35,10 @@
       <el-table-column prop="contacts" label="联系人" width="150px" align="center"></el-table-column>
       <el-table-column prop="contactsPhone" label="联系方式" width="100px" align="center"></el-table-column>
       <el-table-column prop="authorityScope" label="授权范围" width="100px" align="center" :formatter="formatAuthorityScope"></el-table-column>
-      <el-table-column prop="initialFee" label="加盟费" width="150px" align="center"></el-table-column>
-      <el-table-column prop="salesVolume" label="销售额" width="80px" align="center"></el-table-column>
+      <el-table-column prop="initialFee" label="加盟费" width="100px" align="center"></el-table-column>
+      <el-table-column prop="salesVolume" label="销售额" width="100px" align="center"></el-table-column>
       <el-table-column prop="status" label="审核状态" width="80px" align="center" :formatter="formatStatus"></el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="320px" fixed="right">
+      <el-table-column prop="" label="操作" align="center" width="220px" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit" size="mini" v-if="scope.row.status == 0"  @click="edit(scope.row)">编辑</el-button>
           <el-button icon="el-icon-folder-checked" size="mini" v-if="scope.row.status == 2" @click="check(scope.row, 1)">审核</el-button>
@@ -88,6 +88,12 @@ export default {
     FranchiseeSelect
   },
   async mounted() {
+    // 从首页跳转过来的链接
+    if (this.$route.query) {
+      if (this.$route.query.type == 2 || this.$route.query.type == 0) {
+        this.searchParams.status = parseInt(this.$route.query.type)
+      }
+    }
     this.loadData()
   },
   methods: {
