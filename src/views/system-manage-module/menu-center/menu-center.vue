@@ -57,7 +57,7 @@
           <!-- <y-pagination v-show="total>0" class="pageBox" :total="total"
             :page.sync="formSearch.pageNum" :limit.sync="formSearch.pageSize"
             @pagination="getChildMenuList(true)" /> -->
-          <el-pagination background v-show="total > 10" @size-change="changeSize" @current-change="changePage" :page-size="formSearch.pageSize" layout="total, slot, jumper, prev, pager, next" :total="total"></el-pagination>
+          <el-pagination background v-show="total > 10" @size-change="changeSize" @current-change="changePage" :page-size="formSearch.pageSize" :current-page="formSearch.pageNum" layout="total, slot, jumper, prev, pager, next" :total="total"></el-pagination>
         </div>
       </div>
     </div>
@@ -281,11 +281,11 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post("/common/api/rbac/updateMenuStas", {data: {data: { menuId: data.menuId }}}).then(() => {
+        post("/common/api/rbac/updateMenuStas", {data: { menuId: data.menuId }}).then(() => {
           this.$message.success(resMsg)
           this.init()
           //刷新菜单列表
-          this.$store.dispatch("user/reloadMenu")
+          // this.$store.dispatch("user/reloadMenu")
         })
       }).catch(() => {
         this.$message({
@@ -332,7 +332,7 @@ export default {
           this.formAdd.noCache = this.isRedirect ? false : this.formAdd.noCache
           this.formAdd.redirect = this.isRedirect ? this.formAdd.redirect : ""
           const msg = !this.addFlag ? "编辑成功" : "新增成功"
-          post("/common/api/rbac/addEditMenu", {data: {data: this.formAdd}}).then(data => {
+          post("/common/api/rbac/addEditMenu", {data: this.formAdd}).then(data => {
             this.dialogFormVisible = false
             this.$message.success(msg)
             this.init()
@@ -539,7 +539,7 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post("/common/api/rbac/delMenu", {data: {data: { menuId: data.menuId }}}).then(() => {
+        post("/common/api/rbac/delMenu", {data: { menuId: data.menuId }}).then(() => {
           this.$message.success("删除菜单成功")
           this.init()
           this.$store.dispatch("user/reloadMenu")
@@ -554,11 +554,11 @@ export default {
     changeSize(pageSize) {
       this.formSearch.pageSize = pageSize
       this.formSearch.pageNum = 1
-      this.fetchData()
+      this.getChildMenuList(true)
     },
     changePage(pageNum) {
       this.formSearch.pageNum = pageNum
-      this.fetchData()
+      this.getChildMenuList(true)
     },
   }
 }

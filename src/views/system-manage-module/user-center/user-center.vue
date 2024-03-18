@@ -52,7 +52,7 @@
       <!-- 分页 -->
       <!-- <y-pagination v-show="total>0" @pagination="fetchData" class="pageBox" :total="total"
         :page.sync="formSearch.pageNum" :limit.sync="formSearch.pageSize" /> -->
-      <el-pagination background v-show="total > 10" @size-change="changeSize" @current-change="changePage" :page-size="formSearch.pageSize" layout="total, slot, jumper, prev, pager, next" :total="total"></el-pagination>
+      <el-pagination background v-show="total > 10" @size-change="changeSize" @current-change="changePage" :page-size="formSearch.pageSize" :current-page="formSearch.pageNum" layout="total, slot, jumper, prev, pager, next" :total="total"></el-pagination>
     </div>
     <!-- 弹窗新增 -->
     <el-dialog :close-on-click-modal="false" :title="addFlag ? '新增' : '修改'"

@@ -81,7 +81,7 @@ export default {
           this.sending = false
           if (result.code == 200) {
             this.show(false)
-            this.$message.info("信息操作成功！")
+            this.$message.success("信息操作成功！")
             this.$parent.loadData();
           }
           else {

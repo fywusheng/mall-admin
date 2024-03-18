@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Blob from 'blob';
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth'
 import router from '@/router'
 
 // create an axios instance
@@ -39,7 +39,8 @@ HttpService.interceptors.request.use(
 
 //响应拦截器即异常处理
 HttpService.interceptors.response.use(response => {
-  if (response.data.code === '1001') {
+  if (response.data.code === '1001' || response.data.code == '1021') {
+    removeToken()
     router.push('/login')
   }
   return response
