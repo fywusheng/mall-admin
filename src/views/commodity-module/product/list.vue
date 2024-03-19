@@ -75,8 +75,8 @@
         </template>
       </el-table-column>
       <el-table-column prop="name" label="商品名称" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="id" label="商品ID" width="150px" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="code" label="商品编码" width="150px"
+      <el-table-column prop="id" label="商品ID" width="200px" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="code" label="商品编码" width="200px"
         show-overflow-tooltip></el-table-column>
       <el-table-column prop="brandId" label="所属品牌" width="150px"
         show-overflow-tooltip></el-table-column>
@@ -251,7 +251,7 @@ export default {
       const result = await post('/product/published.selling', { publishType: 'onsale', productList: this.multipleSelection })
       this.loading = false
       if (result.code == 200) {
-        this.$$message.success(result.msg)
+        this.$message.success(result.msg)
         this.$nextTick(() => {
           this.activeType = '2'
           this.queryType = 2
@@ -344,6 +344,7 @@ export default {
           const result = await post('/product/published.selling', { publishType: 'offsale', productList: this.multipleSelection })
           this.loading = false
           if (result.code == 200) {
+            this.$message.success(result.msg)
             this.$nextTick(() => {
               this.activeType = '3'
               this.queryType = 3

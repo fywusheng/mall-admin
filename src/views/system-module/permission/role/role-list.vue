@@ -41,12 +41,12 @@
       </el-table-column>
       <el-table-column prop="" label="操作" align="center" width="280px">
         <template slot-scope="scope">
-          <el-link icon="el-icon-view" :underline="false"
-            @click="forward2AuthorizationPage(scope.row)">授权&nbsp;&nbsp;</el-link>
-          <el-link icon="el-icon-edit" :underline="false"
-            @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-link>
-          <el-link icon="el-icon-delete" :underline="false"
-            @click="del(scope.row)">删除&nbsp;&nbsp;</el-link>
+          <el-button icon="el-icon-view" :underline="false" size="mini"
+            @click="forward2AuthorizationPage(scope.row)">授权&nbsp;&nbsp;</el-button>
+          <el-button icon="el-icon-edit" :underline="false" size="mini"
+            @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-button>
+          <el-button icon="el-icon-delete" :underline="false" size="mini"
+            @click="del(scope.row)">删除&nbsp;&nbsp;</el-button>
         </template>
       </el-table-column>
     </el-table>

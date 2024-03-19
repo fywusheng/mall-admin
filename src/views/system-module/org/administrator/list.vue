@@ -43,15 +43,15 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" width="280px;" align="center">
+      <el-table-column prop="" label="操作" width="380px;" align="center">
         <template slot-scope="scope">
-          <el-link icon="el-icon-info" :underline="false"
-            @click="forward2AuthorizationPage(scope.row)">授权&nbsp;&nbsp;</el-link>
-          <el-link icon="el-icon-edit" :underline="false"
-            @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-link>
-          <el-link :underline="false" @click="reset(scope.row)">重置密码&nbsp;&nbsp;</el-link>
-          <el-link icon="el-icon-delete" :underline="false"
-            @click="del(scope.row)">删除&nbsp;&nbsp;</el-link>
+          <el-button icon="el-icon-info" :underline="false" size="mini"
+            @click="forward2AuthorizationPage(scope.row)">授权&nbsp;&nbsp;</el-button>
+          <el-button icon="el-icon-edit" :underline="false" size="mini"
+            @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-button>
+          <el-button :underline="false" @click="reset(scope.row)" size="mini">重置密码&nbsp;&nbsp;</el-button>
+          <el-button icon="el-icon-delete" :underline="false" size="mini"
+            @click="del(scope.row)">删除&nbsp;&nbsp;</el-button>
         </template>
       </el-table-column>
     </el-table>

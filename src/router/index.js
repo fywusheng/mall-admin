@@ -708,7 +708,7 @@ export const constantRoutes = [
         path: 'biz',
         component: resolve => require(['../views/system-module/permission/biz/list'], resolve),
         name: 'BIZ',
-        meta: { title: '权限管理 / 角色管理' }
+        meta: { title: '权限管理 / 应用管理' }
       },
       {
         path: 'role',
