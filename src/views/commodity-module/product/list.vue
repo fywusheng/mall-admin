@@ -105,7 +105,7 @@
           </el-switch>
         </template>
       </el-table-column-->
-      <el-table-column prop="" label="操作" align="center" width="200px" fixed="right">
+      <el-table-column prop="" label="操作" align="center" width="280px" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" v-if="activeType==2 || activeType==3"
             @click="forward2SpecPage(scope.row)">SKU管理</el-button>
@@ -115,7 +115,7 @@
             @click="stopSingleSelection(scope.row)">下架</el-button>
           <el-button size="mini" v-if="activeType==2" icon="el-icon-top"
             @click="publishSingleSelection(scope.row)">上架</el-button>
-          <!-- <el-button size="mini" v-if="activeType==3" :disabled="scope.row.auditState!=2" icon="el-icon-success" @click="audit(scope.row)">审核</el-button> -->
+          <el-button size="mini" v-if="activeType==3" :disabled="scope.row.auditState!=2" icon="el-icon-success" @click="audit(scope.row)">审核</el-button>
         </template>
       </el-table-column>
     </el-table>

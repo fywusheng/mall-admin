@@ -29,19 +29,19 @@
       </el-form-item>
       <el-form-item label="库存" prop="stockBalance">
         <el-input v-model="dataForm.stockBalance" placeholder="请输入库存数量..." style="width:100%"
-          maxlength="32" size="small"></el-input>
+          maxlength="6" size="small"></el-input>
       </el-form-item>
       <el-form-item label="价格" prop="price">
         <el-col :span="8">
-          <el-input v-model="dataForm.price.sellingPrice" placeholder="请输入商品的销售价..." maxlength="32"
+          <el-input v-model="dataForm.price.sellingPrice" placeholder="请输入商品的销售价..." maxlength="6"
             size="small" style="width:95%"></el-input>
         </el-col>
         <el-col :span="8">
-          <el-input v-model="dataForm.price.costPrice" placeholder="请输入商品的成本价..." maxlength="32"
+          <el-input v-model="dataForm.price.costPrice" placeholder="请输入商品的成本价..." maxlength="6"
             size="small" style="width:95%"></el-input>
         </el-col>
         <el-col :span="8" style="align:left">
-          <el-input v-model="dataForm.price.markOffPrice" placeholder="请输入商品的市场价..." maxlength="32"
+          <el-input v-model="dataForm.price.markOffPrice" placeholder="请输入商品的市场价..." maxlength="6"
             size="small" style="width:100%;"></el-input>
         </el-col>
       </el-form-item>

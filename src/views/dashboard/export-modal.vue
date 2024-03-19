@@ -68,6 +68,7 @@
             v-model="saleParams.month"
             type="month"
             style="width: 150px"
+            format="MM"
             value-format="MM"
             placeholder="选择月份">
           </el-date-picker>
@@ -103,6 +104,7 @@
           <el-date-picker
             v-model="accountParams.month"
             type="month"
+            format="MM"
             value-format="MM"
             style="width: 150px"
             placeholder="选择月份">

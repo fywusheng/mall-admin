@@ -49,8 +49,7 @@
           </td>
           <td width="30%">
             <el-form-item label="加盟费" prop="initialFee" class="item custom-input-number">
-              <!-- <el-input v-model="dataForm.initialFee" placeholder="请输入加盟费..." maxlength="10" style="width:80%"></el-input> -->
-              <el-input-number v-model="dataForm.initialFee" controls-position="right" :min="0" :max="9999999999" :precision="2" style="width:80%"></el-input-number>
+              <el-input-number v-model="dataForm.initialFee" placeholder="请输入加盟费..." controls-position="right" :min="0" :max="9999999999" :precision="2" style="width:80%"></el-input-number>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -59,8 +58,7 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="销售额" prop="salesVolume" class="item custom-input-number">
-              <!-- <el-input v-model="dataForm.salesVolume" placeholder="请输入销售额..." maxlength="10" style="width:80%"></el-input> -->
-                <el-input-number v-model="dataForm.salesVolume" controls-position="right" :min="0" :max="9999999999" :precision="2" style="width:80%"></el-input-number>
+              <el-input-number v-model="dataForm.salesVolume" placeholder="请输入销售额..." controls-position="right" :min="0" :max="9999999999" :precision="2" style="width:80%"></el-input-number>
             </el-form-item>
           </td>
           <td width="30%" colspan="2">
@@ -83,6 +81,36 @@
                 <img v-if="dataForm.contractFileUrl" :src="dataForm.contractFileUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+      </table>
+    </el-form>
+
+    <!-- 编辑显示 -->
+    <el-form v-if="routeParamsId != '-1'" class="data-form" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor1" label-position="top" size="small">
+      <el-divider content-position="left" style="width:80%">
+        <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
+        <font style="color:blue">审核信息</font>
+      </el-divider>
+      <el-row style="height: 20px">
+        <el-col :span="24"></el-col>
+      </el-row>
+
+      <table width="100%">
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">
+            <el-form-item label="审核状态：" prop="status" class="item" label-position="top">
+              <el-select v-model="dataForm.status" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择审核状态...">
+                <el-option v-for="item in checkStatusOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </td>
+          <td width="30%" colspan="2">
+            <el-form-item label="审核意见：" prop="reviewComments" class="item" label-position="top">
+              <el-input size="mini" v-model="dataForm.reviewComments" placeholder="请输入审核意见..." maxlength="50" style="width:100%"></el-input>
             </el-form-item>
           </td>
           <td width="5%"></td>
@@ -130,7 +158,7 @@ export default {
 
     // 手机 或者 座机号码
     const isPhoneNumber = (rule, value, callback) => {
-      const patter = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,1,2,5-9]))\d{8}$|^0\d{2,3}-\d{7,8}(-\d{1,4})?$/
+      const patter = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9]))\d{8}$|^0\d{2,3}-\d{7,8}(-\d{1,4})?$/
       if (!patter.test(value)) {
         callback(new Error(`请输入正确的手机号码或者座机号码！`))
       } else {
@@ -140,6 +168,10 @@ export default {
 
     return {
       routeParamsId: '',
+      checkStatusOptions: [
+        { label: "通过", value: 1 },
+        { label: "不通过", value: 0 },
+      ],
       agentTypeOptions: [
         { label: "省代", value: 1 },
         { label: "市代", value: 2 },
@@ -163,6 +195,8 @@ export default {
         initialFee: '',
         salesVolume: '',
         contractFileUrl: '',
+        status: '',
+        reviewComments: '',
       },
       dataRules: {
         informationNo: [{ required: true, message: "加盟商编号不能为空，请完整输入！", trigger: "blur" }],
@@ -181,7 +215,10 @@ export default {
           { required: true, message: "销售额不能为空，请完整输入！", trigger: "change" },
           { required: true, validator: validateNumber, trigger: "change" }  
         ],
+        // 上传文件接口报错，暂时 注释这里，保证正常测试，最后需要打开
         // contractFileUrl: [{ required: true, message: "合同文件不能为空，请上传！", trigger: ["change", "blur"] }],
+        status: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
+        reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
       },
     };
   },
@@ -212,12 +249,24 @@ export default {
       })
     },
     save() {
+      // 编辑 验证审核数据
+      let res = true
+      if (this.routeParamsId > -1) {
+        this.$refs.dataFormInfor1.validate(valid => {
+          res = valid
+        })
+      }
+      if (!res) return
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
           this.sending = true;
           // 编辑传 id
           if (this.routeParamsId > -1) {
             this.dataForm.id = this.routeParamsId
+            // 添加 不传 审核相关的两个字段
+          } else {
+            delete this.dataForm.status
+            delete this.dataForm.reviewComments
           }
           const result = await post("/srm/sh/information/saveInformation", this.dataForm)
           this.sending = false;

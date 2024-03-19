@@ -167,7 +167,7 @@
             <div class="_table">
               <el-table
                 :data="franchiseeSalePrice"
-                height="800"
+                height="600"
                 stripe
                 style="width: 100%">
                 <el-table-column type="index" label="排名" width="60"/>
@@ -186,7 +186,7 @@
             <div class="_table">
               <el-table
                 :data="franchiseeRegisterCount"
-                height="800"
+                height="600"
                 stripe
                 style="width: 100%">
                 <el-table-column type="index" label="排名" width="60"/>
@@ -205,7 +205,7 @@
             <div class="_table">
               <el-table
                 :data="franchiseeMemberCount"
-                height="800"
+                height="600"
                 stripe
                 style="width: 100%">
                 <el-table-column type="index" label="排名" width="60"/>
