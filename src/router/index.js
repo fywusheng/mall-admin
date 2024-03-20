@@ -78,7 +78,7 @@ export const constantRoutes = [
         path: '/apps/dashboard',
         component: resolve => require(['../views/dashboard/index'], resolve),
         name: 'Dashboard',
-        meta: { title: '首页', affix: true }
+        meta: { title: '系统首页', affix: true }
       }
     ]
   },

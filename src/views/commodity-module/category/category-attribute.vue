@@ -305,23 +305,25 @@ export default {
 
     async loadCategoryAttrListData(type) {
       const result = await fetch('/attr/getAttrListByCategoryId?attrType=' + type + '&categoryId=' + this.$route.params.id, {})
-      if (result.code == 200 && result.data != null) {
-        if (1 == type) {
-          this.specSelected = result.data
-          var resultArray = []
-          this.specSelected.filter(function (item) {
-            resultArray.push(item.id);
-          });
-          this.dataForm.specIdsSelected = resultArray
-          this.specSelectionOnChange(this.dataForm.specIdsSelected)
-        } else if (2 == type) {
-          this.attrSelected = result.data
-          var resultArray = []
-          this.attrSelected.filter(function (item) {
-            resultArray.push(item.id);
-          });
-          this.dataForm.attrIdsSelected = resultArray
-          this.attrSelectionOnChange(this.dataForm.attrIdsSelected)
+      if (result.code == 200) {
+        if (result.data != null) {
+          if (1 == type) {
+            this.specSelected = result.data
+            var resultArray = []
+            this.specSelected.filter(function (item) {
+              resultArray.push(item.id);
+            });
+            this.dataForm.specIdsSelected = resultArray
+            this.specSelectionOnChange(this.dataForm.specIdsSelected)
+          } else if (2 == type) {
+            this.attrSelected = result.data
+            var resultArray = []
+            this.attrSelected.filter(function (item) {
+              resultArray.push(item.id);
+            });
+            this.dataForm.attrIdsSelected = resultArray
+            this.attrSelectionOnChange(this.dataForm.attrIdsSelected)
+          }
         }
       } else {
         this.$message.error(result.msg)
