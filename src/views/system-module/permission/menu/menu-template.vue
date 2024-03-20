@@ -21,8 +21,8 @@
           maxlength="256"></el-input>
       </el-form-item>
       <el-form-item label="描述信息" prop="remarks">
-        <el-input v-model="dataForm.remarks" placeholder="请输入权限描述信息..." style="width:100%"
-          type="textarea"></el-input>
+        <el-input v-model="dataForm.remarks" placeholder="请输入权限描述信息..." style="width:100%" maxlength="100" 
+        rows="4" type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="" prop="pid" v-if="showType===1">
         <el-input v-model="dataForm.pid" type="hidden"></el-input>

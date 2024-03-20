@@ -115,7 +115,7 @@
       <el-table-column prop="returnsPrice" label="实付金额" width="80px"
         align="center"></el-table-column>
       <el-table-column prop="paidPrice" label="退款金额" width="80px" align="center"></el-table-column>
-      <el-table-column prop="createdTime" label="申请时间"
+      <el-table-column prop="createdTime" label="申请时间" show-overflow-tooltip
         align="center"></el-table-column>
       <el-table-column prop="" label="操作" width="290px" align="center" fixed="right">
         <template slot-scope="scope">

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form class="search-form clearfix" v-show="showSearchBox" :inline="true" size="small">
+    <el-form class="search-form clearfix" v-show="showSearchBox" :inline="true" size="mini">
       <el-form-item label="标题：" label-width="110px" class="search-field fl" prop="ttl">
         <el-input v-model="searchData.ttl" placeholder="请输入标题" clearable />
       </el-form-item>

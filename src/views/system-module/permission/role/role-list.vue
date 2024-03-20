@@ -24,7 +24,7 @@
         <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
       </div>
       <el-table-column type="index" label="序号"> </el-table-column>
-      <el-table-column prop="name" label="名称"> </el-table-column>
+      <el-table-column prop="name" label="名称" show-overflow-tooltip> </el-table-column>
       <el-table-column prop="code" label="编码"> </el-table-column>
       <el-table-column prop="description" label="描述" width="250px">
       </el-table-column>
@@ -39,7 +39,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="280px">
+      <el-table-column prop="" label="操作" align="center" width="280px" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-view" :underline="false" size="mini"
             @click="forward2AuthorizationPage(scope.row)">授权&nbsp;&nbsp;</el-button>

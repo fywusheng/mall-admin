@@ -1,11 +1,12 @@
 <template>
 <div class="app-container">
-  <el-form class="notice-search-box-body search-form clearfix" v-show="showSearchBox" :inline="true" size="small">
+  <el-form class="notice-search-box-body search-form clearfix" v-show="showSearchBox" :inline="true" size="mini">
     <el-form-item label="公告标题：" label-width="110px" class="search-field fl">
-      <el-input v-model="searchData.notcTtl" placeholder="请输入公告标题" clearable />
+      <el-input v-model="searchData.notcTtl" placeholder="请输入公告标题" clearable size="mini"/>
     </el-form-item>
     <el-form-item label="发布时间：" label-width="110px" class="search-field fl">
       <el-date-picker 
+        size="mini"
        v-model="searchData.time" 
        type="daterange"
        range-separator="-"
@@ -33,20 +34,18 @@
     <el-table ref="noticeTable" v-loading="listLoading" :data="noticeList" element-loading-text="加载中..." highlight-current-row>
       <el-table-column type="index" label="编号" width="60"></el-table-column>
       <el-table-column label="公告标题" align="center" prop="notcTtl"></el-table-column>
-      <el-table-column label="公告内容" align="center" prop="notcInfo"></el-table-column>
+      <el-table-column label="公告内容" align="center" prop="notcInfo" show-overflow-tooltip></el-table-column>
       <el-table-column label="发布渠道" align="center" prop="rlsChnlStr"></el-table-column>
       <el-table-column label="推送次数" align="center" prop="pshCnt"></el-table-column>
       <el-table-column label="运行状态" align="center" prop="runStas">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.runStas"
-            @change="onChangeStatus(scope.row)"
-            active-color="#409EFF"
-            inactive-color="#dcdfe6">
+            @change="onChangeStatus(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="250">
+      <el-table-column align="center" label="操作" width="220" fixed="right">
         <template slot-scope="scope">
           <el-button :underline="false" size="mini" @click="onClickEditNotice(scope.row)">修改</el-button>
           <el-button :underline="false" size="mini" @click="onClickSendNotice(scope.row)">推送</el-button>

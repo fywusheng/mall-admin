@@ -28,7 +28,7 @@
       <el-table-column prop="code" label="活动编码" width="100px" align="center"> </el-table-column>
       <el-table-column prop="type" label="活动类型" width="100px" align="center"
         :formatter="formatActivityTypeMethod"></el-table-column>
-      <el-table-column prop="beginTime" label="生效时间" width="280px" align="center"
+      <el-table-column prop="beginTime" label="生效时间" width="300px" align="center"
         :formatter="formatActivityTime"></el-table-column>
       <el-table-column prop="auditState" label="审核状态" width="100px" align="center"
         :formatter="formatAuditState"></el-table-column>
@@ -43,7 +43,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="150px">
+      <el-table-column prop="" label="操作" align="center" width="150px" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit-outline" size="mini" @click="forward2RulesPage(scope.row)">
             设置规则</el-button>

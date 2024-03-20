@@ -1,8 +1,8 @@
 <template>
   <div class="app-container short-msg-container">
-    <el-form class="short-msg-search-box-body search-form clearfix" v-show="showSearchBox" :inline="true" size="small">
+    <el-form class="short-msg-search-box-body search-form clearfix" v-show="showSearchBox" :inline="true" size="mini">
       <el-form-item label="关键词：" label-width="110px" class="search-field fl" prop="keyword">
-        <el-input v-model="searchData.keyword" placeholder="请输入关键词" clearable />
+        <el-input v-model="searchData.keyword" placeholder="请输入关键词" clearable/>
       </el-form-item>
       <el-form-item label="发布人员：" label-width="110px" class="search-field fl" prop="sender">
         <el-input v-model="searchData.sender" placeholder="请输入发布人员" clearable />

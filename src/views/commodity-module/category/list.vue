@@ -39,7 +39,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="380px">
+      <el-table-column prop="" label="操作" align="center" width="380px" fixed="right">
         <template slot-scope="scope">
           <el-button :disabled="scope.row.level===1||scope.row.level===3" size="mini"
             @click="forward2SpecPage(scope.row)">规格属性

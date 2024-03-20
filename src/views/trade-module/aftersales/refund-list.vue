@@ -63,7 +63,7 @@
         align="center"></el-table-column>
       <el-table-column prop="finishTime" label="退款时间" width="150px"
         align="center"></el-table-column>
-      <el-table-column label="操作" width="100px" align="center">
+      <el-table-column label="操作" width="100px" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" :disabled="Number(scope.row.refundStatus)!=0"
             @click="appoveRefund(scope.row)">手动退款</el-button>

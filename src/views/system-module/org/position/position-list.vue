@@ -41,7 +41,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" width="300px" align="center">
+      <el-table-column prop="" label="操作" width="200px" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
           <el-button icon="el-icon-delete" size="mini"

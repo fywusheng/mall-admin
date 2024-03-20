@@ -56,8 +56,10 @@ export default {
   components: {},
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (!value) {
         callback(new Error('登录账号不能为空，请输入...'))
+      } else if (!validUsername(value)) {
+        callback(new Error('登录账号格式不正确，请输入...'))
       } else {
         callback()
       }
@@ -75,8 +77,8 @@ export default {
         password: ''
       },
       loginRules: {
-        userName: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        userName: [{ required: true, trigger: 'change', validator: validateUsername }],
+        password: [{ required: true, trigger: 'change', validator: validatePassword }]
       },
       passwordType: 'password',
       logo: require('@/assets/imgs/login-logo.jpg'),

@@ -31,7 +31,7 @@
         <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
       </div>
       <el-table-column type="index" label="序号"> </el-table-column>
-      <el-table-column prop="name" label="属性名"> </el-table-column>
+      <el-table-column prop="name" label="属性名" show-overflow-tooltip> </el-table-column>
       <el-table-column prop="id" label="属性ID" width="80px"> </el-table-column>
       <el-table-column prop="specsState" label="是否是规格属性" :formatter="formatSpecsState"
         align="center" width="120px"></el-table-column>
@@ -48,7 +48,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="300px">
+      <el-table-column prop="" label="操作" align="center" width="300px" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-collection" :underline="false" size="mini"
             @click="forward2AttributeValPage(scope.row)" :disabled="scope.row.type==2"

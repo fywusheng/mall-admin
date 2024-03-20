@@ -39,7 +39,7 @@
       <el-table-column prop="infomationNo" label="所属加盟商" width="250px" align="center"></el-table-column>
       <el-table-column prop="xxxx" label="近一次申请时间" width="150px" align="center"></el-table-column>
       <el-table-column prop="renewalStatus" label="续签状态" width="80px" align="center" :formatter="formatStatus"></el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="220px" fixed="right">
+      <el-table-column prop="" label="操作" align="center" width="180px" fixed="right">
         <template slot-scope="scope">
           <!-- 已续签 置灰续签按钮 -->
           <el-button :disabled="scope.row.renewalStatus == 1" icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button>

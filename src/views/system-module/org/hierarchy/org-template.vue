@@ -10,8 +10,8 @@
           style="width:100%"></el-input>
       </el-form-item>
       <el-form-item label="描述信息" prop="remarks">
-        <el-input v-model="dataForm.description" placeholder="请输入部门描述..." type="textarea"
-          style="width:100%"></el-input>
+        <el-input v-model="dataForm.description" placeholder="请输入部门描述..." type="textarea" 
+        maxlength="100" rows="4" style="width:100%"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">

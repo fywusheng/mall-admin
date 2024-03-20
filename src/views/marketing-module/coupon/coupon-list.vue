@@ -59,7 +59,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="120px">
+      <el-table-column prop="" label="操作" align="center" width="120px" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit-outline" size="mini" @click="edit(scope.row)">编 辑
           </el-button>

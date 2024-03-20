@@ -33,7 +33,7 @@
         align="center"></el-table-column>
       <el-table-column prop="updatedTime" label="修改时间" width="150px"
         align="center"></el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="100px">
+      <el-table-column prop="" label="操作" align="center" width="100px" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
         </template>

@@ -436,7 +436,7 @@ export const constantRoutes = [
         path: 'promotion-coupon-list',
         component: resolve => require(['../views/finance-module/promotion/coupon-list'], resolve),
         name: 'Promotion-Coupon-List',
-        meta: { title: '商城 / 营销管理 / 优惠审批' }
+        meta: { title: '商城 / 营销管理 / 优惠券审批' }
       },
       {
         path: 'payment-flow-list',
@@ -621,7 +621,7 @@ export const constantRoutes = [
         path: 'administrator',
         component: resolve => require(['../views/system-module/org/administrator/list'], resolve),
         name: 'Administrator',
-        meta: { title: '设置  / 员工管理' }
+        meta: { title: '设置  / 账号管理' }
       },
       {
         path: 'authorization2User/:id',
@@ -632,32 +632,32 @@ export const constantRoutes = [
     ]
   },
 
-  // 从老龄服务平台迁移过来的系统管理 - 账号、角色、菜单 管理
-  {
-    path: '/apps/system-manage',
-    component: Layout,
-    meta: { title: '系统管理' },
-    children: [
-      {
-        path: 'user-center',
-        component: resolve => require(['../views/system-manage-module/user-center/user-center.vue'], resolve),
-        name: 'UserCenter',
-        meta: { title: '权限管理 / 账号管理' }
-      },
-      {
-        path: 'role-center',
-        component: resolve => require(['../views/system-manage-module/role-center/role-center.vue'], resolve),
-        name: 'RoleCenter',
-        meta: { title: '权限管理 / 角色管理' }
-      },
-      {
-        path: 'menu-center',
-        component: resolve => require(['../views/system-manage-module/menu-center/menu-center.vue'], resolve),
-        name: 'MenuCenter',
-        meta: { title: '权限管理 / 菜单管理' }
-      },
-    ]
-  },
+  // 从老龄服务平台迁移过来的系统管理 - 账号、角色、菜单 管理，后来逻辑不能串通，用回之前老龄保的功能
+  // {
+  //   path: '/apps/system-manage',
+  //   component: Layout,
+  //   meta: { title: '系统管理' },
+  //   children: [
+  //     {
+  //       path: 'user-center',
+  //       component: resolve => require(['../views/system-manage-module/user-center/user-center.vue'], resolve),
+  //       name: 'UserCenter',
+  //       meta: { title: '权限管理 / 账号管理' }
+  //     },
+  //     {
+  //       path: 'role-center',
+  //       component: resolve => require(['../views/system-manage-module/role-center/role-center.vue'], resolve),
+  //       name: 'RoleCenter',
+  //       meta: { title: '权限管理 / 角色管理' }
+  //     },
+  //     {
+  //       path: 'menu-center',
+  //       component: resolve => require(['../views/system-manage-module/menu-center/menu-center.vue'], resolve),
+  //       name: 'MenuCenter',
+  //       meta: { title: '权限管理 / 菜单管理' }
+  //     },
+  //   ]
+  // },
 
   // 从老龄服务平台迁移过来的系统管理 - 消息中心整个模块
   // 接口还没检查
@@ -682,7 +682,7 @@ export const constantRoutes = [
         path: 'inside-message-manage',
         component: resolve => require(['../views/message-module/inside-message-manage/inside-message-manage.vue'], resolve),
         name: 'InsideMessageManage',
-        meta: { title: '消息中心 / 站内消息管理' }
+        meta: { title: '消息中心 / 站内消息' }
       },
       {
         path: 'template-manage',

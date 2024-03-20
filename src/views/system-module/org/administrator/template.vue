@@ -12,7 +12,7 @@
           :disabled="!!dataForm.id" maxlength="32" style="width:100%"></el-input>
       </el-form-item>
       <el-form-item label="联系电话" prop="telphone" class="item">
-        <el-input v-model="dataForm.telphone" placeholder="请输入联系电话..." maxlength="11"
+        <el-input v-model="dataForm.telphone" placeholder="请输入联系电话..." maxlength="12"
           style="width:100%"></el-input>
       </el-form-item>
       <el-form-item label="所属部门/组织" prop="fullOrgIds" class="item">
@@ -62,11 +62,11 @@ export default {
       }
     }
     /**
-     * 手机号码校验
+     * 手机号码校验，手机号座机号
      */
     var validateTelphone = (rule, value, callback) => {
       if (value) {
-        let mobile = /^(13|18|14|17|15)[0-9]{9}$/;
+        let mobile = /^(13|18|14|17|15)[0-9]{9}$|^0\d{2,3}-\d{7,8}(-\d{1,4})?$/;
         //let tel = /^\d{3,4}-?\d{7,9}$/;
         if (value && !mobile.test(value)) {
           return callback(new Error('请输入正确的联系电话...'));

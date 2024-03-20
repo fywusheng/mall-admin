@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form class="system-manage-search-box-body search-form clearfix" v-show="showSearchBox" :inline="true" size="small">
+    <el-form class="system-manage-search-box-body search-form clearfix" v-show="showSearchBox" :inline="true" size="mini">
       <el-form-item label="接收人ID" label-width="110px" class="search-field fl">
         <el-input v-model="searchData.recer" placeholder="请输入接收人ID" clearable />
       </el-form-item>
@@ -32,14 +32,14 @@
       </div>
 
       <el-table ref="remindTable" v-loading="listLoading" :data="remindList" element-loading-text="加载中..." highlight-current-row>
-        <el-table-column label="发送帐号" align="center" prop="sender"></el-table-column>
-        <el-table-column label="发送时间" align="center" prop="sendTime">
+        <el-table-column label="发送帐号" align="center" prop="sender" width="180px"></el-table-column>
+        <el-table-column label="发送时间" align="center" prop="sendTime" width="160px">
           <template slot-scope="scope">
             {{ handleSendDate(scope.row.sendTime) }}
           </template>
         </el-table-column>
-        <el-table-column label="消息类型" align="center" prop="tmplTtl"></el-table-column>
-        <el-table-column label="发送内容" align="center" prop="cont"></el-table-column>
+        <el-table-column label="消息类型" align="center" prop="tmplTtl" width="180px"></el-table-column>
+        <el-table-column label="发送内容" align="center" prop="cont" show-overflow-tooltip></el-table-column>
       </el-table>
 
       <!-- 分页 -->

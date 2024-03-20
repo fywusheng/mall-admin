@@ -17,7 +17,7 @@
     <el-table :data="tableData" :header-cell-style="{background:'#FAF9F7',color:'#000000'}"
       size="mini" row-key="id" :highlight-current-row="false" v-loading="loading"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column label="" type="" width="20px">
+      <el-table-column label="" type="" width="20px" show-overflow-tooltip>
       </el-table-column>
       <el-table-column prop="name" label="菜单名称">
       </el-table-column>
@@ -27,7 +27,7 @@
       </el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" width="150px">
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="300px">
+      <el-table-column prop="" label="操作" align="center" width="300px" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" @click="add(1,scope.row)">添加子菜单</el-button>
           <el-button size="mini" icon="el-icon-edit" @click="edit(scope.row)">编辑</el-button>

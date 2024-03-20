@@ -60,7 +60,7 @@
             show-overflow-tooltip></el-table-column>
           <el-table-column prop="createdTime" label="下单时间" align="center"
             width="150px"></el-table-column>
-          <el-table-column prop="" label="操作" align="center" width="120px">
+          <el-table-column prop="" label="操作" align="center" width="120px" fixed="right">
             <template slot-scope="scope">
               <el-button type="default" icon="el-icon-document" size="mini"
                 @click="forward2DetailsPage(scope.row, 1)">详情</el-button>
@@ -121,7 +121,7 @@
             width="120px"></el-table-column>
           <el-table-column prop="orderTime" label="下单时间" align="center"
             ></el-table-column>
-          <el-table-column prop="" label="操作" align="center" width="120px">
+          <el-table-column prop="" label="操作" align="center" width="120px" fixed="right">
             <template slot-scope="scope">
               <el-button type="default" icon="el-icon-document" size="mini"
                 @click="forward2DetailsPage(scope.row, 2)">详情</el-button>

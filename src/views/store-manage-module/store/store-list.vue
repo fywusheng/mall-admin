@@ -44,7 +44,7 @@
           <span>{{ scope.row.yn == 1 ? '启用' : '停用' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="320px" fixed="right">
+      <el-table-column prop="" label="操作" align="center" width="280px" fixed="right">
         <template slot-scope="scope">
           <el-button v-if="scope.row.reviewStatus != 1" icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
           <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 1" icon="el-icon-turn-off" size="mini" @click="toggle(scope.row, 0)">停用</el-button>

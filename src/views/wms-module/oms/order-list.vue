@@ -54,7 +54,7 @@
         align="center"></el-table-column>
       <el-table-column prop="createdTime" label="下单时间" width="150px"
         align="center"></el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="150px">
+      <el-table-column prop="" label="操作" align="center" width="150px" fixed="right">
         <template slot-scope="scope">
           <el-button v-if="searchParams.orderStatus ==='20'" icon="el-icon-position" size="mini"
             @click="delivery(scope.row)">商家发货</el-button>

@@ -77,7 +77,7 @@
               {{scope.row.rlsTime | dayFormat("date")}}
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="created_at" label="操作" width="250">
+          <el-table-column align="center" prop="created_at" label="操作" width="250" fixed="right">
             <template slot-scope="scope">
               <el-link type="primary" size="small"
                 v-if="btnPermissions.includes('查看') && ['1', '3'].includes(scope.row.chkStas)"

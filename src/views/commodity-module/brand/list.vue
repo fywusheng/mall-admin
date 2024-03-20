@@ -37,8 +37,8 @@
           </el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="中文名称" width="200px"> </el-table-column>
-      <el-table-column prop="nameEn" label="英文名称" width="200px"> </el-table-column>
+      <el-table-column prop="name" label="中文名称" width="200px" show-overflow-tooltip> </el-table-column>
+      <el-table-column prop="nameEn" label="英文名称" width="200px" show-overflow-tooltip> </el-table-column>
       <el-table-column prop="description" label="描述" show-overflow-tooltip>
       </el-table-column>
       <el-table-column prop="createdTime" label="创建时间" align="center" width="150px">
@@ -52,12 +52,12 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="150px">
+      <el-table-column label="操作" align="center" width="200px" fixed="right">
         <template slot-scope="scope">
-          <el-link icon="el-icon-edit" :underline="false" style="font-size:13px"
-            @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-link>
-          <el-link icon="el-icon-delete" :underline="false" style="font-size:13px"
-            @click="del(scope.row)">删除&nbsp;&nbsp;</el-link>
+          <el-button icon="el-icon-edit" :underline="false" style="font-size:13px" size="mini"
+            @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-button>
+          <el-button icon="el-icon-delete" :underline="false" style="font-size:13px" size="mini"
+            @click="del(scope.row)">删除&nbsp;&nbsp;</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -137,13 +137,19 @@ export default {
       }
     },
     async del(row) {
-      const result = await post('/brand/delete', row);
-      if (result.code == 200) {
-        this.$message.success("品牌删除成功!");
-        this.loadData();
-      } else {
-        this.$message.error(result.msg);
-      }
+      this.$confirm('此操作将永久删除该品牌, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          const result = await post('/brand/delete', row);
+          if (result.code == 200) {
+            this.$message.success("品牌删除成功!");
+            this.loadData();
+          } else {
+            this.$message.error(result.msg);
+          }
+        }).catch(() => {});
     },
     forward2AuthorizationPage(row) {
       this.$router.push({ name: 'Authorization2Role', params: { id: row.id } })

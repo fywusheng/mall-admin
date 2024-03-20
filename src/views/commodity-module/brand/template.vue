@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item label="品牌描述" prop="description">
         <el-input v-model="dataForm.description" placeholder="请输入品牌描述..." style="width:100%"
-          type="textarea"></el-input>
+          maxlength="500" rows="4" type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="品牌LOGO" prop="brandLogo">
         <el-upload class="avatar-uploader" :show-file-list="false"
@@ -118,7 +118,11 @@ export default {
           this.sending = false
           if (result.code == 200) {
             this.show(false)
-            this.$message.success("创建品牌成功！")
+            if (this.dataForm.id) {
+              this.$message.success("编辑品牌成功！")
+            } else {
+              this.$message.success("创建品牌成功！")
+            }
             this.$parent.loadData();
           }
           else {

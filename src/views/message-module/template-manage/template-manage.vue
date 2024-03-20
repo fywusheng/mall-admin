@@ -1,6 +1,6 @@
 <template>
 <div class="app-container">
-  <el-form class="template-search-box-body search-form clearfix" v-show="showSearchBox" :inline="true" size="small">
+  <el-form class="template-search-box-body search-form clearfix" v-show="showSearchBox" :inline="true" size="mini">
     <el-form-item label="模板类型：" label-width="110px" class="search-field fl">
       <el-select v-model="searchData.tmplType" placeholder="请选择模板类型" clearable>
         <el-option label="短信" value="1"></el-option>
@@ -38,9 +38,9 @@
           {{ scope.row.tmplType}}      
         </template>
       </el-table-column>
-      <el-table-column label="模板内容" align="center" prop="tmplCont"></el-table-column>
+      <el-table-column label="模板内容" align="center" prop="tmplCont" show-overflow-tooltip></el-table-column>
       <el-table-column label="模板说明" align="center" prop="tmplDscr"></el-table-column>
-      <el-table-column label="操作" align="center" width="200">
+      <el-table-column label="操作" align="center" width="150" fixed="right">
         <template slot-scope="scope">
           <el-button :underline="false" size="mini" @click="onClickEdit(scope.row)">修改</el-button>
           <el-button :underline="false" size="mini" @click="onClickDelete(scope.row)">删除</el-button>

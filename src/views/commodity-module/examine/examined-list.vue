@@ -138,7 +138,7 @@
         <el-table-column prop="createdTime" label="提交审核时间" width="170px" align="center" />
         <el-table-column prop="auditTime" label="审核时间" width="170px" align="center" />
        
-        <el-table-column prop="" label="操作" align="center" width="200px">
+        <el-table-column prop="" label="操作" align="center" width="200px" fixed="right">
           <template slot-scope="scope">
             <el-button size="mini" icon="el-icon-tickets" v-if="activeType==2" @click="handleExamined(0, scope.row)">审核</el-button>
             <el-button size="mini" icon="el-icon-tickets" @click="lookDetail(scope.row)">详情</el-button>
