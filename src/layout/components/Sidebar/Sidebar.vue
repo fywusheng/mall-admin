@@ -3,11 +3,11 @@
 
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <div class="content">
-        <div v-for="(nav, index) in navList" :key="nav.id">
-          <div class="menu menu-home" v-if="index == 0" @click="goHome()">
-            <svg-icon class="iconfont" :icon-class="'menu-home'" />
-            系统首页
-          </div>
+        <div class="menu menu-home" @click="goHome()">
+          <svg-icon class="iconfont" :icon-class="'menu-home'" />
+          系统首页
+        </div>
+        <div v-for="nav in navList" :key="nav.id">
           <div class="menu" @click="menuClick(nav)">
             <svg-icon class="iconfont" :icon-class="getIconClassName(nav.name)" />
             {{nav.name}}
