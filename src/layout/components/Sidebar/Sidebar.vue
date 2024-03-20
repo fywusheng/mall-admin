@@ -33,13 +33,16 @@ export default {
       loading: false,
       navList: [],
       iconList: {
-        '店铺管理': 'menu-store',
+        '门店管理': 'menu-store',
         '商品管理': 'menu-product',
         '物流管理': 'menu-liu',
         '结算管理': 'menu-jiesuan',
-        '客户管理': 'menu-kehu',
+        '用户管理': 'menu-kehu',
         '营销管理': 'menu-yingxiao',
         '交易管理': 'menu-jiaoyi',
+        '加盟商管理': 'menu-jms',
+        '内容管理': 'menu-content',
+        '消息中心': 'menu-msg',
         '设置': 'menu-setting',
       }
     }

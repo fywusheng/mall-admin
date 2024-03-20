@@ -26,13 +26,13 @@
       </el-table-column>
       <el-table-column prop="realName" label="姓名">
       </el-table-column>
-      <el-table-column prop="loginName" label="登录账号" align="center">
+      <el-table-column prop="loginName" label="登录账号" align="center" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="telphone" label="所在部门/职务" width="200px" show-overflow-tooltip>
+      <el-table-column prop="telphone" label="所在部门/职务" width="150px" show-overflow-tooltip>
       </el-table-column>
       <el-table-column prop="telphone" label="手机号码" align="center" width="100px">
       </el-table-column>
-      <el-table-column prop="email" label="邮件" show-overflow-tooltip>
+      <el-table-column prop="email" label="邮件"  width="150px" show-overflow-tooltip>
       </el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" align="center" width="150px">
       </el-table-column>
@@ -41,9 +41,13 @@
           <el-switch v-model="scope.row.delFlag" active-color="#FF5500" :active-value="0"
             inactive-color="#909399" :inactive-value="1">
           </el-switch>
+          <!-- 提示接口不存在 -->
+          <!-- <el-switch :value="scope.row.delFlag" active-color="#FF5500" :active-value="0"
+            inactive-color="#909399" :inactive-value="1" @change="(e) => disable(e, scope.row)">
+          </el-switch> -->
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" width="380px;" align="center">
+      <el-table-column prop="" label="操作" width="380px;" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-info" :underline="false" size="mini"
             @click="forward2AuthorizationPage(scope.row)">授权&nbsp;&nbsp;</el-button>

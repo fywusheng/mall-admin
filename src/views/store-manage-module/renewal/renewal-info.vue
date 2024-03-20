@@ -66,13 +66,13 @@
           <td width="30%">
             <el-form-item label="经营范围：">
               <!-- <p class="_text">{{ dataForm.businessScope }}</p> -->
-              <el-cascader class="_cascader _border_none" disabled v-model="dataForm.businessScope" :options="categoryOptions" placeholder="" clearable :props="{value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
+              <el-cascader class="_cascader _border_none" disabled v-model="dataForm.businessScope" :options="categoryOptions" placeholder="" clearable :props="{multiple:true, value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="经营品牌：">
               <!-- <p class="_text">{{ dataForm.operatingBrand }}</p> -->
-              <el-select class="_border_none" v-model="dataForm.operatingBrand" disabled collapse-tags filterable style="width:80%" clearable placeholder="">
+              <el-select class="_border_none" v-model="dataForm.operatingBrand" multiple disabled filterable style="width:80%" clearable placeholder="">
                 <el-option v-for="item in brandOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -117,12 +117,12 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="经营范围：" prop="newBusinessScope" class="item" label-position="top">
-              <el-cascader class="_cascader _businessScope" v-model="dataForm.newBusinessScope" :options="categoryOptions" placeholder="请选择经营范围..." clearable :props="{value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
+              <el-cascader class="_cascader _businessScope" v-model="dataForm.newBusinessScope" :options="categoryOptions" placeholder="请选择经营范围..." clearable :props="{multiple:true, value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="经营品牌：" prop="newOperatingBrand" class="item" label-position="top">
-              <el-select v-model="dataForm.newOperatingBrand" collapse-tags filterable style="width:80%" clearable placeholder="请选择经营品牌...">
+              <el-select v-model="dataForm.newOperatingBrand" multiple="" filterable style="width:80%" clearable placeholder="请选择经营品牌...">
                 <el-option v-for="item in brandOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -201,9 +201,9 @@ export default {
       dataRules: {
         reviewStatus: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
         reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
-        newPeriodData: [{ required: true, message: "续签门店有效期不能为空，请选择！", trigger: "change" }],
-        newBusinessScope: [{ required: true, message: "续签经营范围不能为空，请选择！", trigger: "change" }],
-        newOperatingBrand: [{ required: true, message: "续签经营品牌不能为空，请选择！", trigger: "change" }],
+        newPeriodData: [{ required: true, message: "续签门店有效期不能为空，请选择！", trigger: "blur" }],
+        newBusinessScope: [{ required: true, message: "续签经营范围不能为空，请选择！", trigger: "blur" }],
+        newOperatingBrand: [{ required: true, message: "续签经营品牌不能为空，请选择！", trigger: "blur" }],
       },
     };
   },
@@ -230,16 +230,16 @@ export default {
       return res ? res.label : ''
     },
 
-    formatSalesArea(str) {
+    formatSalesArea(str, level = 2) {
       const arr = str.split(',')
       const areaList = []
       let item = []
       while(arr.length) {
         const obj = arr.shift()
-        if (item.length < 2) {
+        if (item.length < level) {
           item.push(obj)
         } 
-        if (item.length == 2) {
+        if (item.length == level) {
           areaList.push(item)
           item = []
         }
@@ -301,7 +301,8 @@ export default {
         result.data.periodData = [result.data.periodStartValidity, result.data.periodEndValidity]
         result.data.districtArea = result.data.districtArea.split(',')
         result.data.salesArea = this.formatSalesArea(result.data.salesArea)
-        result.data.businessScope = result.data.businessScope.split(',')
+        result.data.businessScope = this.formatSalesArea(result.data.businessScope, 3)
+        result.data.operatingBrand = result.data.operatingBrand.split(',')
 
         this.dataForm = { ...result.data }
       } else {
@@ -324,7 +325,7 @@ export default {
           params.districtArea = params.districtArea.join()
           params.salesArea = params.salesArea.join()
           params.businessScope = params.newBusinessScope.join()
-          params.operatingBrand = params.newOperatingBrand
+          params.operatingBrand = params.newOperatingBrand.join()
           delete params.newOperatingBrand
           delete params.newBusinessScope
 
@@ -443,11 +444,10 @@ export default {
   .el-input__inner {
     border: none !important;
   }
-  .el-cascader__tags {
-    .el-tag {
-      background-color: #ffffff;
-      color: #383838;
-    }
+  .el-tag {
+    background-color: #ffffff;
+    color: #383838;
+    border-color: transparent;
   }
 }
 ._businessScope {

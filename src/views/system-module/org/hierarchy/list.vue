@@ -12,7 +12,7 @@
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column label="" type="" width="20px">
       </el-table-column>
-      <el-table-column prop="name" label="名称">
+      <el-table-column prop="name" label="名称" show-overflow-tooltip>
       </el-table-column>
       <el-table-column prop="modifier" label="操作人" width="100px">
       </el-table-column>
@@ -25,7 +25,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="300px">
+      <el-table-column prop="" label="操作" align="center" width="300px" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" @click="add(1,scope.row)">添加子部门</el-button>
           <el-button size="mini" @click="edit(scope.row)" icon="el-icon-edit">编辑</el-button>

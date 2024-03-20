@@ -17,8 +17,8 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
-            <el-form-item label="门店编号：" prop="storeNo" class="item">
-              <el-input v-model="dataForm.storeNo" :disabled="routeParamsId != -1" placeholder="请输入门店编号..." maxlength="32" style="width:80%"></el-input>
+            <el-form-item label="门店编号：" prop="storeNo" class="item required-item">
+              <el-input v-model="dataForm.storeNo" disabled :placeholder="`${routeParamsId != -1 ? '请输入门店编号...' : '无需手工录入，后台自动生成...'}`" maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
@@ -64,12 +64,12 @@
           </td>
           <td width="30%">
             <el-form-item label="经营范围：" prop="businessScope" class="item">
-              <el-cascader class="_cascader"  v-model="dataForm.businessScope" :options="categoryOptions" placeholder="请选择经营范围..." clearable :props="{value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
+              <el-cascader class="_cascader"  v-model="dataForm.businessScope" :options="categoryOptions" placeholder="请选择经营范围..." clearable :props="{multiple:true, value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="经营品牌：" prop="operatingBrand" class="item">
-              <el-select v-model="dataForm.operatingBrand" collapse-tags filterable style="width:80%" clearable placeholder="请选择经营品牌...">
+              <el-select v-model="dataForm.operatingBrand" multiple filterable style="width:80%" clearable placeholder="请选择经营品牌...">
                 <el-option v-for="item in brandOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -153,6 +153,36 @@
           <td width="5%"></td>
         </tr>
       </table>
+
+      <!-- 审核未通过展示 -->
+      <el-form class="data-form" v-if="reviewStatusValue == 0" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor1" label-position="top" size="small">
+      <el-divider content-position="left" style="width:80%">
+        <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
+        <font style="color:blue">审核信息</font>
+      </el-divider>
+      <el-row style="height: 20px">
+        <el-col :span="24"></el-col>
+      </el-row>
+
+      <table width="100%">
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">
+            <el-form-item label="审核状态：" prop="reviewStatus" class="item" label-position="top">
+              <el-select v-model="dataForm.reviewStatus" collapse-tags filterable style="width:80%" size="mini" clearable placeholder="请选择审核状态...">
+                <el-option v-for="item in checkStatusOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </td>
+          <td width="30%" colspan="2">
+            <el-form-item label="审核意见：" prop="reviewComments" class="item" label-position="top">
+              <el-input size="mini" v-model="dataForm.reviewComments" placeholder="请输入审核意见..." maxlength="32" style="width:100%"></el-input>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+      </table>
+    </el-form>
     </el-form>
 
 
@@ -188,6 +218,10 @@ export default {
     }
 
     return {
+      checkStatusOptions: [
+        { label: "通过", value: 1 },
+        { label: "不通过", value: 0 },
+      ],
       agentTypeOptions: [
         { label: "省代", value: 1 },
         { label: "市代", value: 2 },
@@ -196,6 +230,7 @@ export default {
         { label: "个体", value: 5 },
       ],
       routeParamsId: '-1',
+      reviewStatusValue: 1, // 审核状态值，默认通过，详情数据获取后，从新赋值
       userObject: {},
       areaList: [],
       loading: false,
@@ -224,7 +259,7 @@ export default {
         enterpriseInformation: '', // 企业信息
       },
       dataRules: {
-        storeNo: [{ required: true, message: "门店编号不能为空，请完整输入！", trigger: "blur" }],
+        // storeNo: [{ required: true, message: "门店编号不能为空，请完整输入！", trigger: "blur" }],
         storeName: [{ required: true, message: "门店名称不能为空，请完整输入！", trigger: "blur" }],
         districtArea: [{ required: true, message: "门店地区不能为空，请选择！", trigger: "change" }],
         openingTime: [{ required: true, message: "开店时间不能为空，请选择！", trigger: "change" }],
@@ -232,7 +267,7 @@ export default {
         infomationNo: [{ required: true, message: "所属加盟商不能为空，请完整输入！", trigger: "change" }],
         salesArea: [{ required: true, message: "售卖区域不能为空，请选择！", trigger: "change" }],
         businessScope: [{ required: true, message: "经营范围不能为空，请选择！", trigger: "change" }],
-        operatingBrand: [{ required: true, message: "经营品牌不能为空，请选择！", trigger: "change" }],
+        operatingBrand: [{ required: true, message: "经营品牌不能为空，请选择！", trigger: "blur" }],
         commissionCalculation: [{ required: true, message: "佣金计算方式不能为空，请完整输入！", trigger: "blur" }],
         commissionSettlement: [{ required: true, message: "佣金结算方式不能为空，请完整输入！", trigger: "blur" }],
         corporateAccount: [{ required: true, message: "对公账户户名不能为空，请完整输入！", trigger: "blur" }],
@@ -241,6 +276,8 @@ export default {
           { required: true, validator: validateNumber, trigger: ["blur", "change"] }
         ],
         corporateBankBranch: [{ required: true, message: "开户银行及支行不能为空，请完整输入！", trigger: "blur" }],
+        reviewStatus: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
+        reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
       },
       props: { multiple: true },
       options: [{
@@ -309,16 +346,16 @@ export default {
     }
   },
   methods: {
-    formatSalesArea(str) {
+    formatSalesArea(str, level = 2) {
       const arr = str.split(',')
       const areaList = []
       let item = []
       while(arr.length) {
         const obj = arr.shift()
-        if (item.length < 2) {
+        if (item.length < level) {
           item.push(obj)
         } 
-        if (item.length == 2) {
+        if (item.length == level) {
           areaList.push(item)
           item = []
         }
@@ -379,13 +416,23 @@ export default {
         result.data.periodData = [result.data.periodStartValidity, result.data.periodEndValidity]
         result.data.districtArea = result.data.districtArea.split(',')
         result.data.salesArea = this.formatSalesArea(result.data.salesArea)
-        result.data.businessScope = result.data.businessScope.split(',')
+        result.data.businessScope = this.formatSalesArea(result.data.businessScope, 3)
+        result.data.operatingBrand = result.data.operatingBrand.split(',')
         this.dataForm = { ...result.data }
+
+        this.reviewStatusValue = result.data.reviewStatus
       } else {
         this.$message.error(result.msg);
       }
     },
     save() {
+      // 编辑 验证审核数据
+      let res = true
+      if (this.routeParamsId > -1) {
+        this.$refs.dataFormInfor1.validate(valid => {
+          res = valid
+        })
+      }
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
           
@@ -404,6 +451,7 @@ export default {
           params.districtArea = params.districtArea.join()
           params.salesArea = params.salesArea.join()
           params.businessScope = params.businessScope.join()
+          params.operatingBrand = params.operatingBrand.join()
 
           const result = await post("/srm/sh/stores/saveStores", params)
           this.sending = false;
@@ -490,6 +538,13 @@ export default {
 ._cascader {
   .el-input {
     width: 100% !important;
+  }
+}
+.required-item {
+  .el-form-item__label::before {
+    content: "*";
+    color: #ff4949;
+    margin-right: 4px;
   }
 }
 </style>

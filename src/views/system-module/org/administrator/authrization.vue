@@ -83,7 +83,8 @@ export default {
     // this.loginName= this.$route.params.loginName;
     this.loadUserRoles(this.$route.params.id);
     this.$loading = false;
-    this.getAreaCityList()
+    // 接口报错，为了不影响测试，先注释掉，最后在打开
+    // this.getAreaCityList()
     this.getManageArea()
   },
 
@@ -141,17 +142,19 @@ export default {
     },
 
     async save() {
-      if (!this.areaCode.length) {
-        this.$message.warning("请选择区域！")
-        return false
-      }
+      // 接口报错，为了不影响测试，先注释掉，最后在打开
+      // if (!this.areaCode.length) {
+      //   this.$message.warning("请选择区域！")
+      //   return false
+      // }
       this.sending = true
       const result = await post('/org/admin/grant', { id: this.$route.params.id, roles: this.checkedRoleKeys })
       this.sending = false
       if (result.code == 200) {
-        this.saveArea()
-        // this.$message.success(result.msg)
-        // this.back2Prev()
+        // 接口报错，为了不影响测试，先注释掉，最后在打开
+        // this.saveArea()
+        this.$message.success(result.msg)
+        this.back2Prev()
       } else {
         this.$message.error(result.msg)
       }
