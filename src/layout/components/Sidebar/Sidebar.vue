@@ -3,7 +3,11 @@
 
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <div class="content">
-        <div v-for="nav in navList" :key="nav.id">
+        <div v-for="(nav, index) in navList" :key="nav.id">
+          <div class="menu menu-home" v-if="index == 0" @click="goHome()">
+            <svg-icon class="iconfont" :icon-class="'menu-home'" />
+            系统首页
+          </div>
           <div class="menu" @click="menuClick(nav)">
             <svg-icon class="iconfont" :icon-class="getIconClassName(nav.name)" />
             {{nav.name}}
@@ -84,6 +88,9 @@ export default {
     },
     menuClick(nav) {
       this.$router.push(nav.url)
+    },
+    goHome() {
+      this.$router.push('/')
     }
   }
 }
@@ -130,6 +137,9 @@ export default {
         color: #ff5500;
       }
     }
+  }
+  .menu-home {
+    cursor: pointer;
   }
 }
 </style>
