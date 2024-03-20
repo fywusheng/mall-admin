@@ -3,7 +3,7 @@
 
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <div class="content">
-        <div class="menu menu-home" @click="goHome()">
+        <div class="menu menu-home" :class="isHome ? 'active' : ''" @click="goHome()">
           <svg-icon class="iconfont" :icon-class="'menu-home'" />
           系统首页
         </div>
@@ -32,6 +32,7 @@ export default {
   name: 'Sidebar',
   data() {
     return {
+      isHome: false,
       activeIndex: location.hash.substr(1),
       contentHeight: window.innerHeight - 100 + 'px',
       loading: false,
@@ -68,8 +69,22 @@ export default {
   },
   watch: {
     // 可以通过watch监听路由地址的变化, 只要路由地址发生变化, 就会自动调用对应的回调函数
-    "$route.path": function (newValue, oldValue) {
-      this.activeIndex = newValue
+    // "$route.path": function (newValue, oldValue) {
+    //   this.activeIndex = newValue
+    //   this.isHome = false
+    //   if (newValue == '/apps/dashboard') {
+    //     this.isHome = true
+    //   }
+    // },
+    "$route.path": {
+      handler (newValue, oldValue) {
+        this.activeIndex = newValue
+        this.isHome = false
+        if (newValue == '/apps/dashboard') {
+          this.isHome = true
+        }
+      },
+      immediate: true
     }
   },
   async mounted() {
@@ -140,6 +155,12 @@ export default {
   }
   .menu-home {
     cursor: pointer;
+    &:hover {
+      color: #ff5500;
+    }
+    &.active {
+      color: #ff5500;
+    }
   }
 }
 </style>
