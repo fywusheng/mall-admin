@@ -1,3 +1,4 @@
+<!-- :remote-method="remoteMethod" -->
 <template>
   <el-select
     v-model="val"
@@ -8,7 +9,6 @@
     :disabled="disabled"
     reserve-keyword
     :placeholder="placeholder"
-    :remote-method="remoteMethod"
     :loading="loading"
     @change="change">
     <el-option
@@ -54,7 +54,7 @@ import { post } from "@/utils/http-client"
       }
     },
     mounted() {
-      this.remoteMethod(' ')
+      // this.remoteMethod(' ')
       this.loadData()
     },
     methods: {
@@ -62,7 +62,7 @@ import { post } from "@/utils/http-client"
       async loadData () {
         const result = await post("/srm/sh/information/getInformationList");
         if (result.code == 200) {
-          this.sourceData = result.data.list;
+          this.options = result.data || [];
         } else {
           this.$message.error(result.msg);
         }
