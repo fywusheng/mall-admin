@@ -1,5 +1,5 @@
 module.exports = {
-  title: '运营管理系统',
+  title: '松辉云康平台业务管理系统',
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
