@@ -55,6 +55,7 @@ import { post } from "@/utils/http-client"
     },
     mounted() {
       this.remoteMethod(' ')
+      this.loadData()
     },
     methods: {
       // 获取所有，暂时先不用
@@ -70,9 +71,11 @@ import { post } from "@/utils/http-client"
         if (query !== '') {
           this.loading = true;
           post("/srm/sh/information/listByPageNo", {informationName: query}).then(res => {
-            if (res.code === '200') {
+            if (res.code == '200') {
               this.loading = false;
               this.options = res.data?.list || []
+            } else {
+              this.$message.error(result.msg);
             }
           })
         } else {

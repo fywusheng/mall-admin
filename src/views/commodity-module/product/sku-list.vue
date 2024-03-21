@@ -22,11 +22,11 @@
       </div>
       <el-table-column type="index" label="序号" align="center" width="50px"> </el-table-column>
       <el-table-column prop="id" label="SKU ID" align="center" width="180px"> </el-table-column>
-      <el-table-column prop="specs" label="SKU规格" align="center"> </el-table-column>
+      <el-table-column prop="specs" label="SKU规格" align="center" show-overflow-tooltip> </el-table-column>
       <el-table-column prop="code" label="SKU编码" align="center" width="180px"> </el-table-column>
       <el-table-column prop="productId" label="商品ID" align="center" width="180px">
       </el-table-column>
-      <el-table-column prop="supplierCode" label="供应商货号" width="100px" show-overflow-tooltip>
+      <el-table-column prop="supplierCode" label="供应商货号" width="100px" show-overflow-tooltip align="center">
       </el-table-column>
       <el-table-column label="总库存/预锁" align="center" width="100px">
         <template slot-scope="scope">
@@ -49,10 +49,10 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="100px">
+      <el-table-column prop="" label="操作" align="center" width="100px" fixed="right">
         <template slot-scope="scope">
-          <el-link :disabled='scope.row.saleState==5' icon="el-icon-edit" :underline="false"
-            @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-link>
+          <el-button :disabled='scope.row.saleState==5' icon="el-icon-edit" size="mini" :underline="false"
+            @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -183,6 +183,7 @@ export default {
       const result = await post('/product/sku/resetting', row);
       if (result.code == 200) {
         this.loadData(row.productId);
+        this.$message.success('设置启用状态成功！')
       }
       else {
         this.$message.error(result.msg);
