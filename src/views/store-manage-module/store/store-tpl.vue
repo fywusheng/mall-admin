@@ -155,7 +155,8 @@
       </table>
 
       <!-- 审核未通过展示 -->
-      <el-form class="data-form" v-if="reviewStatusValue == 0" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor1" label-position="top" size="small">
+    </el-form>
+      <!-- <el-form class="data-form" v-if="reviewStatusValue == 0" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor1" label-position="top" size="small">
       <el-divider content-position="left" style="width:80%">
         <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
         <font style="color:blue">审核信息</font>
@@ -182,7 +183,37 @@
           <td width="5%"></td>
         </tr>
       </table>
-    </el-form>
+    </el-form> -->
+    <el-form class="data-form" v-if="reviewStatusValue == 0" label-position="right" size="small">
+      <el-divider content-position="left" style="width:80%">
+        <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
+        <font style="color:blue">审核信息</font>
+      </el-divider>
+      <el-row style="height: 20px">
+        <el-col :span="24"></el-col>
+      </el-row>
+
+      <table width="100%">
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
+            <el-form-item label="审核状态：" prop="reviewStatus" class="item" label-position="top">
+              <p class="_text">{{ getStatusLabel(dataForm.reviewStatus) }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="审核意见：" prop="reviewComments" class="item" label-position="top">
+              <p class="_text">{{ dataForm.reviewComments }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="审核时间：" prop="reviewDate" class="item" label-position="top">
+              <p class="_text">{{ dataForm.reviewDate }}</p>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+      </table>
     </el-form>
 
 
@@ -276,8 +307,8 @@ export default {
           { required: true, validator: validateNumber, trigger: ["blur", "change"] }
         ],
         corporateBankBranch: [{ required: true, message: "开户银行及支行不能为空，请完整输入！", trigger: "blur" }],
-        reviewStatus: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
-        reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
+        // reviewStatus: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
+        // reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
       },
       props: { multiple: true },
       options: [{
@@ -346,6 +377,10 @@ export default {
     }
   },
   methods: {
+    getStatusLabel(val) {
+      const res = this.checkStatusOptions.find(item => item.value == val)
+      return res ? res.label : ''
+    },
     formatSalesArea(str, level = 2) {
       const arr = str.split(',')
       const areaList = []
@@ -427,12 +462,12 @@ export default {
     },
     save() {
       // 编辑 验证审核数据
-      let res = true
-      if (this.routeParamsId > -1) {
-        this.$refs.dataFormInfor1.validate(valid => {
-          res = valid
-        })
-      }
+      // let res = true
+      // if (this.routeParamsId > -1) {
+      //   this.$refs.dataFormInfor1.validate(valid => {
+      //     res = valid
+      //   })
+      // }
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
           
@@ -440,11 +475,15 @@ export default {
 
           this.sending = true;
 
+          const params = deepClone(this.dataForm)
+          // 编辑
           if (this.$route.params.id != -1) {
-            this.dataForm.id = this.$route.params.id
+            params.id = this.$route.params.id
+            // 审核相关字段不传
+            params.reviewStatus = ''
+            params.reviewComments = ''
           }
 
-          const params = deepClone(this.dataForm)
           params.periodStartValidity = params.periodData[0]
           params.periodEndValidity = params.periodData[1]
           delete params.periodData
@@ -546,5 +585,8 @@ export default {
     color: #ff4949;
     margin-right: 4px;
   }
+}
+._text {
+  transform: translateY(-5px);
 }
 </style>

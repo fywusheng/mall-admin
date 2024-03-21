@@ -49,9 +49,9 @@
         align="center" width="100px"></el-table-column>
       <el-table-column prop="approveState" label="审核状态" align="center" width="100px"
         :formatter="formatApproveState"></el-table-column>
-      <el-table-column prop="modifier" label="操作人" align="center" width="100px"></el-table-column>
+      <!-- <el-table-column prop="modifier" label="操作人" align="center" width="100px"></el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" align="center" width="150px"
-        show-overflow-tooltip></el-table-column>
+        show-overflow-tooltip></el-table-column> -->
       <el-table-column prop="delFlag" label="启用状态" align="center" width="80px">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.delFlag" active-color="#FF5500" :active-value="0"
@@ -59,7 +59,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="120px" fixed="right">
+      <el-table-column prop="" label="操作" align="center" width="120px">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit-outline" size="mini" @click="edit(scope.row)">编 辑
           </el-button>

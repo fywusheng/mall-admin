@@ -88,8 +88,41 @@
       </table>
     </el-form>
 
+
+    <el-form v-if="routeParamsId != '-1'" class="data-form" :v-loading="loading"  label-position="right" size="small">
+      <el-divider content-position="left" style="width:80%">
+        <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
+        <font style="color:blue">审核信息</font>
+      </el-divider>
+      <el-row style="height: 20px">
+        <el-col :span="24"></el-col>
+      </el-row>
+
+      <table width="100%">
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
+            <el-form-item label="审核状态：" prop="status" class="item" label-position="top">
+              <p class="_text">{{ getStatusLabel(dataForm.status) }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="审核意见：" prop="reviewComments" class="item" label-position="top">
+              <p class="_text">{{ dataForm.reviewComments }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="审核时间：" prop="reviewDate" class="item" label-position="top">
+              <p class="_text">{{ dataForm.reviewDate }}</p>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+      </table>
+    </el-form>
+
     <!-- 编辑显示 -->
-    <el-form v-if="routeParamsId != '-1'" class="data-form" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor1" label-position="top" size="small">
+    <!-- <el-form v-if="routeParamsId != '-1'" class="data-form" :model="dataForm" :rules="dataRules" :v-loading="loading" ref="dataFormInfor1" label-position="top" size="small">
       <el-divider content-position="left" style="width:80%">
         <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
         <font style="color:blue">审核信息</font>
@@ -116,7 +149,7 @@
           <td width="5%"></td>
         </tr>
       </table>
-    </el-form>
+    </el-form> -->
 
 
     <el-row style="height: 30px">
@@ -134,6 +167,7 @@
 <script>
 import Vue from 'vue'
 import { fetch, post } from "@/utils/http-client"
+import { deepClone } from '@/utils/index'
 
 export default {
   name: "",
@@ -217,8 +251,8 @@ export default {
         ],
         // 上传文件接口报错，暂时 注释这里，保证正常测试，最后需要打开
         // contractFileUrl: [{ required: true, message: "合同文件不能为空，请上传！", trigger: ["change", "blur"] }],
-        status: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
-        reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
+        // status: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
+        // reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
       },
     };
   },
@@ -235,7 +269,11 @@ export default {
     }
   },
   methods: {
-    
+    getStatusLabel(val) {
+      const res = this.checkStatusOptions.find(item => item.value == val)
+      return res ? res.label : ''
+    },
+
     async loadData(productId) {
       if (productId && productId == -1) {
         return;
@@ -250,25 +288,28 @@ export default {
     },
     save() {
       // 编辑 验证审核数据
-      let res = true
-      if (this.routeParamsId > -1) {
-        this.$refs.dataFormInfor1.validate(valid => {
-          res = valid
-        })
-      }
-      if (!res) return
+      // let res = true
+      // if (this.routeParamsId > -1) {
+      //   this.$refs.dataFormInfor1.validate(valid => {
+      //     res = valid
+      //   })
+      // }
+      // if (!res) return
       this.$refs.dataFormInfor.validate(async valid => {
         if (valid) {
           this.sending = true;
-          // 编辑传 id
+          const params = deepClone(this.dataForm)
+          // 编辑传 id，审核状态 和 审核信息传 “”
           if (this.routeParamsId > -1) {
-            this.dataForm.id = this.routeParamsId
+            params.id = this.routeParamsId
+            params.status = ''
+            params.reviewComments = ''
             // 添加 不传 审核相关的两个字段
           } else {
-            delete this.dataForm.status
-            delete this.dataForm.reviewComments
+            delete params.status
+            delete params.reviewComments
           }
-          const result = await post("/srm/sh/information/saveInformation", this.dataForm)
+          const result = await post("/srm/sh/information/saveInformation", params)
           this.sending = false;
           if (result.code == 200) {
             this.$message.success("加盟商数据保存成功！");
@@ -386,5 +427,8 @@ export default {
       text-align: left;
     }
   }
+}
+._text {
+  transform: translateY(-5px);
 }
 </style>

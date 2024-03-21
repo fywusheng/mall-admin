@@ -27,17 +27,17 @@
         <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
       </div>
       <el-table-column type="index" label="序号" width="50px" align="center"></el-table-column>
-      <el-table-column prop="storeNo" label="门店编号" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="storeName" label="门店名称" width="200px" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="storeNo" label="门店编号" show-overflow-tooltip width="200px"></el-table-column>
+      <el-table-column prop="storeName" label="门店名称"  show-overflow-tooltip></el-table-column>
       <el-table-column prop="districtAreaStr" label="所属地区" width="150px" align="center"></el-table-column>
-      <el-table-column prop="openingTime" label="开店时间" width="200px" align="center"></el-table-column>
-      <el-table-column prop="openingTime" label="有效期" width="300px" align="center">
+      <el-table-column prop="openingTime" label="开店时间" width="100px" align="center"></el-table-column>
+      <el-table-column prop="openingTime" label="有效期" width="200px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.periodStartValidity }} 至 {{ scope.row.periodEndValidity }}</span>
         </template>
       </el-table-column>
       <!-- 这个字段文档中没有 -->
-      <el-table-column prop="informationName" label="所属加盟商" width="250px" align="center"></el-table-column>
+      <el-table-column prop="informationName" label="所属加盟商" width="200px" align="center"></el-table-column>
       <el-table-column prop="reviewStatus" label="审核状态" width="80px" align="center" :formatter="formatStatus"></el-table-column>
       <el-table-column prop="yn" label="启用状态" width="80px" align="center">
         <template slot-scope="scope">
@@ -46,7 +46,7 @@
       </el-table-column>
       <el-table-column prop="" label="操作" align="center" width="280px" fixed="right">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.reviewStatus != 1" icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.reviewStatus == 0" icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
           <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 1" icon="el-icon-turn-off" size="mini" @click="toggle(scope.row, 0)">停用</el-button>
           <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 0" icon="el-icon-open" size="mini" @click="toggle(scope.row, 1)">启用</el-button>
           <el-button v-if="scope.row.reviewStatus == 1" icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button>
@@ -56,7 +56,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background v-show="totalCount > 10" @size-change="changeSize" @current-change="changePage" :page-size="pageSize" layout="total, slot, jumper, prev, pager, next" :total="totalCount"></el-pagination>
+    <el-pagination background v-show="totalCount > 10" @size-change="changeSize" @current-change="changePage" :page-size="pageSize" :current-page="pageNo" layout="total, slot, jumper, prev, pager, next" :total="totalCount"></el-pagination>
   </div>
 </template>
 <script>
@@ -127,8 +127,16 @@ export default {
       }
     },
     // 续签
+    // 提交的为待续签 = 0，通过的为已续签 = 1，驳回的为未续签 = 2
     renewal(row) {
-      this.$router.push({ name: 'Renewal-Info', params: { id: row.id } })
+      post('/srm/sh/stores/saveStores', {...row, renewalStatus: 0}).then(res => {
+        if (res.code == 200) {
+          this.$message.success('转为待续签成功')
+          this.loadData()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
     },
     // 停用 | 启用 type=0停用  =1启用
     toggle(row, type) {
