@@ -52,8 +52,11 @@
             width="80px"></el-table-column>
           <el-table-column prop="paymentMethod" label="支付方式" align="center" width="80px"
             :formatter="formatPaymentMethod"></el-table-column>
-          <el-table-column prop="userName" label="下单人" align="center" width="100px"
-            show-overflow-tooltip></el-table-column>
+          <el-table-column prop="userName" label="下单人" align="center" width="100px" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <span>{{scope.row.userName || '--'}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="userLoginName" label="下单账号" align="center"
             width="120px"></el-table-column>
           <el-table-column prop="userName" label="收货地址" :formatter="formatReceiveAddress"
@@ -115,8 +118,11 @@
             width="80px" :formatter="formatOrderStatusLabel"></el-table-column>
           <el-table-column prop="paymentMethod" label="支付方式" align="center" width="80px"
             :formatter="formatPaymentMethod"></el-table-column>
-          <el-table-column prop="crterName" label="下单人" align="center" width="100px"
-            show-overflow-tooltip></el-table-column>
+          <el-table-column prop="crterName" label="下单人" align="center" width="100px" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <span>{{scope.row.crterName || '--'}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="updterName" label="下单账号" align="center"
             width="120px"></el-table-column>
           <el-table-column prop="orderTime" label="下单时间" align="center"

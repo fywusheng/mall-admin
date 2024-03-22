@@ -25,13 +25,14 @@
         <el-form-item class="">
           <!-- <el-button class="two-words" plain size="mini" @click="onReset('formSearch')">重置</el-button> -->
           <el-button class="two-words" type="primary" icon="el-icon-search" size="mini" @click="handleSearch">查询</el-button>
+          <el-button size="mini" icon="el-icon-circle-plus-outline" @click="addOrEdit()">添加</el-button>
         </el-form-item>
       </el-form>
       <div class="table-wrap">
         <div class="table-edit-box clearfix">
           <div class="table-btn-right">
-            <el-button v-if="btnPermissions.includes('添加')" type="success" size="small"
-              @click="addOrEdit()">添加</el-button>
+            <!-- <el-button v-if="btnPermissions.includes('添加')" type="success" size="small"
+              @click="addOrEdit()">添加</el-button> -->
           </div>
         </div>
         <el-table ref="table" v-loading="listLoading" height="460px" :data="list"
@@ -68,16 +69,16 @@
           <el-table-column label="创建时间" prop="crteTime" min-width="120" align="center"
             show-overflow-tooltip>
             <template slot-scope="scope">
-              {{scope.row.crteTime | dayFormat("date")}}
+              {{scope.row.crteTime}}
             </template>
           </el-table-column>
           <el-table-column label="发布时间" prop="rlsTime" min-width="120" align="center"
             show-overflow-tooltip>
             <template slot-scope="scope">
-              {{scope.row.rlsTime | dayFormat("date")}}
+              {{scope.row.rlsTime}}
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="created_at" label="操作" width="250" fixed="right">
+          <!-- <el-table-column align="center" prop="created_at" label="操作" width="250" fixed="right">
             <template slot-scope="scope">
               <el-link type="primary" size="small"
                 v-if="btnPermissions.includes('查看') && ['1', '3'].includes(scope.row.chkStas)"
@@ -97,6 +98,28 @@
               <el-link type="danger" size="small"
                 v-if="btnPermissions.includes('删除') && scope.row.chkStas !== '1'"
                 @click="handleDelete(scope.row.contId)">删除</el-link>
+            </template>
+          </el-table-column> -->
+          <el-table-column align="center" prop="created_at" label="操作" width="250">
+            <template slot-scope="scope">
+              <el-button size="mini"
+                v-if="['1', '3'].includes(scope.row.chkStas)"
+                @click="addOrEdit(scope.row,1)">查看</el-button>
+              <el-button size="mini"
+                v-if="scope.row.chkStas === '3'"
+                @click="downShelf(scope.row)">下架</el-button>
+              <el-button size="mini"
+                v-if="(scope.row.chkStas === '0' || scope.row.chkStas ==='-1')"
+                @click="addOrEdit(scope.row,2)">修改</el-button>
+              <el-button size="mini"
+                v-if="(scope.row.chkStas === '0' || scope.row.chkStas ==='-1')"
+                @click="submitExamine(scope.row.contId)">提交审核</el-button>
+              <el-button size="mini"
+                v-if="scope.row.chkStas === '1'"
+                @click="examine(scope.row)">审核</el-button>
+              <el-button size="mini"
+                v-if="scope.row.chkStas !== '1'"
+                @click="handleDelete(scope.row.contId)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -284,6 +307,7 @@ import { fetch, post } from "@/utils/http-nepsp"
 import YCascader from "@/components/y-cascader/index"
 import YUploadImg from "@/components/y-upload-img"
 import YUploadFile from "@/components/y-upload-file"
+import YEditor from '@/components/y-editor'
 import { convertUrlToBase64, fileToBase64 } from "@/utils/downloadImg"
 import { deepClone } from "@/utils/index"
 import { dayFormat } from '@/utils/dayjs'
@@ -360,7 +384,8 @@ export default {
   components: {
     YCascader,
     YUploadImg,
-    YUploadFile
+    YUploadFile,
+    YEditor,
   },
   data() {
     // const judgeTtl = (rule, value, callback) => {
@@ -587,7 +612,7 @@ export default {
     //获取数据
     this.handleSearch()
 
-    this.handleBtnPermission()
+    // this.handleBtnPermission()
 
   },
   methods: {

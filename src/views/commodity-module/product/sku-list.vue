@@ -35,9 +35,9 @@
       </el-table-column>
       <el-table-column prop="stockWarning" label="预警库存" align="center" width="80px">
       </el-table-column>
-      <el-table-column prop="markOffPrice" label="市场价" align="center" width="60px">
+      <el-table-column prop="markOffPrice" label="市场价" align="center" width="80px">
       </el-table-column>
-      <el-table-column prop="sellingPrice" label="销售价" align="center" width="60px">
+      <el-table-column prop="sellingPrice" label="销售价" align="center" width="80px">
       </el-table-column>
       <el-table-column prop="createdTime" label="创建时间" align="center"
         width="150px"></el-table-column>

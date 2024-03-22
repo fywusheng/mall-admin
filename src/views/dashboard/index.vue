@@ -570,7 +570,7 @@ export default {
       }
     },
     goPath(url, name) {
-      console.log(name)
+      console.log(url, name)
       const queryParam = {
         在售商品: "1",
         待上架商品: "2",
@@ -582,6 +582,7 @@ export default {
         待审核加盟商: "2",
         审核未通过加盟商: "0",
       };
+
       if (!url) return;
       if (queryParam[name]) {
         this.$router.push({ path: url, query: { type: queryParam[name] } });

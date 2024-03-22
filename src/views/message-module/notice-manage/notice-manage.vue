@@ -442,7 +442,7 @@ export default {
     async onClickSendNotice(row) {
       this.listLoading = true
       try {
-        const { type } = await post("/ngcmn/mock/api/notice/push", {data: {data: { id: row.id }}})
+        const { type } = await post("/ngcmn/mock/api/notice/push", {data: {data: { id: row.notcId }}})
         if (type === "success") {
           this.$message({
             type: "success",

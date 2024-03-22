@@ -162,8 +162,10 @@ export default {
         colCodg: "",
         region: "",
         absoluteUrl: "",
-        account: this.$store.getters.name,
-        accountId: this.$store.getters.id
+        // account: this.$store.getters.name,
+        account: 'admin',
+        // accountId: this.$store.getters.id
+        accountId: 'admin'
       },
       /* 表单验证 */
       formAddRule: {
@@ -234,8 +236,10 @@ export default {
       if (row.colId) {
         this.formAdd = {
           ...row,
-          account: this.$store.getters.name,
-          accountId: this.$store.getters.id
+          // account: this.$store.getters.name,
+          // accountId: this.$store.getters.id
+          account: 'admin',
+          accountId: 'admin'
         }
       }
       this.editVisible = true
@@ -364,8 +368,10 @@ export default {
     async _deleteCmsCol(key) {
       const data = {
         key,
-        account: this.$store.getters.name,
-        accountId: this.$store.getters.id
+        // account: this.$store.getters.name,
+        // accountId: this.$store.getters.id
+        account: 'admin',
+        accountId: 'admin'
       }
       try {
         await post("/cms/iep/web/cms/cmscol/deleteCmsCol", {data: data})
@@ -420,8 +426,10 @@ export default {
           colCodg: "",
           region: "",
           absoluteUrl: "",
-          account: this.$store.getters.name,
-          accountId: this.$store.getters.id
+          // account: this.$store.getters.name,
+          account: 'admin',
+          // accountId: this.$store.getters.id
+          accountId: 'admin'
         }
         this.dialogImageUrl = ""
       }
