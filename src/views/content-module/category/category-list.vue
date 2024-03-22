@@ -42,7 +42,7 @@
               {{ (scope.$index + 1 )+ (formSearch.pageNum - 1) * formSearch.pageSize }}
             </template>
           </el-table-column>
-          <el-table-column label="内容标题" prop="ttl" min-width="120" align="center" />
+          <el-table-column label="内容标题" prop="ttl" min-width="120" align="center" show-overflow-tooltip/>
           <el-table-column label="封面图" prop="imgs" min-width="120" align="center">
             <template slot-scope="scope">
               <el-image v-if="scope.row.imgs.length>0" style="width: 50px; height: 50px"
@@ -655,7 +655,7 @@ export default {
         "pageNum": 1,
         "pageSize": 10
       }
-      const { data } = await post("/cms/iep/web/cms/cmscol/selectCmsColByDTO", params)
+      const { data } = await post("/cms/iep/web/cms/cmscol/selectCmsColByDTO", {data: params})
       if (!data.list) {
         this.categoryChildTypeOPt = []
         this.formAdd.subColId = ""
@@ -689,7 +689,7 @@ export default {
           for (const key in params) {
             formData.append(key, params[key])
           }
-          post("/cms/iep/web/cms/singleFileUpload", formData, {
+          post("/cms/iep/web/cms/singleFileUpload", {data: formData}, {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded"
             },
@@ -796,7 +796,7 @@ export default {
               account: _this.$store.getters.uact,
               accountId: _this.$store.getters.id
             }
-            post("/cms/iep/web/cms/cmscont/updateContToAudit", params).then(data => {
+            post("/cms/iep/web/cms/cmscont/updateContToAudit", {data: params}).then(data => {
               _this.$message.success("提交审核成功")
               // _this.handleSearch()
               _this.fetchData()
@@ -817,7 +817,7 @@ export default {
             const params = {
               key: row.contId
             }
-            post("/cms/iep/web/cms/cmscont/updateContDownShelf", params).then(data => {
+            post("/cms/iep/web/cms/cmscont/updateContDownShelf", {data: params}).then(data => {
               _this.$message.success("下架成功")
               // _this.handleSearch()
               _this.fetchData()
@@ -842,7 +842,7 @@ export default {
         accountId: _this.$store.getters.id
       }
       // operationApi.updateContAuditNoPass(params).then(data => {
-        post("/cms/iep/web/cms/cmscont/updateContAuditNoPass", params).then(data => {
+        post("/cms/iep/web/cms/cmscont/updateContAuditNoPass", {data: params}).then(data => {
         _this.$message.success("审核不通过成功")
         _this.dialogExamine = false
         _this.showDialog = false
@@ -889,7 +889,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // operationApi.updateRegRelease(this.inTimeParams).then(data => {
-            post("/cms/iep/web/cms/cmscont/updateRegRelease", this.inTimeParams).then(data => {
+            post("/cms/iep/web/cms/cmscont/updateRegRelease", {data: this.inTimeParams}).then(data => {
             this.$message.success("定时发布成功，文章将于" + this.inTimeParams.releaseDate + "发布！")
             this.dialogTime = false
             this.dialogExamine = false
@@ -921,7 +921,7 @@ export default {
         accountId: this.$store.getters.id
       }
       // operationApi.updateImmediaAuditPass(params).then(data => {
-        post("/cms/iep/web/cms/cmscont/updateImmediaAuditPass", params).then(data => {
+        post("/cms/iep/web/cms/cmscont/updateImmediaAuditPass", {data: params}).then(data => {
         console.log("🚀 ~ file: index.vue ~ line 332 ~ operationApi.insertOrUpdateCmsCont ~ data", data)
         this.$message.success("发布成功")
         this.dialogExamine = false
@@ -987,7 +987,7 @@ export default {
           if (action === "confirm") {
             //谨慎操作
             // operationApi.deleteCmsCont(params).then(data => {
-              post("/cms/iep/web/cms/cmscont/deleteCmsCont", params).then(data => {
+              post("/cms/iep/web/cms/cmscont/deleteCmsCont", {data: params}).then(data => {
               this.$message.success("删除专题内容成功")
               // this.handleSearch()
               this.fetchData()
@@ -1015,7 +1015,7 @@ export default {
     fetchData() {
       this.listLoading = true
       // operationApi.selectCmsContByDTO(this.formSearch).then(data => {
-        post("/cms/iep/web/cms/cmscont/selectCmsContByDTO", this.formSearch).then(data => {
+        post("/cms/iep/web/cms/cmscont/selectCmsContByDTO", {data: this.formSearch}).then(data => {
         this.listLoading = false
         if (data.data) {
           this.list = data.data.list || []
@@ -1080,7 +1080,7 @@ export default {
      */
     async selectCmsColByDTO() {
       // const { data } = await operationApi.selectCmsColByDTO(this.formSearch)
-      const { data } = await post("/cms/iep/web/cms/cmscol/selectCmsColByDTO", this.formSearch)
+      const { data } = await post("/cms/iep/web/cms/cmscol/selectCmsColByDTO", {data: this.formSearch})
       this.categoryTypeOPt = data.list.map((item) => {
         return {
           label: item.colName,
@@ -1151,10 +1151,10 @@ export default {
      */
     async _uploadBase64(base64, fileExt) {
       // const { data } = await operationApi.uploadImage({
-      const { data } = await post("/cms/iep/web/cms/imgUpload", {
+      const { data } = await post("/cms/iep/web/cms/imgUpload", {data: {
         base64String: base64,
         imageExt: fileExt
-      })
+      }})
       return data
     },
 
@@ -1282,7 +1282,7 @@ export default {
             delete params["recomFlag"]
           }
           // operationApi.insertOrUpdateCmsCont(params).then(data => {
-          post("/cms/iep/web/cms/cmscont/insertOrUpdateCmsCont", params).then(data => {
+          post("/cms/iep/web/cms/cmscont/insertOrUpdateCmsCont", { data: params }).then(data => {
             this.$message.success(msg)
             this.dialogFormVisible = false
             this.handleSearch()

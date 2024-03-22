@@ -70,6 +70,9 @@
           <el-option label="系统通知" :value="3"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="公告内容：" prop="notcInfo">
+        <el-input type="textarea" v-model="noticeInfo.notcInfo" placeholder="请输入公告内容" :autosize="{ minRows: 3, maxRows: 3 }" />
+      </el-form-item>
       <el-form-item label="发布渠道：">
         <el-select style="width: 100%;" v-model="noticeInfo.rlsChnl" placeholder="请选择发布渠道" clearable>
           <el-option label="APP" value="app"></el-option>
@@ -88,9 +91,6 @@
       </el-form-item>
       <el-form-item label="重定向地址：">
         <el-input v-model="noticeInfo.rediAddr" placeholder="请输入重定向地址"/>
-      </el-form-item>
-      <el-form-item label="公告内容：" prop="notcInfo">
-        <el-input type="textarea" v-model="noticeInfo.notcInfo" placeholder="请输入公告内容" :autosize="{ minRows: 3, maxRows: 3 }" />
       </el-form-item>
       <el-form-item label="是否需要登录：" prop="lginFlag">
         <el-select style="width: 100%;" v-model="noticeInfo.notcCfgDTO.lginFlag" placeholder="请选择是否需要登录" clearable>
@@ -352,20 +352,24 @@ export default {
      * @author: chenwz
      */
     async handleEditNotice() {
-      const params = Object.assign({}, this.noticeInfo, { runStas: this.noticeInfo.runStas ? 0 : 1 })
-      try {
-        const { type } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: {data: params}})
-        if (type === "success") {
-          this.addEditDialogVisible = false
-          this.$message({
-            type: "success",
-            message: "保存成功!"
-          })
-          this.loadNoticeList()
+      this.$refs.noticeDialogForm.validate(async valid => {
+        if (valid) {
+          const params = Object.assign({}, this.noticeInfo, { runStas: this.noticeInfo.runStas ? 0 : 1 })
+          try {
+            const { type } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: {data: params}})
+            if (type === "success") {
+              this.addEditDialogVisible = false
+              this.$message({
+                type: "success",
+                message: "保存成功!"
+              })
+              this.loadNoticeList()
+            }
+          } catch (e) {
+            this.addEditDialogVisible = true
+          }
         }
-      } catch (e) {
-        this.addEditDialogVisible = true
-      }
+      })
     },
     /**
      * @description: 点击删除公告操作
@@ -419,20 +423,26 @@ export default {
      * @author: chenwz
      */
     async handleAddNotice() {
-      const params = Object.assign({}, this.noticeInfo, { runStas: this.noticeInfo.runStas ? 0 : 1 })
-      try {
-        const { type } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: {data: params}})
-        if (type === "success") {
-          this.addEditDialogVisible = false
-          this.$message({
-            type: "success",
-            message: "添加公告成功!"
-          })
-          this.loadNoticeList()
+      this.$refs.noticeDialogForm.validate(async valid => {
+        if (valid) {
+          const params = Object.assign({}, this.noticeInfo, { runStas: this.noticeInfo.runStas ? 0 : 1 })
+          try {
+            const { type, message } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: {data: params}})
+            if (type === "success") {
+              this.addEditDialogVisible = false
+              this.$message({
+                type: "success",
+                message: "添加公告成功!"
+              })
+              this.loadNoticeList()
+            } else {
+              this.$message.error(message)
+            }
+          } catch (e) { 
+            this.addEditDialogVisible = true
+          }
         }
-      } catch (e) { 
-        this.addEditDialogVisible = true
-      }
+      })
     },
     /**
      * @description: 推送公告
