@@ -173,9 +173,9 @@ export default {
           { required: true, message: "请输入专题类别名称", trigger: "blur" }
         ],
         srt: [{ required: true, message: "请选择专题排序", trigger: "change" }],
-        absoluteUrl: [
-          { required: true, message: "请上传文件", trigger: "change" }
-        ],
+        // absoluteUrl: [
+        //   { required: true, message: "请上传文件", trigger: "change" }
+        // ],
         dispFlag: [
           { required: true, message: "请选择是否启用状态", trigger: "change" }
         ]

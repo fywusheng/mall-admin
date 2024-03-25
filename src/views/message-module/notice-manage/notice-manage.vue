@@ -48,7 +48,7 @@
       <el-table-column align="center" label="操作" width="220" fixed="right">
         <template slot-scope="scope">
           <el-button :underline="false" size="mini" @click="onClickEditNotice(scope.row)">修改</el-button>
-          <el-button :underline="false" size="mini" @click="onClickSendNotice(scope.row)">推送</el-button>
+          <!-- <el-button :underline="false" size="mini" @click="onClickSendNotice(scope.row)">推送</el-button> -->
           <el-button :underline="false" size="mini" @click="onClickDeleteNotice(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -449,6 +449,7 @@ export default {
      * @param row Object 推送数据内容
      * @author: chenwz
      */
+    // 平台系统没找到对应的接口
     async onClickSendNotice(row) {
       this.listLoading = true
       try {
