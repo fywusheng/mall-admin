@@ -38,7 +38,7 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/nepsp-api/': { // 图片上传代理，和 老龄服务平台迁移过来的功能接口代理
+      '^/nepsp-api/': { // 图片上传代理，和 老龄服务平台迁移过来的功能接口代理
         // target: 'https://api.hpgjzlinfo.com', // 这里是目标服务器地址
         target: 'http://192.168.1.187:10188',
         changeOrigin: true, // 是否改变源地址
@@ -47,8 +47,16 @@ module.exports = {
           '^/nepsp-api': '/nepsp-api'
         }
       },
-
-      '/nepsp-api-server/': {
+      // 图片文件上传接口 单独处理
+      '^/nepsp-upload-api/': { // 图片上传代理，和 老龄服务平台迁移过来的功能接口代理
+        target: 'https://api.hpgjzlinfo.com', // 这里是目标服务器地址
+        changeOrigin: true, // 是否改变源地址
+        ws: false, // 代理websockets
+        pathRewrite: {
+          '^/nepsp-upload-api': ''
+        }
+      },
+      '^/nepsp-api-server/': {
         // 开发环境地址: 192.168.1.206:28800
         // 测试环境地址: http://192.168.1.187:28800
         target: 'http://192.168.1.187:28800', // 这里是目标服务器地址
@@ -59,7 +67,7 @@ module.exports = {
           '^/nepsp-api-server': '/'
         }
       },
-      '/nepsp-cms-api/': {
+      '^/nepsp-cms-api/': {
         target: 'http://192.168.1.187:7002', // 这里是目标服务器地址
         // target: 'https://mall.hling168.com',
         changeOrigin: true, // 是否改变源地址

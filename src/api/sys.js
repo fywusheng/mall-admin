@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import requestUpload from '@/utils/request-upload'
 import Qs from 'qs'
 
 export function fetchMenuList(params) {
@@ -67,18 +68,22 @@ export function resetPassword(data) {
 }
 
 // 图片上传
+// 图片文件上传，特殊处理，直接代理到 生产地址
 export function clientUpload(data) {
-  return request({
-    url: 'nepsp-api/cms/iep/web/cms/imgUpload',
+  return requestUpload({
+    // url: '/nepsp-api/cms/iep/web/cms/imgUpload',
+    url: '/nepsp-api/cms/iep/web/cms/imgUpload',
     method: 'post',
     data
   })
 }
 
 // 文件上传
+// 图片文件上传，特殊处理，直接代理到 生产地址
 export function clientFileUpload(formData) {
-  return request({
-    url: 'nepsp-api/cms/iep/web/cms/singleFileUpload',
+  return requestUpload({
+    // url: '/nepsp-api/cms/iep/web/cms/singleFileUpload',
+    url: '/nepsp-api/cms/iep/web/cms/singleFileUpload',
     method: 'post',
     data: formData
   })

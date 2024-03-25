@@ -65,7 +65,7 @@
 
 <script>
 // import { appUserManageApi, commonApi } from "@/api"
-import { fetch, post } from "@/utils/http-nepsp"
+import { post } from "@/utils/http-nepsp"
 import { fetch as clientFetch } from "@/utils/http-client"
 import YUnitedSelect from "@/components/y-united-select/index"
 
