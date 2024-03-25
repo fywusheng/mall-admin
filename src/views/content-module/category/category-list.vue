@@ -388,6 +388,7 @@ export default {
     YEditor,
   },
   data() {
+    const userinfor = JSON.parse(localStorage.getItem('userInfor'));
     // const judgeTtl = (rule, value, callback) => {
     //   if ((/[\u4E00-\u9FA5]{1,}/g).test(value)) {
     //     return callback()
@@ -491,8 +492,10 @@ export default {
       inTimeParams: { //定时发布
         contId: "", //文章id
         releaseDate: "", //定时发布时间
-        account: this.$store.getters.uact,
-        accountId: this.$store.getters.id
+        account: userinfor.userName,
+        accountId: userinfor.loginName,
+        // account: this.$store.getters.uact,
+        // accountId: this.$store.getters.id
       },
       dialogTime: false, //定时发布弹框显示
       timePickerOptions: { //时间选择限制
@@ -522,8 +525,10 @@ export default {
         mediaUrl: "", //视频/音频链接
 
         contTypeName: "随便", //内容类型名称（可随意传一个)
-        account: this.$store.getters.uact, //用户账号
-        accountId: this.$store.getters.id //用户id
+        account: userinfor.userName,
+        accountId: userinfor.loginName,
+        // account: this.$store.getters.uact, //用户账号
+        // accountId: this.$store.getters.id //用户id
       },
       copyFormAdd: {}, //复制初始form
       formAddRule: {
@@ -553,7 +558,8 @@ export default {
       btnPermissions: [],
 
       inputVisible: false, //内容标签相关
-      inputValue: "" //内容标签相关
+      inputValue: "", //内容标签相关
+      userinfor: JSON.parse(localStorage.getItem('userInfor')),
     }
   },
   filters: {
@@ -603,6 +609,7 @@ export default {
   created() {
     //复制初始formadd数据
     this.copyFormAdd = JSON.parse(JSON.stringify(this.formAdd))
+    console.log(this.userinfor)
     //获取城市列表
     this.getRegnAreaTree()
 
@@ -793,8 +800,8 @@ export default {
           if (action === "confirm") {
             const params = {
               contId,
-              account: _this.$store.getters.uact,
-              accountId: _this.$store.getters.id
+              account: this.userinfor.userName,
+              accountId: this.userinfor.loginName,
             }
             post("/cms/iep/web/cms/cmscont/updateContToAudit", {data: params}).then(data => {
               _this.$message.success("提交审核成功")
@@ -838,8 +845,8 @@ export default {
       const params = {
         contId: this.operatContId,
         reason: this.dataForm.reason,
-        account: _this.$store.getters.uact,
-        accountId: _this.$store.getters.id
+        account: this.userinfor.userName,
+        accountId: this.userinfor.loginName,
       }
       // operationApi.updateContAuditNoPass(params).then(data => {
         post("/cms/iep/web/cms/cmscont/updateContAuditNoPass", {data: params}).then(data => {
@@ -917,8 +924,8 @@ export default {
     sendRightNow(contId) {
       const params = {
         contId,
-        account: this.$store.getters.uact,
-        accountId: this.$store.getters.id
+        account: this.userinfor.userName,
+        accountId: this.userinfor.loginName,
       }
       // operationApi.updateImmediaAuditPass(params).then(data => {
         post("/cms/iep/web/cms/cmscont/updateImmediaAuditPass", {data: params}).then(data => {
@@ -976,8 +983,8 @@ export default {
     handleDelete(id) {
       const params = {
         key: id,
-        account: this.$store.getters.uact,
-        accountId: this.$store.getters.id
+        account: this.userinfor.userName,
+        accountId: this.userinfor.loginName,
       }
       this.$alert("是否确认删除", "提示", {
         confirmButtonText: "确定",
@@ -1281,6 +1288,10 @@ export default {
             delete params["moveFlag"]
             delete params["recomFlag"]
           }
+
+          params.account = this.userinfor.userName
+          params.accountId = this.userinfor.loginName
+          
           // operationApi.insertOrUpdateCmsCont(params).then(data => {
           post("/cms/iep/web/cms/cmscont/insertOrUpdateCmsCont", { data: params }).then(data => {
             this.$message.success(msg)
