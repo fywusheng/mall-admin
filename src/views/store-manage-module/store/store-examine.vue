@@ -190,7 +190,7 @@
     </el-form>
 
     <!-- 详情显示 -->
-    <el-form class="data-form" v-if="routeParamsType == 0 && dataForm.reviewStatus == 1" ref="dataFormInfor" label-position="right" size="small">
+    <el-form class="data-form" v-if="routeParamsType == 0 && (dataForm.reviewStatus == 1 || dataForm.reviewStatus == 0)" ref="dataFormInfor" label-position="right" size="small">
       <el-divider content-position="left" style="width:80%">
         <i class="el-icon-postcard" style="color:blue"></i>&nbsp;
         <font style="color:blue">审核信息</font>
