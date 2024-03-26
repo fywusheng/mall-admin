@@ -72,14 +72,8 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="合同文件" prop="contractFileUrl" class="item">
-              <el-upload class="avatar-uploader"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-                :auto-upload="true"
-              >
-                <img v-if="dataForm.contractFileUrl" :src="dataForm.contractFileUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              <el-upload class="upload-demo" style="width: 80%" action="#"  :limit="1" :before-upload="beforeAvatarUpload" :on-change="handleAvatarSuccess">
+                <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
             </el-form-item>
           </td>
@@ -333,15 +327,16 @@ export default {
       this.dataForm.contractFileUrl = file.response.data.absoluteUrl;
     },
     beforeAvatarUpload(file) {
-      // const isJPG = file.type === 'image/jpeg';
+      let fileType = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const isFile = ['word', 'pdf', 'doc', 'docx'].includes(fileType);
       const isLt30M = file.size / 1024 / 1024 < 30;
-      // if (!isJPG) {
-      //   this.$message.error('上传头像图片只能是 JPG 格式!');
-      // }
-      if (!isLt30M) {
-        this.$message.error('上传头像图片大小不能超过 30MB!');
+      if (!isFile) {
+        this.$message.error('上传文件只能是 word、pdf、docx 格式!');
       }
-      return isLt30M;
+      if (!isLt30M) {
+        this.$message.error('上传文件大小不能超过 30MB!');
+      }
+      return isFile && isLt30M;
     }
   }
 };

@@ -71,7 +71,7 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="合同文件：">
-              <el-button class="_text" type="text"><a :href="detailData.contractFileUrl" target="_blank" download>下载</a></el-button>
+              <el-button class="_text" v-if="detailData.contractFileUrl" type="text"><a :href="detailData.contractFileUrl" target="_blank" download>下载</a></el-button>
             </el-form-item>
           </td>
           <td width="5%"></td>
