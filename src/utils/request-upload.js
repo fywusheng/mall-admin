@@ -21,7 +21,6 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    console.log(config)
     // console.log('config::' ,config)
     config.headers['token'] = getToken();
     // 兼容文件上传服务

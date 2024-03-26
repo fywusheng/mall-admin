@@ -78,7 +78,7 @@
           <el-option label="APP" value="app"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="公告图片：">
+      <el-form-item label="公告图片：" prop="imgUrl">
         <el-upload class="avatar-uploader"
           :show-file-list="false" :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload" :auto-upload="true">
@@ -310,7 +310,8 @@ export default {
           crteTime: "",
           invdTime: "",
           poolarea: null,
-          popNotcTtl: ""
+          popNotcTtl: "",
+          imgUrl: ""
         }
       }
       this.isEdit = false
@@ -479,11 +480,12 @@ export default {
       this.searchData.pageNum = pageNum
       this.loadNoticeList()
     },
-      handleAvatarSuccess(response, file) {
+    handleAvatarSuccess(response, file) {
       if (!response || response.code != 0) {
         return;
       }
-      this.noticeInfo.imgUrl = file.response.data.imgUrl;
+      // this.noticeInfo.imgUrl = file.response.data.absoluteUrl;
+      this.$set(this.noticeInfo, 'imgUrl', file.response.data.absoluteUrl)
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';

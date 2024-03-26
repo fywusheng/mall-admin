@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import requestUpload from '@/utils/request-upload'
+// import HttpService from '@/utils/http-client'
 import Qs from 'qs'
 
 export function fetchMenuList(params) {

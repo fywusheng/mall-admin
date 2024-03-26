@@ -50,6 +50,7 @@ module.exports = {
       // 图片文件上传接口 单独处理
       '^/nepsp-upload-api/': { // 图片上传代理，和 老龄服务平台迁移过来的功能接口代理
         target: 'https://api.hpgjzlinfo.com', // 这里是目标服务器地址
+        // target: 'http://192.168.1.187:10188',
         changeOrigin: true, // 是否改变源地址
         ws: false, // 代理websockets
         pathRewrite: {
