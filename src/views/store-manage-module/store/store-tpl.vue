@@ -37,6 +37,25 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
+            <el-form-item label="店长姓名：" prop="storeManagerName" class="item">
+              <el-input v-model="dataForm.storeManagerName" placeholder="请输入店长姓名..." maxlength="20" style="width:80%"></el-input>              
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="联系电话/登录账号：" prop="contactPhone" class="item">
+              <el-input v-model="dataForm.contactPhone" placeholder="请输入联系电话/登录账号..." maxlength="12" style="width:80%"></el-input>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="支持电话：" prop="supportPhone" class="item">
+              <el-input v-model="dataForm.supportPhone" placeholder="请输入支持电话..." maxlength="12" style="width:80%"></el-input>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
             <el-form-item label="开店时间：" prop="openingTime" class="item">
               <el-date-picker v-model="dataForm.openingTime" type="date" value-format="yyyy-MM-dd" placeholder="选择开店时间" style="width: 80%" >
               </el-date-picker>
@@ -248,6 +267,16 @@ export default {
       }
     }
 
+    // 手机 或者 座机号码
+    const isPhoneNumber = (rule, value, callback) => {
+      const patter = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9]))\d{8}$|^0\d{2,3}-\d{7,8}(-\d{1,4})?$/
+      if (!patter.test(value)) {
+        callback(new Error(`请输入正确的手机号码或者座机号码！`))
+      } else {
+        callback()
+      }
+    }
+
     return {
       checkStatusOptions: [
         { label: "通过", value: 1 },
@@ -288,6 +317,9 @@ export default {
         corporateBank: '', // 对公银行卡号
         corporateBankBranch: '', // 对公银行卡开户行
         enterpriseInformation: '', // 企业信息
+        storeManagerName: '', // 店长姓名
+        contactPhone: '', // 登录电话
+        supportPhone: '', // 支持电话
       },
       dataRules: {
         // storeNo: [{ required: true, message: "门店编号不能为空，请完整输入！", trigger: "blur" }],
@@ -302,6 +334,17 @@ export default {
         commissionCalculation: [{ required: true, message: "佣金计算方式不能为空，请完整输入！", trigger: "blur" }],
         commissionSettlement: [{ required: true, message: "佣金结算方式不能为空，请完整输入！", trigger: "blur" }],
         corporateAccount: [{ required: true, message: "对公账户户名不能为空，请完整输入！", trigger: "blur" }],
+        storeManagerName: [
+          { required: true, message: "店长姓名不能为空，请完整输入！", trigger: "blur" }
+        ], // 店长姓名
+        contactPhone: [
+          { required: true, message: "联系电话/登录账号不能为空，请完整输入！", trigger: "change" },
+          { required: true, validator: isPhoneNumber, trigger: "change" }
+        ], // 登录电话
+        supportPhone: [
+          { required: true, message: "支持电话不能为空，请完整输入！", trigger: "change" },
+          { required: true, validator: isPhoneNumber, trigger: "change" }
+        ],
         corporateBank: [
           { required: true, message: "对公银行卡号不能为空，请完整输入！", trigger: "blur" },
           { required: true, validator: validateNumber, trigger: ["blur", "change"] }

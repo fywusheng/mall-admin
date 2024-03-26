@@ -39,6 +39,25 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
+            <el-form-item label="店长姓名：">
+              <p class="_text">{{ dataForm.storeManagerName }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="联系电话/登录账号：">
+              <p class="_text">{{ dataForm.contactPhone }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="支持电话：">
+              <p class="_text">{{ dataForm.supportPhone }}</p>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
             <el-form-item label="开店时间：">
               <p class="_text">{{ dataForm.openingTime }}</p>
             </el-form-item>
@@ -284,6 +303,9 @@ export default {
         corporateBank: '', // 对公银行卡号
         corporateBankBranch: '', // 对公银行卡开户行
         enterpriseInformation: '', // 企业信息
+        storeManagerName: '', // 店长姓名
+        contactPhone: '', // 登录电话
+        supportPhone: '', // 支持电话
       },
       dataRules: {
         reviewStatus: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
