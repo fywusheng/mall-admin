@@ -72,7 +72,9 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="合同文件" prop="contractFileUrl" class="item">
-              <el-upload class="upload-demo" style="width: 80%" action="#"  :limit="1" :before-upload="beforeAvatarUpload" :on-change="handleAvatarSuccess">
+              <el-upload class="upload-demo" style="width: 80%" action="#"  :limit="1" 
+                :before-upload="beforeAvatarUpload"
+                :on-success="handleAvatarSuccess">
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
             </el-form-item>
@@ -320,11 +322,9 @@ export default {
       this.$router.back();
     },
     handleAvatarSuccess(response, file) {
-      console.log(response, file)
-      if (!response || response.code != 0) {
-        return;
+      if (response?.code == 0) {
+        this.dataForm.contractFileUrl = response.data.absoluteUrl;
       }
-      this.dataForm.contractFileUrl = file.response.data.absoluteUrl;
     },
     beforeAvatarUpload(file) {
       let fileType = file.name.substring(file.name.lastIndexOf(".") + 1);
