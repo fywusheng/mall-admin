@@ -339,13 +339,13 @@ export const constantRoutes = [
         path: 'content-list',
         component: resolve => require(['../views/content-module/content/content-list.vue'], resolve),
         name: 'Content-List',
-        meta: { title: '商城  / 内容管理 / 内容列表' }
+        meta: { title: '商城  / 内容管理 / 内容类别' }
       },
       {
         path: 'category-list',
         component: resolve => require(['../views/content-module/category/category-list.vue'], resolve),
         name: 'Category-Details',
-        meta: { title: '商城 / 内容管理 / 内容类别' }
+        meta: { title: '商城 / 内容管理 / 内容列表' }
       }
     ]
   },
