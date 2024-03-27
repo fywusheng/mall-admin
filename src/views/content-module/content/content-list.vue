@@ -339,7 +339,7 @@ export default {
       } catch (error) {
         this.formData = []
         this.total = 0
-        this.$message("未查询到相关数据")
+        this.$message.error("未查询到相关数据")
       }
       this.listLoading = false
     },

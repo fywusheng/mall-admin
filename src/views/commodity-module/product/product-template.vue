@@ -125,7 +125,7 @@
           <td width="5%"></td>
           <td width="45%">
             <el-form-item label="适用人群" prop="targetAudience" class="item">
-              <el-select v-model="dataForm.targetAudience" multiple :multiple-limit="4" clearable placeholder="请选择最多不超过4个适用人群标签..."
+              <el-select v-model="dataForm.targetAudience" multiple :multiple-limit="2" clearable placeholder="请选择最多不超过2个适用人群标签..."
                 :disabled="dataForm.saleState==5" style="width:80%">
                 <el-option v-for="item in targetAudienceOptions" :key="item.key" :label="item.label"
                   :value="item.key"></el-option>
@@ -296,7 +296,7 @@
       </el-form-item>
       <el-form-item label="发货地:" prop="deliveryRegion" class="item">
         <el-input v-model="shopForm.deliveryRegion" placeholder="请输入商品发货地城市名称..."
-          :disabled="dataForm.saleState==5" maxlength="32" style="width:80%"></el-input>
+          :disabled="dataForm.saleState==5" maxlength="100" style="width:80%"></el-input>
       </el-form-item>
       <el-form-item label="发货时长(N1至N2天送达):" prop="deliveryMinDays" class="item">
         <div class="lineFlex">
@@ -304,7 +304,7 @@
             :disabled="dataForm.saleState==5" :min="1" maxlength="32" style="width:38%; text-align:left;"></el-input-number>
           -至-
           <el-input-number v-model="shopForm.deliveryMaxDays" controls-position="right" placeholder="请输入最大送达天数..."
-            :disabled="dataForm.saleState==5" :max="100" maxlength="32" style="width:38%; text-align:left;"></el-input-number>
+            :disabled="dataForm.saleState==5" :min="2" :max="100" maxlength="32" style="width:38%; text-align:left;"></el-input-number>
         </div>
 
       </el-form-item>
@@ -964,6 +964,12 @@ export default {
               return
             }
           }
+          // 
+          if (this.oldMoneyForm.memberDiscount == 1) {
+            if (!this.oldMoneyForm.discountAmount) {
+              return this.$message.warning('输入的会员优惠金额不能为空！')
+            }
+          }
           if (this.oldMoneyForm.isCreditPoints == 1) {
             const patter = /^-?\d+\.?\d{0,2}$/
             if (!this.oldMoneyForm.pointDiscountPoint) {
@@ -1000,7 +1006,6 @@ export default {
           //   return
           // }
 
-          this.sending = true;
           if (this.dataForm.categoryNode.length > 0) {
             this.dataForm.categoryNode = '1,' + this.dataForm.categoryNode.join(',')
           }
@@ -1117,6 +1122,7 @@ export default {
           const targetAudience = this.dataForm.targetAudience.join()
           params.targetAudience = targetAudience
 
+          this.sending = true;
           var url = this.dataForm.id ? '/product/update' : '/product/add'
           const result = await post(url, params)
           this.sending = false;

@@ -339,11 +339,11 @@ export default {
         ], // 店长姓名
         contactPhone: [
           { required: true, message: "联系电话/登录账号不能为空，请完整输入！", trigger: "change" },
-          { required: true, validator: isPhoneNumber, trigger: "change" }
+          // { required: true, validator: isPhoneNumber, trigger: "change" }
         ], // 登录电话
         supportPhone: [
           { required: true, message: "支持电话不能为空，请完整输入！", trigger: "change" },
-          { required: true, validator: isPhoneNumber, trigger: "change" }
+          // { required: true, validator: isPhoneNumber, trigger: "change" }
         ],
         corporateBank: [
           { required: true, message: "对公银行卡号不能为空，请完整输入！", trigger: "blur" },

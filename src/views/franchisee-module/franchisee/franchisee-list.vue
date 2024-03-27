@@ -89,12 +89,12 @@ export default {
   },
   async mounted() {
     // 从首页跳转过来的链接
-    if (this.$route.query) {
-      if (this.$route.query.type == 2 || this.$route.query.type == 0) {
-        this.searchParams.status = parseInt(this.$route.query.type)
-      }
+    if (this.$route.query && this.$route.query.type >= 0) {
+      this.searchParams.status = parseInt(this.$route.query.type)
+      this.loadData()
+    } else {
+      this.loadData()
     }
-    this.loadData()
   },
   methods: {
     changeName(val) {

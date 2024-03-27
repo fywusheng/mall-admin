@@ -20,9 +20,9 @@
           </div>
         </div> -->
         <!-- TODO -->
-        <!-- 最后确认 是否需要根据类型不同来显示加盟商管理的内容 -->
+        <!-- 最后确认 是否需要根据类型不同来显示加盟商管理的内容，暂时先放开，把限制去掉 -->
+        <!-- v-if="userObject.accountType == 9 || userObject.accountType == 1" -->
         <div
-          v-if="userObject.accountType == 9 || userObject.accountType == 1"
           class="_right"
         >
           <div class="_title">加盟商管理</div>
@@ -135,7 +135,6 @@
           end-placeholder="结束日期"
         >
         </el-date-picker>
-        <!-- TODO -->
         <el-button class="statistics-table" @click="showExportDialog">统计报表</el-button>
         <div class="_center">
           <div class="_item" v-for="(item, i) in showData.list" :key="i">
@@ -505,10 +504,11 @@ export default {
           data.orderGmv,
           data.refundOrderCount,
           data.refundAmount,
-          data.orderAmount,
-          data.registerCount,
-          data.memberCount,
-          data.orderAmountAvg,
+          // 新增四个字段不跳转
+          {...data.orderAmount, url: 'no-jump'},
+          {...data.registerCount, url: 'no-jump'},
+          {...data.memberCount, url: 'no-jump'},
+          {...data.orderAmountAvg, url: 'no-jump'},
         ];
         this.franchiseeSalePrice = res.data.franchiseeSalePrice || []
         this.franchiseeRegisterCount = res.data.franchiseeRegisterCount || []
@@ -582,7 +582,8 @@ export default {
         待审核加盟商: "2",
         审核未通过加盟商: "0",
       };
-
+      // 下边四个字段点击不跳转
+      if (url == 'no-jump') return
       if (!url) return;
       if (queryParam[name]) {
         this.$router.push({ path: url, query: { type: queryParam[name] } });
@@ -596,9 +597,9 @@ export default {
       if (res.code == "200") {
         const data = res.data || {};
         this.GYManageValues = [
-          data.auditPassNum,
-          data.auditDoingNum,
-          data.auditNoPassNum,
+          {...data.auditPassNum, url: '/apps/franchisee/franchisee-list'},
+          {...data.auditDoingNum, url: '/apps/franchisee/franchisee-list'},
+          {...data.auditNoPassNum, url: '/apps/franchisee/franchisee-list'},
         ];
       } else {
         this.$message.warning(res.msg);
@@ -610,15 +611,18 @@ export default {
       const C = v1.auditRefundNum || { num: "", url: "" };
       const A1 = {
         num: v2[0].countNum,
-        url: v2[0].url,
+        // url: v2[0].url,
+        url: '/apps/commodity/product',
       };
       const B1 = {
         num: v2[1].countNum,
-        url: v2[1].url,
+        // url: v2[1].url,
+        url: '/apps/commodity/product',
       };
       const C1 = {
         num: v2[2].countNum,
-        url: v2[2].url,
+        // url: v2[2].url,
+        url: '/apps/commodity/product',
       };
       this.manageListV = [
         [A, B, C],

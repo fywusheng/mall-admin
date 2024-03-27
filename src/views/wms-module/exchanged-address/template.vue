@@ -25,7 +25,7 @@
           style="width:80%"></el-cascader>
       </el-form-item>
       <el-form-item label="详情地址" prop="address">
-        <el-input v-model="dataForm.address" placeholder="请输入详细地址..." maxlength="256"
+        <el-input v-model="dataForm.address" placeholder="请输入详细地址..." maxlength="100"
           style="width:100%"></el-input>
       </el-form-item>
     </el-form>

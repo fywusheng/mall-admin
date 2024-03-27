@@ -44,7 +44,7 @@
           </td>
           <td width="30%">
             <el-form-item label="联系方式" prop="contactsPhone" class="item">
-              <el-input v-model="dataForm.contactsPhone" placeholder="请输入联系方式..." style="width:80%"></el-input>
+              <el-input v-model="dataForm.contactsPhone" placeholder="请输入联系方式..." maxlength="12" style="width:80%"></el-input>
             </el-form-item>
           </td>
           <td width="30%">
@@ -235,7 +235,7 @@ export default {
         contacts: [{ required: true, message: "联系人不能为空，请完整输入！", trigger: "change" }],
         contactsPhone: [
           { required: true, message: "联系方式不能为空，请完整输入！", trigger: "change" },
-          { required: true, validator: isPhoneNumber, trigger: "change" }
+          // { required: true, validator: isPhoneNumber, trigger: "change" }
         ],
         initialFee: [
           { required: true, message: "加盟费不能为空，请完整输入！", trigger: "change" },
@@ -246,7 +246,7 @@ export default {
           { required: true, validator: validateNumber, trigger: "change" }  
         ],
         // 上传文件接口报错，暂时 注释这里，保证正常测试，最后需要打开
-        // contractFileUrl: [{ required: true, message: "合同文件不能为空，请上传！", trigger: ["change", "blur"] }],
+        contractFileUrl: [{ required: true, message: "合同文件不能为空，请上传！", trigger: ["change", "blur"] }],
         // status: [{ required: true, message: "审核状态不能为空，请选择！", trigger: "blur" }],
         // reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
       },
