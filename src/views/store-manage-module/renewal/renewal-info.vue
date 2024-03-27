@@ -38,6 +38,25 @@
         <tr>
           <td width="5%"></td>
           <td width="30%">
+            <el-form-item label="店长姓名：">
+              <p class="_text">{{ dataForm.storeManagerName }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="联系电话/登录账号：">
+              <p class="_text">{{ dataForm.contactPhone }}</p>
+            </el-form-item>
+          </td>
+          <td width="30%">
+            <el-form-item label="支持电话：">
+              <p class="_text">{{ dataForm.supportPhone }}</p>
+            </el-form-item>
+          </td>
+          <td width="5%"></td>
+        </tr>
+        <tr>
+          <td width="5%"></td>
+          <td width="30%">
             <el-form-item label="开店时间：">
               <p class="_text">{{ dataForm.openingTime }}</p>
             </el-form-item>

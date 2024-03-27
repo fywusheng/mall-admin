@@ -75,7 +75,7 @@
       </el-form-item>
       <el-form-item label="发布渠道：">
         <el-select style="width: 100%;" v-model="noticeInfo.rlsChnl" placeholder="请选择发布渠道" clearable>
-          <el-option label="APP" value="app"></el-option>
+          <el-option label="小程序" value="app"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="公告图片：" prop="imgUrl">

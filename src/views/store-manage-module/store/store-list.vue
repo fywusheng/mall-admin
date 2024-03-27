@@ -49,7 +49,7 @@
           <el-button v-if="scope.row.reviewStatus == 0" icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
           <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 1" icon="el-icon-turn-off" size="mini" @click="toggle(scope.row, 0)">停用</el-button>
           <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 0" icon="el-icon-open" size="mini" @click="toggle(scope.row, 1)">启用</el-button>
-          <el-button v-if="scope.row.reviewStatus == 1" icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button>
+          <el-button v-if="scope.row.reviewStatus == 1 && scope.row.renewalStatus != 1 && isExpire(scope.row)" icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button>
           <!-- 只有待审核显示审核按钮 -->
           <el-button v-if="scope.row.reviewStatus == 2" icon="el-icon-folder-checked" size="mini" @click="check(scope.row, 1)">审核</el-button>
           <el-button icon="el-icon-document" size="mini" @click="check(scope.row, 0)">详情</el-button>
@@ -94,6 +94,12 @@ export default {
     this.loadData()
   },
   methods: {
+    // 有效期 大于当前时间后显示 续签按钮
+    isExpire (row) {
+      const curDate = Date.now()
+      const periodEndValidity = new Date(row.periodEndValidity).getTime()
+      return periodEndValidity < curDate
+    },
     changePage(pageNo) {
       this.pageNo = pageNo
       this.loadData()
@@ -131,7 +137,7 @@ export default {
     renewal(row) {
       post('/srm/sh/stores/saveStores', {...row, renewalStatus: 0}).then(res => {
         if (res.code == 200) {
-          this.$message.success('转为待续签成功')
+          this.$message.success('续签申请提交成功')
           this.loadData()
         } else {
           this.$message.error(res.msg)

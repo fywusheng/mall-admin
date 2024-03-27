@@ -967,27 +967,27 @@ export default {
           // 
           if (this.oldMoneyForm.memberDiscount == 1) {
             if (!this.oldMoneyForm.discountAmount) {
-              return this.$message.warning('输入的会员优惠金额不能为空！')
+              return this.$message.warning('会员优惠金额不能为空！')
             }
           }
           if (this.oldMoneyForm.isCreditPoints == 1) {
             const patter = /^-?\d+\.?\d{0,2}$/
             if (!this.oldMoneyForm.pointDiscountPoint) {
-              this.$message.warning('输入的会员用户积分不能为空！')
+              this.$message.warning('会员用户积分抵扣值不能为空！')
               return
             }
             if (!patter.test(this.oldMoneyForm.pointDiscountPoint)) {
-              this.$message.warning('输入的会员用户积分为数字或者数字保留2位小数！')
+              this.$message.warning('会员用户积分抵扣值为数字或者数字保留2位小数！')
               return
             }
             // 会员用户抵扣积分 & 注册用户抵扣积分，两项都必须填写，如只写其中一项，需要提示： 积分抵扣设置不完整，请重新设置
             // 最后需要替换字段
             if (!this.oldMoneyForm.registerPoint) {
-              this.$message.warning('输入的注册用户积分不能为空！')
+              this.$message.warning('注册用户积分抵扣值不能为空！')
               return
             }
             if (!patter.test(this.oldMoneyForm.registerPoint)) {
-              this.$message.warning('输入的注册用户积分为数字或者数字保留2位小数！')
+              this.$message.warning('注册用户积分抵扣值为数字或者数字保留2位小数！')
               return
             }
           }
