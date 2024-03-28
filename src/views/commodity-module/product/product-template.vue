@@ -106,6 +106,14 @@
         <tr>
           <td width="5%"></td>
           <td width="45%">
+            <el-form-item label="前台类目" prop="firstCategoryNode" class="item _custom_cascader">
+              <el-cascader v-model="dataForm.firstCategoryNode" :options="frontDeskCategoriesOptions"
+                placeholder="请选择商品所属类目信息..." :disabled="dataForm.saleState==5"
+                :props="{value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}"
+                style="width:80%"></el-cascader>
+            </el-form-item>
+          </td>
+          <td width="50%">
             <el-form-item label="计量单位" prop="valuationUnit" class="item">
               <el-select v-model="dataForm.valuationUnit" placeholder="请选择商品计量单位..."
                 :disabled="dataForm.saleState==5" style="width:80%">
@@ -114,15 +122,15 @@
               </el-select>
             </el-form-item>
           </td>
-          <td width="50%">
+        </tr>
+        <tr>
+          <td width="5%"></td>
+          <td width="45%">
             <el-form-item label="计量值(数字)" prop="unitVal" class="item">
               <el-input v-model="dataForm.unitVal" placeholder="请输入商品计量值..."
                 :disabled="dataForm.saleState==5" maxlength="32" style="width:80%"></el-input>
             </el-form-item>
           </td>
-        </tr>
-        <tr>
-          <td width="5%"></td>
           <td width="45%">
             <el-form-item label="适用人群" prop="targetAudience" class="item">
               <el-select v-model="dataForm.targetAudience" multiple :multiple-limit="2" clearable placeholder="请选择最多不超过2个适用人群标签..."
@@ -132,7 +140,7 @@
               </el-select>
             </el-form-item>
           </td>
-          <td width="50%"></td>
+          <td width="5%"></td>
         </tr>
       </table>
 
@@ -459,6 +467,8 @@ export default {
       categoryOptions: [],
       categoryAttrList: [],
       supplierOptions: [],
+      frontDeskCategoriesOptions: [],
+      categoryMap: {},
       valuationUnitOptions: [
         { key: 1, label: "件" },
         { key: 2, label: "重量" },
@@ -537,6 +547,7 @@ export default {
         brandId: "",
         categoryId: "",
         categoryNode: [],
+        firstCategoryNode: [],
         valuationUnit: "",
         unitVal: "",
         tariffType: "",
@@ -550,7 +561,8 @@ export default {
         name: [{ required: true, message: "商品名称不能为空，请完整输入！", trigger: "blur" }],
         subName: [{ required: true, message: "商品简称不能为空，请完整输入！", trigger: "blur" }],
         brandId: [{ required: true, message: "商品品牌不能为空，请选择品牌！", trigger: "change" }],
-        categoryNode: [{ required: true, message: "商品类目不能为空，请选择类目！", trigger: "change" }],
+        categoryNode: [{ required: true, message: "商品基础类目不能为空，请选择基础类目！", trigger: "change" }],
+        firstCategoryNode: [{ required: true, message: "商品前台类目不能为空，请选择前台类目！", trigger: "change" }],
         valuationUnit: [{ required: true, message: "计量单位不能为空，请选择！", trigger: "change" }],
         targetAudience: [{ required: true, message: "适用人群不能为空，请选择！", trigger: "change" }],
         unitVal: [{ required: true, validator: validateAttributes, trigger: "blur" }],
@@ -595,6 +607,7 @@ export default {
     this.loadBrandOptions();
     this.loadCategoryOptions();
     this.loadSupplierOptions();
+    this.loadFrontDeskCategories();
     if (this.$route.params.id) {
       this.loadData(this.$route.params.id)
     }
@@ -782,6 +795,14 @@ export default {
         this.$message.error(result.msg);
       }
     },
+    async loadFrontDeskCategories () {
+      const result = await fetch('/category/list.sales', {})
+      if (result.code == 200) {
+        this.frontDeskCategoriesOptions = result.data
+      } else {
+        this.$message.error(result.msg)
+      }
+    },
     checkAttr(data) {
       if (data.type === 0) {//单选框
         Vue.set(this.dataForm.attributeMap, data.id, data.attrValSelected)
@@ -888,6 +909,7 @@ export default {
           brandId: result.data.brandId,
           categoryId: result.data.categoryId,
           categoryNode: result.data.categoryNode.split(',').splice(1, 3),
+          firstCategoryNode: result.data.firstCategoryNode.split(',').splice(1, 3),
           valuationUnit: result.data.valuationUnit,
           unitVal: result.data.unitVal,
           tariffType: result.data.tariffType,
@@ -1008,6 +1030,9 @@ export default {
 
           if (this.dataForm.categoryNode.length > 0) {
             this.dataForm.categoryNode = '1,' + this.dataForm.categoryNode.join(',')
+          }
+          if (this.dataForm.firstCategoryNode.length > 0) {
+            this.dataForm.firstCategoryNode = '2,' + this.dataForm.firstCategoryNode.join(',')
           }
           let points = {
             isCreditPoints: this.oldMoneyForm.isCreditPoints,

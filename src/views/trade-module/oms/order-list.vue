@@ -258,6 +258,9 @@ export default {
         pageSize: this.pageSize,
         ...this.vipSearchParams
       }
+      params.orderId = params.orderId ? params.orderId : undefined
+      params.userPhone = params.userPhone ? params.userPhone : undefined
+      params.orderStatus = params.orderStatus ? params.orderStatus : undefined
       const result = await nepspPost('/offlineshopping/order/findOrderPage', {data: params})
       if (result.code == 0) {
         this.$nextTick(() => {
