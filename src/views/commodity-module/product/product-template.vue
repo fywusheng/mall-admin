@@ -309,7 +309,7 @@
       <el-form-item label="发货时长(N1至N2天送达):" prop="deliveryMinDays" class="item">
         <div class="lineFlex">
           <el-input-number v-model="shopForm.deliveryMinDays" controls-position="right" placeholder="请输入最小送达天数..."
-            :disabled="dataForm.saleState==5" :min="1" maxlength="32" style="width:38%; text-align:left;"></el-input-number>
+            :disabled="dataForm.saleState==5" :min="1" maxlength="32" :max="100" style="width:38%; text-align:left;"></el-input-number>
           -至-
           <el-input-number v-model="shopForm.deliveryMaxDays" controls-position="right" placeholder="请输入最大送达天数..."
             :disabled="dataForm.saleState==5" :min="2" :max="100" maxlength="32" style="width:38%; text-align:left;"></el-input-number>
@@ -600,6 +600,11 @@ export default {
   },
   components: {
     Editor
+  },
+  watch: {
+    productDetail (val) {
+      console.log('----', val)
+    }
   },
   async mounted() {
     const user = localStorage.getItem('userInfor')
@@ -918,28 +923,28 @@ export default {
           attributes: result.data.attributes,
           saleState: result.data.saleState,
           attributeMap: new Map,
-          targetAudience: result.data.targetAudience?.split(',')
+          targetAudience: result.data.targetAudience?.split(',').map(i => parseInt(i))
         };
-        
-          this.oldMoneyForm.isCreditPoints = result.data.isCreditPoints + '',
-          this.oldMoneyForm.discountAmount = result.data.discountAmount,
-          this.oldMoneyForm.pointDiscountPoint = result.data.pointDiscountPoint,
-          this.oldMoneyForm.registerPoint = result.data.registerPoint,
-          this.productDetail = result.data.productDetail,
-          this.dataForm = dataForm,
-          this.oldMoneyForm.money = result.data.isRebate + '',
-          this.moneyValue = result.data.rebateMoney,//返利
-          this.shopForm.goodsCode = result.data.goodsCode,
-          this.shopForm.styleCode = result.data.styleCode,
-          this.shopForm.deliveryType = result.data.deliveryType,
-          this.shopForm.deliveryRegion = result.data.deliveryRegion,
-          this.shopForm.deliveryMinDays = result.data.deliveryMinDays,
-          this.shopForm.deliveryMaxDays = result.data.deliveryMaxDays,
-          this.serviceForm.place = result.data.isAreaService + '',
-          this.serviceForm.store = result.data.isStoreService + '',
-          this.shopForm.area = result.data.isAreaService + '',
-          this.oldMoneyForm.shop = result.data.productType + '',
-          this.listItem = []
+      
+        this.oldMoneyForm.isCreditPoints = result.data.isCreditPoints + '',
+        this.oldMoneyForm.discountAmount = result.data.discountAmount,
+        this.oldMoneyForm.pointDiscountPoint = result.data.pointDiscountPoint,
+        this.oldMoneyForm.registerPoint = result.data.registerPoint,
+        this.productDetail = result.data.productDetail,
+        this.dataForm = dataForm,
+        this.oldMoneyForm.money = result.data.isRebate + '',
+        this.moneyValue = result.data.rebateMoney,//返利
+        this.shopForm.goodsCode = result.data.goodsCode,
+        this.shopForm.styleCode = result.data.styleCode,
+        this.shopForm.deliveryType = result.data.deliveryType,
+        this.shopForm.deliveryRegion = result.data.deliveryRegion,
+        this.shopForm.deliveryMinDays = result.data.deliveryMinDays,
+        this.shopForm.deliveryMaxDays = result.data.deliveryMaxDays,
+        this.serviceForm.place = result.data.isAreaService + '',
+        this.serviceForm.store = result.data.isStoreService + '',
+        this.shopForm.area = result.data.isAreaService + '',
+        this.oldMoneyForm.shop = result.data.productType + '',
+        this.listItem = []
         const saleAreas = result.data.saleAreas || []
         let codes = []
         saleAreas.forEach(item => {
@@ -1028,13 +1033,19 @@ export default {
           //    this.$message.error('属性参数不能为空!') 
           //   return
           // }
-
+          let categoryNode = ''
+          let firstCategoryNode = ''
           if (this.dataForm.categoryNode.length > 0) {
-            this.dataForm.categoryNode = '1,' + this.dataForm.categoryNode.join(',')
+            categoryNode = '1,' + this.dataForm.categoryNode.join(',')
           }
           if (this.dataForm.firstCategoryNode.length > 0) {
-            this.dataForm.firstCategoryNode = '2,' + this.dataForm.firstCategoryNode.join(',')
+            firstCategoryNode = '2,' + this.dataForm.firstCategoryNode.join(',')
           }
+
+          if (this.shopForm.deliveryMinDays > this.shopForm.deliveryMaxDays) {
+            return this.$message.warning('发货时长 N1 需要 小于等于 N2 ！')
+          }
+
           let points = {
             isCreditPoints: this.oldMoneyForm.isCreditPoints,
             memberDiscount: this.oldMoneyForm.memberDiscount,
@@ -1147,6 +1158,10 @@ export default {
           }
           const targetAudience = this.dataForm.targetAudience.join()
           params.targetAudience = targetAudience
+
+          params.categoryNode = categoryNode
+          params.firstCategoryNode = firstCategoryNode
+
 
           this.sending = true;
           var url = this.dataForm.id ? '/product/update' : '/product/add'

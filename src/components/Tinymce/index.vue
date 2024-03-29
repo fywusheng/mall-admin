@@ -92,8 +92,9 @@ export default {
   watch: {
     value(val) {
       if (!this.hasChange && this.hasInit) {
-        this.$nextTick(() =>
-          window.tinymce.get(this.tinymceId).setContent(val || ''))
+        this.$nextTick(() => {
+          window.tinymce.get(this.tinymceId).setContent(val || '')
+        })
       }
     }
   },
@@ -161,7 +162,7 @@ export default {
            this.hasChange = false
           editor.on('NodeChange Change KeyUp SetContent', () => {
             if(_this.value){
-               this.hasChange = true
+              this.hasChange = true
             }
             this.$emit('input', editor.getContent())
           })
