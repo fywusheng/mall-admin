@@ -74,7 +74,7 @@
           <img :src="scope.row.mainImgUrl" width="30px" height="30px" />
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="商品名称" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="name" width="280px" label="商品名称" show-overflow-tooltip></el-table-column>
       <el-table-column prop="id" label="商品ID" width="200px" show-overflow-tooltip></el-table-column>
       <el-table-column prop="code" label="商品编码" width="200px"
         show-overflow-tooltip></el-table-column>
@@ -89,7 +89,7 @@
       <el-table-column prop="saleStopTime" label="下架时间" width="150px" v-if="activeType==2"
         align="center"></el-table-column>
       <!-- v-if="activeType==4" 把审核状态放出来-->
-      <el-table-column prop="auditState" label="审核状态" width="100px" align="center"
+      <el-table-column prop="auditState" label="审核状态" align="center"
         :formatter="formatAuditState"></el-table-column>
       <el-table-column prop="auditTimeTime" label="审核时间" width="100px" v-if="activeType==3"
         align="center"></el-table-column>

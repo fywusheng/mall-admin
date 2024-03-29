@@ -428,6 +428,45 @@ export const constantRoutes = [
     ]
   },
 
+  // 运营管理，轮播图 ，用户反馈
+  {
+    path: '/apps/operating-module',
+    component: Layout,
+    children: [
+      {
+        path: 'banner-manage',
+        component: resolve => require(['../views/operating-module/banner-manage/index.vue'], resolve),
+        name: 'BannerManage',
+        meta: { title: '商城  / 运营管理 / 轮播图管理' }
+      },
+      {
+        path: 'feedback-manage',
+        component: resolve => require(['../views/operating-module/feedback-manage/index.vue'], resolve),
+        name: 'FeedbackManage',
+        meta: { title: '商城  / 运营管理 / 用户反馈管理' }
+      },
+    ]
+  },
+
+  // {
+  //   path: "/operating-module/banner-manage",
+  //   name: "operatingBannerManage",
+  //   component: BannerManage,
+  //   meta: {
+  //     title: "轮播图管理",
+  //     icon: "user"
+  //   }
+  // },
+  // {
+  //   path: "/operating-module/feedback-manage",
+  //   name: "operatingFeedbackManage",
+  //   component: FeedbackManage,
+  //   meta: {
+  //     title: "用户反馈管理",
+  //     icon: "user"
+  //   }
+  // }
+
   {
     path: '/apps/finance',
     component: Layout,
