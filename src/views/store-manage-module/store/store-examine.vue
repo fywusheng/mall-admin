@@ -232,8 +232,8 @@
             </el-form-item>
           </td>
           <td width="30%">
-            <el-form-item label="审核时间：" prop="reviewTime" class="item" label-position="top">
-              <p class="_text">{{ dataForm.reviewTime }}</p>
+            <el-form-item label="审核时间：" prop="reviewDate" class="item" label-position="top">
+              <p class="_text">{{ dataForm.reviewDate }}</p>
             </el-form-item>
           </td>
           <td width="5%"></td>

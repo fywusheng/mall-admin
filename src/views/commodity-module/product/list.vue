@@ -299,7 +299,7 @@ export default {
             if (resp.code == 200) {
               this.loading = false
               const data = resp.data
-              if (data.length !== 0) {
+              if (data && Array.isArray(data) && data.length !== 0) {
                 this.up()
               } else {
                 this.$message.error('请先设置SKU,设置成功后方可上架!')

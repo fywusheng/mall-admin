@@ -120,11 +120,14 @@
             :formatter="formatPaymentMethod"></el-table-column>
           <el-table-column prop="crterName" label="下单人" align="center" width="100px" show-overflow-tooltip>
             <template slot-scope="scope">
-              <span>{{scope.row.crterName || '--'}}</span>
+              <span>{{(scope.row.orderDetailDTO && scope.row.orderDetailDTO.crterName) || '--'}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="updterName" label="下单账号" align="center"
-            width="120px"></el-table-column>
+          <el-table-column prop="updterName" label="下单账号" align="center" width="120px">
+            <template slot-scope="scope">
+              <span>{{(scope.row.orderDetailDTO && scope.row.orderDetailDTO.updterName) || '--'}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="orderTime" label="下单时间" align="center"
             ></el-table-column>
           <el-table-column prop="" label="操作" align="center" width="120px" fixed="right">
