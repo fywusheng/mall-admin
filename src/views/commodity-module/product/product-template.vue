@@ -921,7 +921,8 @@ export default {
           targetAudience: result.data.targetAudience?.split(',')
         };
         
-        this.oldMoneyForm.isCreditPoints = result.data.isCreditPoints + '',
+          this.oldMoneyForm.isCreditPoints = result.data.isCreditPoints + '',
+          this.oldMoneyForm.discountAmount = result.data.discountAmount,
           this.oldMoneyForm.pointDiscountPoint = result.data.pointDiscountPoint,
           this.oldMoneyForm.registerPoint = result.data.registerPoint,
           this.productDetail = result.data.productDetail,
