@@ -76,10 +76,14 @@ export default {
       totalCount: 20,
       loading: false,
       searchParams: {
-        applicableUser: 0
+        applicableUser: ''
       },
       dialogList: [],
-      supplierOptions: [{ label: "所有用户", value: 0 }, { label: "会员用户", value: 1 }, { label: "注册用户", value: 2 }],
+      supplierOptions: [
+        // { label: "所有用户", value: 0 },
+        { label: "会员用户", value: 1 },
+        { label: "注册用户", value: 2 }
+      ],
       showDialog: false
     }
   },
