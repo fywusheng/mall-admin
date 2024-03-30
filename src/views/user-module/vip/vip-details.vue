@@ -15,7 +15,7 @@
         </div>
     </div>
     <!-- 用户信息结束 -->
-    <div class="page-title">会员开通记录</div>
+    <div class="page-title" v-if="list.length">会员开通记录</div>
     <!-- 查询结果区开始 -->
     <!-- TODO 表头字段调整，需核对 -->
     <div class="table-wrap " v-if="list.length">
