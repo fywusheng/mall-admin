@@ -4,7 +4,7 @@
     <div class="user-info  clearfix">
         <div class="left-info flex-c-s flex-col">
           <img class="imgs" :src="info && info.userIcon" alt="">
-          <h3 class="name">{{info && info.psnName}}</h3>
+          <h3 class="name">{{info.psnName || '--'}}</h3>
           <div class="status">{{info && info.crtfStas === "0" ? "未认证" : "已认证"}}</div>
         </div>
         <div class="right-info clearfix">
@@ -18,7 +18,7 @@
     <div class="page-title">会员开通记录</div>
     <!-- 查询结果区开始 -->
     <!-- TODO 表头字段调整，需核对 -->
-    <div class="table-wrap ">
+    <div class="table-wrap " v-if="list.length">
       <el-table ref="table" v-loading="listLoading" height="446px" :data="list" element-loading-text="加载中..."   highlight-current-row>
         <el-table-column align="center" label="序号" prop="id" min-width="75">
             <template slot-scope="scope">
@@ -69,11 +69,11 @@ export default {
           value: "绑定手机"
         },
         {
-          key: "gend",
+          key: "gend", // 
           value: "性别"
         },
         {
-          key: "BRDY",
+          key: "brdy",
           value: "出生年月"
         },
         {
@@ -89,7 +89,7 @@ export default {
           value: "所属门店"
         },
         {
-          key: "address",
+          key: "districtArea",
           value: "门店地址"
         },
         {
@@ -101,15 +101,15 @@ export default {
           value: "使用状态"
         },
         {
-          key: "xxxx",
+          key: "xxxx", // 
           value: "会员有效期"
         },
         {
-          key: "xxxx",
+          key: "xxxx", // 
           value: "会员续费次数"
         },
         {
-          key: "xxxx",
+          key: "xxxx", // 
           value: "会员累计已省金额"
         },
       ],
@@ -141,6 +141,7 @@ export default {
       const obj = {key: "", value: ""}
       this.fiedlList.push(obj)
     }
+    // console.log(this.fiedlList)
 
     //查询扫码记录
     this.handleSearch()
@@ -174,7 +175,7 @@ export default {
       const parmas = {memberType: this.$route.params.memberType, memberId: this.memberId}
       post("/nun/api/userPerson/getUserInfoById", {data: {data: parmas}}).then(data => {
       // post("/nun/api/userWeb/userDetail", {acctId: this.acctId}).then(data => {
-        this.info = data.data&&data.data.userDetail
+        this.info = data.data
         this.info.gend = this.info.gend === "1" ? "男" : "女"
       })
     },
@@ -198,7 +199,7 @@ export default {
       this.listLoading = false
       post("/nun/api/userWeb/userDetailScanList", this.formSearch).then(data => {
         this.listLoading = false
-        if (data.data){
+        if (data.code == 200){
           this.list = data.data.ecUserList && data.data.ecUserList.list || []
           this.total = data.data.ecUserList && data.data.ecUserList.total || 0
         } else {
@@ -285,6 +286,9 @@ export default {
           margin-left: 140px;
           padding-left: 10px;
           height: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }

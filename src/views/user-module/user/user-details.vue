@@ -16,7 +16,7 @@
     </div>
     <!-- 用户信息结束 -->
     <!-- 查询结果区开始 -->
-    <div class="table-wrap ">
+    <div class="table-wrap " v-if="list.length">
       <el-table ref="table" v-loading="listLoading" height="446px" :data="list" element-loading-text="加载中..."   highlight-current-row>
         <el-table-column align="center" label="序号" prop="id" min-width="75">
             <template slot-scope="scope">
@@ -178,7 +178,7 @@ export default {
       this.listLoading = false
       post("/nun/api/userWeb/userDetailScanList", this.formSearch).then(data => {
         this.listLoading = false
-        if (data.data){
+        if (data.code == 200){
           this.list = data.data.ecUserList && data.data.ecUserList.list || []
           this.total = data.data.ecUserList && data.data.ecUserList.total || 0
         } else {
@@ -265,6 +265,9 @@ export default {
           margin-left: 120px;
           padding-left: 10px;
           height: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }
