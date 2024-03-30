@@ -39,7 +39,11 @@
           </template>
         </el-table-column>
         <el-table-column align="center" label="姓名" prop="psnName" show-overflow-tooltip />
-        <el-table-column align="center" label="身份证号" prop="idCard" show-overflow-tooltip />
+        <el-table-column align="center" label="身份证号" prop="idCard" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ scope.row.idCard ? '已录' : '--' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="所在地" prop="districtArea"
           show-overflow-tooltip />
         <el-table-column align="center" label="手机号" prop="phone" show-overflow-tooltip />

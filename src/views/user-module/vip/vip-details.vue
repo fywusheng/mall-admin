@@ -1,5 +1,9 @@
 <template>
   <div class="page-user-detail app-container">
+    <el-page-header @back="back2Prev" content="用户详情"></el-page-header>
+    <el-row style="height: 30px">
+      <el-col :span="24"></el-col>
+    </el-row>
     <!-- 用户信息开始 -->
     <div class="user-info  clearfix">
         <div class="left-info flex-c-s flex-col">
@@ -10,7 +14,8 @@
         <div class="right-info clearfix">
           <div class="block fl clearfix" v-for="(item,index) in fiedlList" :key="index" >
             <div class="field fl">{{item.value}}</div>
-            <div class="content">{{info[item.key] || "--"}}</div>
+            <div class="content" v-if="item.key != 'idCard'">{{info[item.key] || "--"}}</div>
+            <div class="content" v-else>{{info[item.key] ? '已录' : "--"}}</div>
           </div>
         </div>
     </div>
@@ -216,6 +221,9 @@ export default {
     changePage(pageNum) {
       this.formSearch.pageNum = pageNum
       this.fetchData()
+    },
+    back2Prev() {
+      this.$router.back();
     },
   }
 
