@@ -1,6 +1,6 @@
 <template>
   <div class="page-user-detail app-container">
-    <el-page-header @back="back2Prev" content="用户详情"></el-page-header>
+    <el-page-header @back="back2Prev" content="会员详情"></el-page-header>
     <el-row style="height: 30px">
       <el-col :span="24"></el-col>
     </el-row>
