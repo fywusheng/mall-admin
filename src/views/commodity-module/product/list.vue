@@ -50,8 +50,9 @@
           <!-- <el-button v-if="activeType==3" type="default" size="small" @click="forward2ProductAddPage">审 批</el-button> -->
           <el-button v-if="activeType==3" type="default" icon="el-icon-circle-plus-outline"
             size="mini" @click="forward2ProductAddPage()">新增</el-button>
-          <el-button v-if="activeType==3" type="default" size="mini" @click="exportProduct"
-            icon="el-icon-download">导出</el-button>
+            <!-- 导出功能先注释 -->
+          <!-- <el-button v-if="activeType==3" type="default" size="mini" @click="exportProduct"
+            icon="el-icon-download">导出</el-button> -->
           <!-- <el-button v-if="activeType==4" type="default" size="small" @click="forward2ProductAddPage" icon="el-icon-upload">导 入</el-button> -->
         </el-form-item>
       </el-row>
