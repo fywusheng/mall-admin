@@ -62,7 +62,7 @@
         <td width="10%" class="td-colspan-label">下单人：</td>
         <td width="20%" class="td-colspan-value">{{loginName}}</td>
         <td width="10%" class="td-colspan-label">手机号码：</td>
-        <td width="20%" class="td-colspan-value">{{mobile}}</td>
+        <td width="20%" class="td-colspan-value">{{loginName}}</td>
         <td width="10%" class="td-colspan-label">创建时间：</td>
         <td width="25%" class="td-colspan-value">{{createdTime}}</td>
       </tr>
@@ -172,12 +172,13 @@
     <table width="100%">
       <tr style="height:40px">
         <td width="5%"></td>
+        <!-- 后端说了原来就这样，如果显示的话往后排。 -->
         <td width="10%" class="td-colspan-label">支付方式：</td>
         <td width="20%" class="td-colspan-value">{{paymentMethod}}</td>
         <td width="10%" class="td-colspan-label">支付时间：</td>
         <td width="20%" class="td-colspan-value">{{paymentTime}}</td>
         <td width="10%" class="td-colspan-label">支付状态：</td>
-        <td width="25%" class="td-colspan-value">{{paymentState}}</td>
+        <td width="25%" class="td-colspan-value">{{paymentState == 0 ? '待支付' : paymentState == 1 ? '已支付' : ''}}</td>
       </tr>
       <tr style="height:40px">
         <td width="5%"></td>

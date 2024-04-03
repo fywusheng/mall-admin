@@ -45,8 +45,8 @@
       </el-table-column>
       <el-table-column prop="" label="操作" align="center" width="150px" fixed="right">
         <template slot-scope="scope">
-          <el-button icon="el-icon-edit-outline" size="mini" @click="forward2RulesPage(scope.row)">
-            设置规则</el-button>
+          <el-button v-if="scope.row.auditState == 1" icon="el-icon-document" size="mini" @click="forward2RulesPage(scope.row)">详情</el-button>
+          <el-button v-else icon="el-icon-edit-outline" size="mini" @click="forward2RulesPage(scope.row)">设置规则</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -267,7 +267,7 @@ export default {
         const resp = await fetch("/product/sku/list", { productId: item.id });
         if (resp.code == 200) {
           this.loading = false
-          if (resp.data.length == 0) {
+          if (!resp.data || (resp.data && Array.isArray(resp.data) && resp.data.length == 0)) {
             this.$message.warning('请先设置SKU,设置成功后方可上架!')
             return true
           }

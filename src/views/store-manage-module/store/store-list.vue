@@ -29,6 +29,16 @@
       <el-table-column type="index" label="序号" width="50px" align="center"></el-table-column>
       <el-table-column prop="storeNo" label="门店编号" show-overflow-tooltip width="200px"></el-table-column>
       <el-table-column prop="storeName" label="门店名称"  show-overflow-tooltip></el-table-column>
+      <el-table-column prop="storeManagerName" label="店长姓名" width="100px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.storeManagerName || '--' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="contactPhone" label="联系电话" width="110px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.contactPhone || '--' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="districtAreaStr" label="所属地区" width="150px" align="center"></el-table-column>
       <el-table-column prop="openingTime" label="开店时间" width="100px" align="center"></el-table-column>
       <el-table-column prop="openingTime" label="有效期" width="200px" align="center">
@@ -37,7 +47,11 @@
         </template>
       </el-table-column>
       <!-- 这个字段文档中没有 -->
-      <el-table-column prop="informationName" label="所属加盟商" width="200px" align="center"></el-table-column>
+      <el-table-column prop="informationName" label="所属加盟商" width="200px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.informationName || '--' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="reviewStatus" label="审核状态" width="80px" align="center" :formatter="formatStatus"></el-table-column>
       <el-table-column prop="yn" label="启用状态" width="80px" align="center">
         <template slot-scope="scope">

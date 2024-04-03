@@ -164,9 +164,19 @@ export default {
       loading: false,
       vipLoading: false,
       // 交易订单状态
-      orderStatusOptions: [{ name: '待支付', code: '10' }, { name: '待发货', code: '20' }, { name: '待收货', code: '30' }, { name: '待评价', code: '50' }, { name: '交易完成', code: '40' }, { name: '已取消', code: '90' }],
+      orderStatusOptions: [
+        { name: '待支付', code: '10' },
+        { name: '待发货', code: '20' },
+        { name: '待收货', code: '30' },
+        { name: '待评价', code: '50' },
+        { name: '交易完成', code: '40' },
+        { name: '已取消', code: '90' }],
       // 会员订单状态 TODO 
-      vipOrderStatusOptions: [{ name: '已完成', code: '3' }, { name: '待支付', code: '1' }, { name: '已关闭', code: '4' }, { name: '已退款', code: '6' }],
+      vipOrderStatusOptions: [
+        { name: '已完成', code: '3' },
+        { name: '待支付', code: '1' },
+        { name: '已关闭', code: '4' },
+        { name: '已退款', code: '6' }],
       // 列表中的字典用到
       vipOrderStatusOptionsCopy: [
         { name: '未支付', code: '1' },

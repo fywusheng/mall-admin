@@ -50,10 +50,10 @@
       <el-table-column prop="owner" label="发起(成本)部门" align="center" width="150px"></el-table-column>
       <el-table-column prop="approveState" label="审核状态" align="center" width="80px"
         :formatter="formatApproveState"></el-table-column>
-      <el-table-column prop="modifier" label="审核人" align="center" width="80px"></el-table-column>
+      <!-- <el-table-column prop="modifier" label="审核人" align="center" width="80px"></el-table-column> -->
       <el-table-column prop="updatedTime" label="审核时间" align="center"
         width="150px"></el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="100px" fixed="right">
+      <el-table-column prop="" label="操作" align="center" width="100px">
         <template slot-scope="scope">
           <el-button :disabled="scope.row.auditState!=0" icon="el-icon-success"
             @click="approveCoupon(scope.row)" size="mini">审核</el-button>
