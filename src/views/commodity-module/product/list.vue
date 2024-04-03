@@ -262,24 +262,48 @@ export default {
         this.$message.error(result.msg)
       }
     },
-    allup() {
-      const endState = this.multipleSelection.some(async (item) => {
+    async allup() {
+      const resArr = []
+      for (const item of this.multipleSelection) {
         const resp = await fetch("/product/sku/list", { productId: item.id });
         if (resp.code == 200) {
           this.loading = false
           if (!resp.data || (resp.data && Array.isArray(resp.data) && resp.data.length == 0)) {
             this.$message.warning('请先设置SKU,设置成功后方可上架!')
-            return true
+            resArr.push(false)
+            break
+          } else {
+            resArr.push(true)
           }
         } else {
           this.loading = false
           this.$message.error(resp.msg)
-          return
+          resArr.push(false)
+          break
         }
-      })
-      if (!endState) {
+      }
+      if (resArr.length == this.multipleSelection.length && !resArr.includes(false)) {
         this.up()
       }
+
+      // const endState = this.multipleSelection.some(async (item) => {
+      //   const resp = await fetch("/product/sku/list", { productId: item.id });
+      //   if (resp.code == 200) {
+      //     this.loading = false
+      //     if (!resp.data || (resp.data && Array.isArray(resp.data) && resp.data.length == 0)) {
+      //       this.$message.warning('请先设置SKU,设置成功后方可上架!')
+      //       return true
+      //     }
+      //   } else {
+      //     this.loading = false
+      //     this.$message.error(resp.msg)
+      //     return
+      //   }
+      // })
+      // console.log('123123', endState)
+      // if (!endState) {
+      //   this.up()
+      // }
     },
     publishedSelling(row) {
       //校验sku
