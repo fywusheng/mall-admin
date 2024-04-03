@@ -4,7 +4,7 @@
     <el-form class="data-form" :model="dataForm" :rules="dataRules" ref="dataForm"
       label-width="150px" label-position="top" size="mini">
       <el-form-item label="活动名称" prop="name">
-        <el-input v-model="dataForm.name" placeholder="请输入活动名称..." maxlength="64"
+        <el-input v-model="dataForm.name" placeholder="请输入活动名称..." maxlength="30"
           style="width:100%"></el-input>
       </el-form-item>
       <el-form-item label="活动类型" prop="type">
@@ -25,15 +25,15 @@
         </div>
       </el-form-item>
       <el-form-item label="活动描述" prop="description">
-        <el-input v-model="dataForm.description" placeholder="请输入活动描述..." maxlength="256"
+        <el-input v-model="dataForm.description" placeholder="请输入活动描述..." maxlength="100"
           type="textarea" style="width:100%"></el-input>
       </el-form-item>
       <el-form-item label="发起部门" prop="owner">
-        <el-input v-model="dataForm.owner" placeholder="请输入活动所属部门..." maxlength="60"
+        <el-input v-model="dataForm.owner" placeholder="请输入活动所属部门..." maxlength="50"
           style="width:100%"></el-input>
       </el-form-item>
       <el-form-item label="活动用途" prop="purpose">
-        <el-input v-model="dataForm.purpose" placeholder="请输入活动用途..." maxlength="120"
+        <el-input v-model="dataForm.purpose" placeholder="请输入活动用途..." maxlength="100"
           style="width:100%"></el-input>
       </el-form-item>
     </el-form>
