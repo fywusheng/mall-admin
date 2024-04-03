@@ -35,7 +35,11 @@
       <el-table-column type="index" label="编号" width="60"></el-table-column>
       <el-table-column label="公告标题" align="center" prop="notcTtl"></el-table-column>
       <el-table-column label="公告内容" align="center" prop="notcInfo" show-overflow-tooltip></el-table-column>
-      <el-table-column label="发布渠道" align="center" prop="rlsChnlStr"></el-table-column>
+      <el-table-column label="发布渠道" align="center" prop="rlsChnlStr">
+        <template slot-scope="scope">
+          <span>{{ scope.row.rlsChnlStr ? '小程序' : '--' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="推送次数" align="center" prop="pshCnt"></el-table-column>
       <el-table-column label="运行状态" align="center" prop="runStas">
         <template slot-scope="scope">
