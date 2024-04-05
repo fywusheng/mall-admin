@@ -14,8 +14,13 @@
         <div class="right-info clearfix">
           <div class="block fl clearfix" v-for="(item,index) in fiedlList" :key="index" >
             <div class="field fl">{{item.value}}</div>
-            <div class="content" v-if="item.key != 'idCard'">{{info[item.key] || "--"}}</div>
-            <div class="content" v-else>{{info[item.key] ? '已录' : "--"}}</div>
+            <div class="content" v-if="item.key == 'idCard'">{{info[item.key] ? '已录' : "--"}}</div>
+            <div class="content" v-else-if="item.key == 'storeName'">{{(info.shStoreDTO && info.shStoreDTO.storeName) || "--"}}</div>
+            <div class="content" v-else-if="item.key == 'shStoreDTO-address'">{{(info.shStoreDTO && info.shStoreDTO.address) || "--"}}</div>
+            <div class="content" v-else-if="item.key == 'shStoreDTO-expirationTime'">{{(info.shStoreDTO && info.shStoreDTO.expirationTime) || "--"}}</div>
+            <div class="content" v-else-if="item.key == 'shStoreDTO-membeRenewals'">{{(info.shStoreDTO && info.shStoreDTO.membeRenewals) || "--"}}</div>
+            <div class="content" v-else-if="item.key == 'shStoreDTO-memberAcount'">{{(info.shStoreDTO && info.shStoreDTO.memberAcount) || "--"}}</div>
+            <div class="content" v-else>{{info[item.key] || "--"}}</div>
           </div>
         </div>
     </div>
@@ -74,7 +79,7 @@ export default {
           value: "绑定手机"
         },
         {
-          key: "gend", // 
+          key: "sex", // 
           value: "性别"
         },
         {
@@ -94,7 +99,7 @@ export default {
           value: "所属门店"
         },
         {
-          key: "districtArea",
+          key: "shStoreDTO-address",
           value: "门店地址"
         },
         {
@@ -106,15 +111,15 @@ export default {
           value: "使用状态"
         },
         {
-          key: "xxxx", // 
+          key: "shStoreDTO-expirationTime",
           value: "会员有效期"
         },
         {
-          key: "xxxx", // 
+          key: "shStoreDTO-membeRenewals",
           value: "会员续费次数"
         },
         {
-          key: "xxxx", // 
+          key: "shStoreDTO-memberAcount",
           value: "会员累计已省金额"
         },
       ],
@@ -181,7 +186,7 @@ export default {
       post("/nun/api/userPerson/getUserInfoById", {data: {data: parmas}}).then(data => {
       // post("/nun/api/userWeb/userDetail", {acctId: this.acctId}).then(data => {
         this.info = data.data
-        this.info.gend = this.info.gend === "1" ? "男" : "女"
+        this.info.sex = this.info.sex == "0" ? "男" : "女"
       })
     },
     /**

@@ -14,8 +14,10 @@
         <div class="right-info clearfix">
           <div class="block fl clearfix" v-for="(item,index) in fiedlList" :key="index" >
             <div class="field fl">{{item.value}}</div>
-            <div class="content" v-if="item.key != 'idCard'">{{info[item.key] || "--"}}</div>
-            <div class="content" v-else>{{info[item.key] ? '已录' : "--"}}</div>
+            <div class="content" v-if="item.key == 'idCard'">{{info[item.key] ? '已录' : "--"}}</div>
+            <div class="content" v-else-if="item.key == 'storeName'">{{(info.shStoreDTO && info.shStoreDTO.storeName) || "--"}}</div>
+            <div class="content" v-else-if="item.key == 'shStoreDTO-address'">{{(info.shStoreDTO && info.shStoreDTO.address) || "--"}}</div>
+            <div class="content" v-else>{{info[item.key] || "--"}}</div>
           </div>
         </div>
     </div>
@@ -71,11 +73,11 @@ export default {
           value: "绑定手机"
         },
         {
-          key: "gend",
+          key: "sex",
           value: "性别"
         },
         {
-          key: "BRDY",
+          key: "brdy",
           value: "出生年月"
         },
         {
@@ -91,7 +93,7 @@ export default {
           value: "所属门店"
         },
         {
-          key: "address",
+          key: "shStoreDTO-address",
           value: "门店地址"
         },
         {
@@ -160,7 +162,7 @@ export default {
       const params = {memberType: this.$route.params.memberType, memberId: this.memberId}
       post("/nun/api/userPerson/getUserInfoById", {data: {data: params}}).then(data => {
         this.info = data.data
-        this.info.gend = this.info.gend === "1" ? "男" : "女"
+        this.info.sex = this.info.sex == "0" ? "男" : "女"
       })
     },
     /**
