@@ -162,7 +162,7 @@ export default {
       const params = {memberType: this.$route.params.memberType, memberId: this.memberId}
       post("/nun/api/userPerson/getUserInfoById", {data: {data: params}}).then(data => {
         this.info = data.data
-        this.info.sex = this.info.sex == "0" ? "男" : "女"
+        this.info.sex = this.info.sex == "0" ? "男" : this.info.sex == "1" ? "女" : '--'
       })
     },
     /**

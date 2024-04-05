@@ -540,6 +540,8 @@ export default {
           if (result.code == 200) {
             this.$message.success("门店信息保存成功！");
             this.back2Prev()
+          } else if (result.code == 500) {
+            this.$message.warning(result.data);
           } else {
             this.$message.error(result.msg);
           }

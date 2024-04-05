@@ -186,7 +186,9 @@ export default {
       post("/nun/api/userPerson/getUserInfoById", {data: {data: parmas}}).then(data => {
       // post("/nun/api/userWeb/userDetail", {acctId: this.acctId}).then(data => {
         this.info = data.data
-        this.info.sex = this.info.sex == "0" ? "男" : "女"
+        this.info.sex = this.info.sex == "0" ? "男" : this.info.sex == "1" ? "女" : '--'
+        // 会员使用状态0  失效  1 使用
+        this.info.cardStatus = this.info.cardStatus == 1 ? '使用' : this.info.cardStatus == 0 ? '失效' : '--'
       })
     },
     /**
