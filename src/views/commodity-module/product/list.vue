@@ -79,7 +79,7 @@
       <el-table-column prop="id" label="商品ID" width="200px" show-overflow-tooltip></el-table-column>
       <el-table-column prop="code" label="商品编码" width="200px"
         show-overflow-tooltip></el-table-column>
-      <el-table-column prop="brandId" label="所属品牌" width="150px"
+      <el-table-column prop="brandName" label="所属品牌" width="150px"
         show-overflow-tooltip></el-table-column>
       <el-table-column prop="categoryNode" label="所属类目" width="150px"
         show-overflow-tooltip></el-table-column>
