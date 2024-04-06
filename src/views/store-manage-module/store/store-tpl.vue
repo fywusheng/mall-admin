@@ -516,6 +516,13 @@ export default {
           
           if (!this.dataForm.address) return this.$message.warning('门店详细地址不能为空，请输入！')
 
+
+          if (this.dataForm.businessScope) {
+            console.log(this.dataForm.businessScope)
+            if (this.dataForm.businessScope.length > 50) {
+              return this.$message.warning('经营范围选择数量超出限制，请重新选择！')
+            }
+          }
           this.sending = true;
 
           const params = deepClone(this.dataForm)

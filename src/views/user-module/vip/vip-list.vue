@@ -47,8 +47,16 @@
         <el-table-column align="center" label="所在地" prop="districtArea"
           show-overflow-tooltip />
         <el-table-column align="center" label="手机号" prop="phone" show-overflow-tooltip />
-        <el-table-column align="center" label="会员使用状态" prop="cardStatus" show-overflow-tooltip/>
-        <el-table-column align="center" label="开通时间" prop="idCardTime" show-overflow-tooltip width="180"/>
+        <el-table-column align="center" label="会员使用状态" prop="cardStatus" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ scope.row.cardStatus || '--' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="开通时间" prop="idCardTime" show-overflow-tooltip width="180">
+          <template slot-scope="scope">
+            <span>{{ scope.row.idCardTime || '--' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="goDetail(scope.row)">详情</el-button>

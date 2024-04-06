@@ -41,8 +41,16 @@
         </el-table-column>
         <el-table-column align="center" label="所在地" prop="districtArea" show-overflow-tooltip />
         <el-table-column align="center" label="手机号" prop="phone" show-overflow-tooltip />
-        <el-table-column align="center" label="所属门店" prop="storeName" show-overflow-tooltip></el-table-column>
-        <el-table-column align="center" label="门店地址" prop="address" show-overflow-tooltip></el-table-column>
+        <el-table-column align="center" label="所属门店" prop="storeName" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ scope.row.storeName || '--' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="门店地址" prop="address" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ scope.row.address || '--'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="注册时间" prop="crteTime" show-overflow-tooltip width="180">
         </el-table-column>
         <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="300">
