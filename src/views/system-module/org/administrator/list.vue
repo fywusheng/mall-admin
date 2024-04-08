@@ -28,8 +28,8 @@
       </el-table-column>
       <el-table-column prop="loginName" label="登录账号" align="center" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="telphone" label="所在部门/职务" width="150px" show-overflow-tooltip>
-      </el-table-column>
+      <!-- <el-table-column prop="telphone" label="所在部门/职务" width="150px" show-overflow-tooltip>
+      </el-table-column> -->
       <el-table-column prop="telphone" label="手机号码" align="center" width="100px">
       </el-table-column>
       <el-table-column prop="email" label="邮件"  width="150px" show-overflow-tooltip>
