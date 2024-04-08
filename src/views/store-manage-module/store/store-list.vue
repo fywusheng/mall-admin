@@ -60,7 +60,7 @@
       </el-table-column>
       <el-table-column prop="" label="操作" align="center" width="280px" fixed="right">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.reviewStatus == 0" icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.reviewStatus == 0 || scope.row.reviewStatus == 1" icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
           <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 1" icon="el-icon-turn-off" size="mini" @click="toggle(scope.row, 0)">停用</el-button>
           <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 0" icon="el-icon-open" size="mini" @click="toggle(scope.row, 1)">启用</el-button>
           <el-button v-if="scope.row.reviewStatus == 1 && scope.row.renewalStatus != 1 && isExpire(scope.row)" icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button>

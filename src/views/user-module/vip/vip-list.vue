@@ -47,11 +47,7 @@
         <el-table-column align="center" label="所在地" prop="districtArea"
           show-overflow-tooltip />
         <el-table-column align="center" label="手机号" prop="phone" show-overflow-tooltip />
-        <el-table-column align="center" label="会员使用状态" prop="cardStatus" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span>{{ scope.row.cardStatus || '--' }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column align="center" label="会员使用状态" prop="cardStatus" show-overflow-tooltip :formatter="getcardStatus"></el-table-column>
         <el-table-column align="center" label="开通时间" prop="idCardTime" show-overflow-tooltip width="180">
           <template slot-scope="scope">
             <span>{{ scope.row.idCardTime || '--' }}</span>
@@ -117,6 +113,13 @@ export default {
     this.getCityList()
   },
   methods: {
+    getcardStatus(row) {
+      if ('cardStatus' in row && row.cardStatus !== '') {
+        return row.cardStatus == 1 ? '使用中' : row.cardStatus == 0 ? '已失效' : ''
+      } else {
+        return '--'
+      }
+    },
     /**
      * @description: 重置密码
      * @param {type} 

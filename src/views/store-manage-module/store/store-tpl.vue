@@ -519,7 +519,7 @@ export default {
 
           if (this.dataForm.businessScope) {
             console.log(this.dataForm.businessScope)
-            if (this.dataForm.businessScope.length > 50) {
+            if (this.dataForm.businessScope.length > 60) {
               return this.$message.warning('经营范围选择数量超出限制，请重新选择！')
             }
           }
