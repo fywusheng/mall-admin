@@ -475,12 +475,12 @@ export default {
         { key: 3, label: "体积" }
       ],
       targetAudienceOptions: [
-        { key: 1, label: "高血压" },
-        { key: 2, label: "高血脂" },
-        { key: 3, label: "高血糖" },
-        { key: 4, label: "高尿酸" },
-        { key: 5, label: "脂肪肝" },
-        { key: 6, label: "肾囊肿" },
+        { key: "高血压", label: "高血压" },
+        { key: "高血脂", label: "高血脂" },
+        { key: "高血糖", label: "高血糖" },
+        { key: "高尿酸", label: "高尿酸" },
+        { key: "脂肪肝", label: "脂肪肝" },
+        { key: "肾囊肿", label: "肾囊肿" },
       ],
       SuppliedTypeOptions: [
         { key: 0, label: "平台自营" },
@@ -923,7 +923,7 @@ export default {
           attributes: result.data.attributes,
           saleState: result.data.saleState,
           attributeMap: new Map,
-          targetAudience: result.data.targetAudience?.split(',').map(i => parseInt(i))
+          targetAudience: result.data.targetAudience?.split(',')
         };
       
         this.oldMoneyForm.isCreditPoints = result.data.isCreditPoints + '',
