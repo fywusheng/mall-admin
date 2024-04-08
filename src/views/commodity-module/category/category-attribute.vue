@@ -314,7 +314,6 @@ export default {
               resultArray.push(item.id);
             });
             this.dataForm.specIdsSelected = resultArray
-            console.log(this.dataForm.specIdsSelected)
             this.specSelectionOnChange(this.dataForm.specIdsSelected)
           } else if (2 == type) {
             this.attrSelected = result.data
@@ -333,8 +332,6 @@ export default {
     },
 
     async specSelectionOnChange(val) {
-      console.log(val)
-      console.log(this.attrList)
       const resultArr = this.attrList.filter(ele => {
         let isFilter = val.some(item => {
           return item == ele.id
@@ -352,24 +349,19 @@ export default {
           if (!ele.hasOwnProperty('isIndeterminate')) {
             this.$set(ele, 'isIndeterminate', true)
           }
-          console.log(ele)
           this.$nextTick(async () => {
             const result = await fetch('/attr/listValByAttrId?attrId=' + ele.id, {})
-            console.log(ele.attrValList)
             ele.attrValList = result.data || [];
           })
           this.specSelected.some(item => {
             if (item.id == ele.id) {
               ele.attrValSelected = item.attrValSelected
             }
-            console.log(111, ele.attrValSelected)
-            console.log(222, item.attrValSelected)
           })
           return true
         }
       })
       this.spec_tableData = resultArr
-      console.log(333,this.spec_tableData)
     },
 
     async attrSelectionOnChange(val) {

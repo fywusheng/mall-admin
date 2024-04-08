@@ -203,7 +203,7 @@ export const constantRoutes = [
         component: resolve => require(['../views/commodity-module/salescategory/sales-category-product-list'], resolve),
         name: 'SalesCategoryProduct',
         // meta: { title: '商城 / 商品运营 / 运营类目 / 商品列表 ' }
-        meta: { title: '商城 / 商品运营 / 前台类目 / 商品列表 ' }
+        meta: { title: '商城 / 商品运营 / 前台类目 / 运营类目商品列表' }
       },
       {
         path: 'salesplanning',

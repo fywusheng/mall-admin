@@ -319,6 +319,10 @@ export default {
         fileName.length
       )
     },
+    // 图片删除
+    handleRemove(file, fileList){
+      console.log(file, fileList)
+    },
     /**
      * @description: 查询请求
      * @param {type}
