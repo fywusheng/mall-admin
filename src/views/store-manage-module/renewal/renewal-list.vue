@@ -29,15 +29,15 @@
       <el-table-column type="index" label="序号" width="50px" align="center"></el-table-column>
       <el-table-column prop="storeNo" label="门店编号" show-overflow-tooltip></el-table-column>
       <el-table-column prop="storeName" label="门店名称" width="200px" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="districtArea" label="所属地区" width="150px" align="center"></el-table-column>
+      <el-table-column prop="districtAreaStr" label="所属地区" width="150px" align="center"></el-table-column>
       <el-table-column prop="openingTime" label="开店时间" width="200px" align="center"></el-table-column>
       <el-table-column prop="isPostage" label="门店有效期" width="300px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.periodStartValidity }} 至 {{ scope.row.periodEndValidity }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="infomationNo" label="所属加盟商" width="250px" align="center"></el-table-column>
-      <el-table-column prop="xxxx" label="近一次申请时间" width="150px" align="center"></el-table-column>
+      <el-table-column prop="informationName" label="所属加盟商" width="250px" align="center"></el-table-column>
+      <el-table-column prop="updateTime" label="近一次申请时间" width="150px" align="center"></el-table-column>
       <el-table-column prop="renewalStatus" label="续签状态" width="80px" align="center" :formatter="formatStatus"></el-table-column>
       <el-table-column prop="" label="操作" align="center" width="180px" fixed="right">
         <template slot-scope="scope">
