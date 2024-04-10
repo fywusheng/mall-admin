@@ -32,7 +32,7 @@
         :formatter="formatActivityTime"></el-table-column>
       <el-table-column prop="auditState" label="审核状态" width="100px" align="center"
         :formatter="formatAuditState"></el-table-column>
-      <el-table-column prop="moidifier" label="操作人" width="100px"></el-table-column>
+      <!-- <el-table-column prop="moidifier" label="操作人" width="100px"></el-table-column> -->
       <el-table-column prop="updatedTime" label="操作时间" width="150px" align="center">
       </el-table-column>
       <el-table-column prop="delFlag" label="启用状态" align="center" width="80px">
