@@ -115,7 +115,9 @@ export default {
       const params = {
         pageNum: this.pageNo,
         pageSize: this.pageSize,
-        ...this.searchParams
+        queryObject: {
+          ...this.searchParams
+        }
       }
       const result = await post('/srm/sh/stores/listByPageNo', params)
       this.loading = false
