@@ -347,6 +347,8 @@ export default {
           params.operatingBrand = params.newOperatingBrand.join()
           delete params.newOperatingBrand
           delete params.newBusinessScope
+          // 续签状态传 1
+          params.renewalStatus = 1
 
           const result = await post("/srm/sh/stores/saveStores", params)
           this.sending = false;
