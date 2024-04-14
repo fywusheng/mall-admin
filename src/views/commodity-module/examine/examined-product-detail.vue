@@ -36,18 +36,18 @@
         </el-row>
 
         <el-descriptions title="供货信息" :column="2">
-            <el-descriptions-item label="供货方式">
+            <!-- <el-descriptions-item label="供货方式">
               <span v-if="productInfo.suppliedType === 0">自营</span>
               <span v-else-if="productInfo.suppliedType === 1">商家</span>
               <span v-else>--</span>
             </el-descriptions-item>
-            <el-descriptions-item label="所属商家">{{productInfo.supplierName}}</el-descriptions-item>
+            <el-descriptions-item label="所属商家">{{productInfo.supplierName}}</el-descriptions-item> -->
             <el-descriptions-item label="商家货号">{{productInfo.goodsCode}}</el-descriptions-item>
             <el-descriptions-item label="商家款号">{{productInfo.styleCode}}</el-descriptions-item>
             <el-descriptions-item label="发货地类型">
-              <span v-if="productInfo.deliveryType === 0">国内发货</span>
-              <span v-else-if="productInfo.deliveryType === 1">香港发货</span>
-              <span v-else-if="productInfo.deliveryType === 2">海外发货</span>
+              <span v-if="productInfo.deliveryType == 0">国内发货</span>
+              <span v-else-if="productInfo.deliveryType == 1">香港发货</span>
+              <span v-else-if="productInfo.deliveryType == 2">海外发货</span>
               <span v-else>--</span>
               </el-descriptions-item>
             <el-descriptions-item label="发货地">{{productInfo.deliveryRegion}}</el-descriptions-item>
@@ -94,6 +94,11 @@ export default {
   data() {
     return {
       visible: false
+    }
+  },
+  watch: {
+    productInfo (val) {
+      // console.log(111, val)
     }
   },
   mounted() {
