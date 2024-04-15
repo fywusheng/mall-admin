@@ -29,10 +29,10 @@
         <el-input v-model="dataForm.email" placeholder="请输入电子邮件..." maxlength="256"
           style="width:100%"></el-input>
       </el-form-item>
-      <el-form-item label="备注信息" prop="remarks" class="item">
+      <!-- <el-form-item label="备注信息" prop="remarks" class="item">
         <el-input v-model="dataForm.remarks" placeholder="请输入备注信息..." type="textarea"
           maxlength="256" style="width:100%"></el-input>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="show(false)">取消</el-button>
