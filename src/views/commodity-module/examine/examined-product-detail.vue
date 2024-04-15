@@ -51,7 +51,7 @@
               <span v-else>--</span>
               </el-descriptions-item>
             <el-descriptions-item label="发货地">{{productInfo.deliveryRegion}}</el-descriptions-item>
-            <el-descriptions-item label="发货时长">{{productInfo.deliveryMinDays}} - {{productInfo.deliveryMinDays}}</el-descriptions-item>
+            <el-descriptions-item label="发货时长">{{productInfo.deliveryMinDays}} - {{productInfo.deliveryMaxDays}}</el-descriptions-item>
         </el-descriptions>
 
         <el-descriptions title="属性参数" :column="2"></el-descriptions>
