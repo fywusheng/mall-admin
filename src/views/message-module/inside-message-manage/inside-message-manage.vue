@@ -10,8 +10,8 @@
       <el-form-item label="发送人：" label-width="110px" class="search-field fl" prop="sender">
         <el-input v-model="searchData.sender" placeholder="请输入发送人" clearable />
       </el-form-item>
-      <el-form-item label="接收人号码：" label-width="110px" class="search-field fl" prop="recerMobile">
-        <el-input v-model="searchData.recerMobile" placeholder="请输入接收人号码" clearable />
+      <el-form-item label="接收人号码：" label-width="110px" class="search-field fl" prop="recer">
+        <el-input v-model="searchData.recer" placeholder="请输入接收人号码" clearable />
       </el-form-item>
       <el-form-item label="阅读状态：" label-width="110px" class="search-field fl" prop="readStas">
         <el-select v-model="searchData.readStas" placeholder="请选择阅读状态" clearable>
@@ -56,7 +56,7 @@
         <el-table-column label="消息标题" align="center" prop="ttl"></el-table-column>
         <el-table-column label="公告内容" align="center" prop="cont"></el-table-column>
         <el-table-column label="发布人" align="center" prop="sender"></el-table-column>
-        <el-table-column label="接收人号码" align="center" prop="recerMobile"></el-table-column>
+        <el-table-column label="接收人号码" align="center" prop="recer"></el-table-column>
         <el-table-column label="发送时间" align="center" prop="sendTime">
           <template slot-scope="scope">
             {{ handleSendDate(scope.row.sendTime) }}
