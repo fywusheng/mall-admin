@@ -17,9 +17,9 @@
             <div class="content" v-if="item.key == 'idCard'">{{info[item.key] ? '已录' : "--"}}</div>
             <div class="content" v-else-if="item.key == 'storeName'">{{(info.shStoreDTO && info.shStoreDTO.storeName) || "--"}}</div>
             <div class="content" v-else-if="item.key == 'shStoreDTO-address'">{{(info.shStoreDTO && info.shStoreDTO.address) || "--"}}</div>
-            <div class="content" v-else-if="item.key == 'shStoreDTO-expirationTime'">{{(info.shStoreDTO && info.shStoreDTO.expirationTime) || "--"}}</div>
-            <div class="content" v-else-if="item.key == 'shStoreDTO-membeRenewals'">{{(info.shStoreDTO && info.shStoreDTO.membeRenewals) || "--"}}</div>
-            <div class="content" v-else-if="item.key == 'shStoreDTO-memberAcount'">{{(info.shStoreDTO && info.shStoreDTO.memberAcount) || "--"}}</div>
+            <!-- <div class="content" v-else-if="item.key == 'shStoreDTO-expirationTime'">{{(info.shStoreDTO && info.shStoreDTO.expirationTime) || "--"}}</div> -->
+            <!-- <div class="content" v-else-if="item.key == 'shStoreDTO-membeRenewals'">{{(info.shStoreDTO && info.shStoreDTO.membeRenewals) || "--"}}</div> -->
+            <!-- <div class="content" v-else-if="item.key == 'shStoreDTO-memberAcount'">{{(info.shStoreDTO && info.shStoreDTO.memberAcount) || "--"}}</div> -->
             <div class="content" v-else>{{info[item.key] || "--"}}</div>
           </div>
         </div>
@@ -111,15 +111,15 @@ export default {
           value: "使用状态"
         },
         {
-          key: "shStoreDTO-expirationTime",
+          key: "expirationTime",
           value: "会员有效期"
         },
         {
-          key: "shStoreDTO-membeRenewals",
+          key: "memberRenewals",
           value: "会员续费次数"
         },
         {
-          key: "shStoreDTO-memberAcount",
+          key: "memberAcount",
           value: "会员累计已省金额"
         },
       ],
