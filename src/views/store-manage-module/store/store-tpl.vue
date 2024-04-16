@@ -269,9 +269,10 @@ export default {
 
     // 手机 或者 座机号码
     const isPhoneNumber = (rule, value, callback) => {
-      const patter = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9]))\d{8}$|^0\d{2,3}-\d{7,8}(-\d{1,4})?$/
+      // const patter = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9]))\d{8}$|^0\d{2,3}-\d{7,8}(-\d{1,4})?$/
+      const patter = /^((13[0-9])|(17[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9]))\d{8}$/
       if (!patter.test(value)) {
-        callback(new Error(`请输入正确的手机号码或者座机号码！`))
+        callback(new Error(`请输入正确的手机号码！`))
       } else {
         callback()
       }
@@ -339,7 +340,7 @@ export default {
         ], // 店长姓名
         contactPhone: [
           { required: true, message: "联系电话/登录账号不能为空，请完整输入！", trigger: "change" },
-          // { required: true, validator: isPhoneNumber, trigger: "change" }
+          { required: true, validator: isPhoneNumber, trigger: "change" }
         ], // 登录电话
         supportPhone: [
           { required: true, message: "支持电话不能为空，请完整输入！", trigger: "change" },

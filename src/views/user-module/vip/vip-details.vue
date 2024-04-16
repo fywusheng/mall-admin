@@ -20,7 +20,7 @@
             <!-- <div class="content" v-else-if="item.key == 'shStoreDTO-expirationTime'">{{(info.shStoreDTO && info.shStoreDTO.expirationTime) || "--"}}</div> -->
             <!-- <div class="content" v-else-if="item.key == 'shStoreDTO-membeRenewals'">{{(info.shStoreDTO && info.shStoreDTO.membeRenewals) || "--"}}</div> -->
             <!-- <div class="content" v-else-if="item.key == 'shStoreDTO-memberAcount'">{{(info.shStoreDTO && info.shStoreDTO.memberAcount) || "--"}}</div> -->
-            <div class="content" v-else>{{info[item.key] || "--"}}</div>
+            <div class="content" v-else>{{(info[item.key] || info[item.key] === 0 || info[item.key] === '0') ? info[item.key] : '--'}}</div>
           </div>
         </div>
     </div>
