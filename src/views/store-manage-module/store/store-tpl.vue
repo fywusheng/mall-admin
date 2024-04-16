@@ -474,7 +474,7 @@ export default {
       }
     },
     async loadCategoryOptions() {
-      const result = await fetch("/category/list.basic", {});
+      const result = await fetch("/category/list.sales", {});
       if (result.code == 200) {
         this.categoryOptions = result.data;
       } else {
