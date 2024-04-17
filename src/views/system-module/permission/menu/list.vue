@@ -23,8 +23,8 @@
       </el-table-column>
       <el-table-column prop="bizCode" label="所属业务" width="100px">
       </el-table-column>
-      <el-table-column prop="modifier" label="操作人" width="100px">
-      </el-table-column>
+      <!-- <el-table-column prop="modifier" label="操作人" width="100px">
+      </el-table-column> -->
       <el-table-column prop="updatedTime" label="操作时间" width="150px">
       </el-table-column>
       <el-table-column prop="" label="操作" align="center" width="300px" fixed="right">

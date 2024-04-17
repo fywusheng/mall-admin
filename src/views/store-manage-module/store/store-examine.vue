@@ -85,7 +85,7 @@
           </td>
           <td width="30%">
             <el-form-item label="经营范围：">
-              <!-- <p class="_text">{{ dataForm.businessScope }}</p> -->
+              <!-- <p class="_text">{{ dataForm.businessScopeStr }}</p> -->
               <el-cascader class="_cascader _border_none" disabled v-model="dataForm.businessScope" :options="categoryOptions" placeholder="" clearable :props="{multiple:true, value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
             </el-form-item>
           </td>
@@ -410,7 +410,8 @@ export default {
         result.data.periodData = [result.data.periodStartValidity, result.data.periodEndValidity]
         result.data.districtArea = result.data.districtArea.split(',')
         result.data.salesArea = this.formatSalesArea(result.data.salesArea)
-        result.data.businessScope = this.formatSalesArea(result.data.businessScope, 3)
+        // result.data.businessScope = this.formatSalesArea(result.data.businessScope, 3)
+        result.data.businessScope = JSON.parse(result.data.businessScope)
         result.data.operatingBrand = result.data.operatingBrand.split(',')
 
         this.dataForm = { ...result.data }
@@ -432,7 +433,8 @@ export default {
           delete params.periodData
           params.districtArea = params.districtArea.join()
           params.salesArea = params.salesArea.join()
-          params.businessScope = params.businessScope.join()
+          // params.businessScope = params.businessScope.join()
+          params.businessScope = JSON.stringify(params.businessScope)
           params.operatingBrand = params.operatingBrand.join()
 
           const result = await post("/srm/sh/stores/saveStores", params)

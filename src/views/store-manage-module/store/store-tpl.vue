@@ -495,7 +495,8 @@ export default {
         result.data.periodData = [result.data.periodStartValidity, result.data.periodEndValidity]
         result.data.districtArea = result.data.districtArea.split(',')
         result.data.salesArea = this.formatSalesArea(result.data.salesArea)
-        result.data.businessScope = this.formatSalesArea(result.data.businessScope, 3)
+        // result.data.businessScope = this.formatSalesArea(result.data.businessScope, 3)
+        result.data.businessScope = JSON.parse(result.data.businessScope)
         result.data.operatingBrand = result.data.operatingBrand.split(',')
         this.dataForm = { ...result.data }
 
@@ -540,9 +541,10 @@ export default {
           delete params.periodData
           params.districtArea = params.districtArea.join()
           params.salesArea = params.salesArea.join()
-          params.businessScope = params.businessScope.join()
+          // params.businessScope = params.businessScope.join()
+          params.businessScope = JSON.stringify(params.businessScope)
           params.operatingBrand = params.operatingBrand.join()
-
+          console.log(params)
           const result = await post("/srm/sh/stores/saveStores", params)
           this.sending = false;
           if (result.code == 200) {
