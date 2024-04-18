@@ -10,7 +10,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="loadData" size="small">查询(Q)</el-button>
-          <el-button type="default" @click="add(0)" size="small">新增一级菜单(A)</el-button>
+          <!-- <el-button type="default" @click="add(0)" size="small">新增一级菜单(A)</el-button> -->
         </el-form-item>
       </el-form>
     </el-row>
@@ -27,12 +27,12 @@
       </el-table-column> -->
       <el-table-column prop="updatedTime" label="操作时间" width="150px">
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="300px" fixed="right">
+      <el-table-column prop="" label="操作" align="center" width="100px" fixed="right">
         <template slot-scope="scope">
-          <el-button size="mini" @click="add(1,scope.row)">添加子菜单</el-button>
+          <!-- <el-button size="mini" @click="add(1,scope.row)">添加子菜单</el-button> -->
           <el-button size="mini" icon="el-icon-edit" @click="edit(scope.row)">编辑</el-button>
-          <el-button size="mini" icon="el-icon-delete" @click="del(scope.row)"
-            v-show="scope.row.sysUserId != 1">删除</el-button>
+          <!-- <el-button size="mini" icon="el-icon-delete" @click="del(scope.row)"
+            v-show="scope.row.sysUserId != 1">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>

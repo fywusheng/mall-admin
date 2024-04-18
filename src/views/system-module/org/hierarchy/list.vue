@@ -1,12 +1,12 @@
 <template>
   <div class="main-content">
-    <el-row class="mb-2">
+    <!-- <el-row class="mb-2">
       <el-form :inline="true">
         <el-form-item>
-          <!-- <el-button type="primary" icon="el-icon-search" @click="loadData" size="mini">查询</el-button> -->
+          <el-button type="primary" icon="el-icon-search" @click="loadData" size="mini">查询</el-button>
         </el-form-item>
       </el-form>
-    </el-row>
+    </el-row> -->
     <el-table :data="tableData" :header-cell-style="{background:'#FAF9F7',color:'#000000'}"
       size="mini" row-key="id" :highlight-current-row='false' :default-expand-all='false'
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
