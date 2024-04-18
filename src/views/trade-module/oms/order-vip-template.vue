@@ -145,7 +145,8 @@
       <tr style="height:40px">
         <td width="5%"></td>
         <td width="10%" class="td-colspan-label">支付方式：</td>
-        <td width="20%" class="td-colspan-value">{{paymentMethod}}</td>
+        <!-- <td width="20%" class="td-colspan-value">{{paymentMethod}}</td> -->
+        <td width="20%" class="td-colspan-value">微信支付</td>
         <td width="10%" class="td-colspan-label">支付时间：</td>
         <td width="20%" class="td-colspan-value">{{paymentTime}}</td>
         <td width="10%" class="td-colspan-label">支付状态：</td>

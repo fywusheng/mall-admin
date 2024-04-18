@@ -65,9 +65,9 @@
                 </div>
               </el-image>
             </el-form-item>
-            <el-form-item label="所属商家">
+            <!-- <el-form-item label="所属商家">
               <span>{{ props.row.supplierId }}</span>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="申请人">
               <span>{{ props.row.memberId }}</span>
             </el-form-item>
@@ -108,8 +108,8 @@
       <el-table-column prop="returnsDesc" label="售后状态" width="200px" show-overflow-tooltip></el-table-column>
       <el-table-column prop="orderCode" label="归属订单" width="200px" align="center">
         <template slot-scope="scope">
-          <el-link :underline="false"
-            @click="forward2DetailsPage(scope.row)">{{scope.row.orderCode}}</el-link>
+          <el-button  type="text"
+            @click="forward2DetailsPage(scope.row)">{{scope.row.orderCode}}</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="returnsPrice" label="实付金额" width="80px"
@@ -117,7 +117,7 @@
       <el-table-column prop="paidPrice" label="退款金额" width="80px" align="center"></el-table-column>
       <el-table-column prop="createdTime" label="申请时间" show-overflow-tooltip
         align="center"></el-table-column>
-      <el-table-column prop="" label="操作" width="290px" align="center" fixed="right">
+      <el-table-column prop="" label="操作" width="290px" align="center">
         <template slot-scope="scope">
           <el-button size="mini" :disabled="Number(scope.row.returnsStatus)!=-1"
             @click="audit(scope.row)">售后审核</el-button>

@@ -26,8 +26,8 @@
       <el-table-column prop="code" label="SKU编码" align="center" width="180px"> </el-table-column>
       <el-table-column prop="productId" label="商品ID" align="center" width="180px">
       </el-table-column>
-      <el-table-column prop="supplierCode" label="供应商货号" width="100px" show-overflow-tooltip align="center">
-      </el-table-column>
+      <!-- <el-table-column prop="supplierCode" label="供应商货号" width="100px" show-overflow-tooltip align="center">
+      </el-table-column> -->
       <el-table-column label="总库存/预锁" align="center" width="100px">
         <template slot-scope="scope">
           {{scope.row.stockBalance}}/{{scope.row.stockPreCost}}

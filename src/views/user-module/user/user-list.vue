@@ -43,12 +43,12 @@
         <el-table-column align="center" label="手机号" prop="phone" show-overflow-tooltip />
         <el-table-column align="center" label="所属门店" prop="storeName" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span>{{ scope.row.storeName || '--' }}</span>
+            <span>{{ (scope.row.shStoreDTO && scope.row.shStoreDTO.storeName) || '--' }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="门店地址" prop="address" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span>{{ scope.row.address || '--'}}</span>
+            <span>{{ (scope.row.shStoreDTO && scope.row.shStoreDTO.address) || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="注册时间" prop="crteTime" show-overflow-tooltip width="180">

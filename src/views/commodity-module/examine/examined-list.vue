@@ -365,7 +365,7 @@ export default {
       const result = await fetch("/product/getByPK", {productId: row.id})
       if (result.code === "200") {
         Object.keys(result.data).map(key => {
-          if (!result.data[key]){
+          if (result.data[key] === '' || result.data[key] === null || result.data[key] === undefined){
             result.data[key] = "--"
           }
         })

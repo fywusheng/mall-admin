@@ -1,12 +1,12 @@
 <template>
   <div class="main-content">
-    <el-row class="mb-2">
+    <!-- <el-row class="mb-2">
       <el-form :inline="true">
         <el-form-item>
-          <!-- <el-button type="primary" icon="el-icon-search" @click="loadData" size="mini">查询</el-button> -->
+          <el-button type="primary" icon="el-icon-search" @click="loadData" size="mini">查询</el-button>
         </el-form-item>
       </el-form>
-    </el-row>
+    </el-row> -->
     <el-table :data="tableData" :header-cell-style="{background:'#FAF9F7',color:'#000000'}"
       size="mini" row-key="id" :highlight-current-row='false' :default-expand-all='false'
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -14,17 +14,17 @@
       </el-table-column>
       <el-table-column prop="name" label="名称" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="modifier" label="操作人" width="100px">
-      </el-table-column>
+      <!-- <el-table-column prop="modifier" label="操作人" width="100px">
+      </el-table-column> -->
       <el-table-column prop="updatedTime" label="操作时间" width="150px">
       </el-table-column>
-      <el-table-column prop="delFlag" label="启用状态" align="center" width="80px">
+      <!-- <el-table-column prop="delFlag" label="启用状态" align="center" width="80px">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.delFlag" active-color="#FF5500" :active-value="0"
             inactive-color="#909399" :inactive-value="1">
           </el-switch>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="" label="操作" align="center" width="300px" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" @click="add(1,scope.row)">添加子部门</el-button>

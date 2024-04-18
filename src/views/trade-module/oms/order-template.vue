@@ -173,8 +173,9 @@
       <tr style="height:40px">
         <td width="5%"></td>
         <!-- 后端说了原来就这样，如果显示的话往后排。 -->
-        <td width="10%" class="td-colspan-label">支付方式：</td>
-        <td width="20%" class="td-colspan-value">{{paymentMethod}}</td>
+        <td width="10%" class="td-colspan-label">支付方式11：</td>
+        <!-- <td width="20%" class="td-colspan-value">{{paymentMethod}}</td> -->
+        <td width="20%" class="td-colspan-value">微信支付</td>
         <td width="10%" class="td-colspan-label">支付时间：</td>
         <td width="20%" class="td-colspan-value">{{paymentTime}}</td>
         <td width="10%" class="td-colspan-label">支付状态：</td>
@@ -259,6 +260,7 @@ export default {
 
     formatPaymentMethod: function (paymentMethod) {
       return paymentMethod === 'alipayMobile' ? '支付宝' : paymentMethod === 'wechatMobile' ? '微信支付' : paymentMethod === 'cash_pay' ? '余额支付' : '--'
+      // return "微信支付"
     },
   },
 

@@ -41,13 +41,13 @@
         align="center"></el-table-column>
       <el-table-column prop="updatedTime" label="修改时间" width="150px"
         align="center"></el-table-column>
-      <el-table-column prop="delFlag" label="启用状态" width="80px" align="center">
+      <!-- <el-table-column prop="delFlag" label="启用状态" width="80px" align="center">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.delFlag" active-color="#FF5500" :active-value="0"
             inactive-color="#909399" :inactive-value="1" @change="resetting(scope.row)">
           </el-switch>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="" label="操作" align="center" width="300px" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-collection" :underline="false" size="mini"

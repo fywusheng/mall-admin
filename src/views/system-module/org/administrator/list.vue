@@ -36,26 +36,22 @@
       </el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" align="center" width="150px">
       </el-table-column>
-      <el-table-column prop="delFlag" label="启用状态" align="center" width="80px">
+      <!-- <el-table-column prop="delFlag" label="启用状态" align="center" width="80px">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.delFlag" active-color="#FF5500" :active-value="0"
             inactive-color="#909399" :inactive-value="1">
           </el-switch>
-          <!-- 提示接口不存在 -->
-          <!-- <el-switch :value="scope.row.delFlag" active-color="#FF5500" :active-value="0"
-            inactive-color="#909399" :inactive-value="1" @change="(e) => disable(e, scope.row)">
-          </el-switch> -->
         </template>
-      </el-table-column>
-      <el-table-column prop="" label="操作" width="380px;" align="center" fixed="right">
+      </el-table-column> -->
+      <el-table-column prop="" label="操作" width="300px;" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button icon="el-icon-info" :underline="false" size="mini"
             @click="forward2AuthorizationPage(scope.row)">授权&nbsp;&nbsp;</el-button>
           <el-button icon="el-icon-edit" :underline="false" size="mini"
             @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-button>
           <el-button :underline="false" @click="reset(scope.row)" size="mini">重置密码&nbsp;&nbsp;</el-button>
-          <el-button icon="el-icon-delete" :underline="false" size="mini"
-            @click="del(scope.row)">删除&nbsp;&nbsp;</el-button>
+          <!-- <el-button icon="el-icon-delete" :underline="false" size="mini"
+            @click="del(scope.row)">删除&nbsp;&nbsp;</el-button> -->
         </template>
       </el-table-column>
     </el-table>

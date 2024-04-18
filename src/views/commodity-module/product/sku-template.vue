@@ -23,10 +23,10 @@
         </el-col>
       </el-row>
       <el-form-item label="" prop="skuSpecsMap"></el-form-item>
-      <el-form-item label="供应商货号" prop="supplierCode">
+      <!-- <el-form-item label="供应商货号" prop="supplierCode">
         <el-input v-model="dataForm.supplierCode" placeholder="请输入商家的货号..." style="width:100%"
           maxlength="32" size="small"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="库存" prop="stockBalance">
         <el-input v-model="dataForm.stockBalance" placeholder="请输入库存数量..." style="width:100%"
           maxlength="6" size="small"></el-input>

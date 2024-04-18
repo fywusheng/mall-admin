@@ -216,7 +216,8 @@ export default {
       // this.loadData();
     },
     formatPaymentMethod: function (row, column) {
-      return row.paymentMethod === 'alipayMobile' ? '支付宝' : row.paymentMethod === 'wechatMobile' ? '微信支付' : row.paymentMethod === 'cash_pay' ? '余额支付' : '--'
+      // return row.paymentMethod === 'alipayMobile' ? '支付宝' : row.paymentMethod === 'wechatMobile' ? '微信支付' : row.paymentMethod === 'cash_pay' ? '余额支付' : '--'
+      return "微信支付"
     },
     formatReceiveAddress: function (row, column) {
       return row.receiveCityName + row.receiveAreaName + row.receiveAddress

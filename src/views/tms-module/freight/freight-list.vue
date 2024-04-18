@@ -41,7 +41,7 @@
         :formatter="formatPostage"></el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" width="150px"
         align="center"></el-table-column>
-      <el-table-column prop="modifier" label="操作人" width="80px" align="center"></el-table-column>
+      <!-- <el-table-column prop="modifier" label="操作人" width="80px" align="center"></el-table-column> -->
       <el-table-column prop="delFlag" label="启用状态" align="center" width="80px">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.delFlag" active-color="#FF5500" :active-value="0"
@@ -80,10 +80,15 @@ export default {
       },
       dialogList: [],
       supplierOptions: [
-        // { label: "所有用户", value: 0 },
+        { label: "所有用户", value: 0 },
         { label: "会员用户", value: 1 },
         { label: "注册用户", value: 2 }
       ],
+      // copySupplierOptions: [
+      //   { label: "所有用户", value: 0 },
+      //   { label: "会员用户", value: 1 },
+      //   { label: "注册用户", value: 2 }
+      // ],
       showDialog: false
     }
   },
