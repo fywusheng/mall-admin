@@ -2,13 +2,13 @@
   <el-dialog class="dialog" title="新增权限一级菜单" width="600px" :visible.sync="showDialog">
     <el-form class="data-form" :model="dataForm" :rules="dataRules" ref="dataForm"
       label-width="150px" label-position="top">
-      <el-form-item label="所属业务" prop="bizCode">
+      <!-- <el-form-item label="所属业务" prop="bizCode">
         <el-select v-model="dataForm.bizCode" placeholder="请选择所属业务模块..." :disabled="bizDisabed"
           style="width:100%">
           <el-option v-for="item in bizData" :key="item.code" :label="item.name" :value="item.code">
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="所属父权限菜单" prop="pname" v-if="showType===1">
         <el-input v-model="dataForm.pname" type="input" style="width:100%" disabled></el-input>
       </el-form-item>
