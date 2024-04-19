@@ -1182,6 +1182,8 @@ export default {
       this.$router.back();
     },
     handleAvatarSuccess(response, file) {
+      // console.log(response)
+      // console.log(file)
       if (!response || response.code != 0) {
         return;
       }
