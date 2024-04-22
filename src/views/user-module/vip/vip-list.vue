@@ -31,7 +31,7 @@
 
     <!-- 查询结果区开始 -->
     <div class="table-wrap ">
-      <el-table ref="table" v-loading="listLoading" height="446px" :data="list"
+      <el-table ref="table" v-loading="listLoading" max-height="490px" :data="list"
         element-loading-text="加载中..." highlight-current-row>
         <el-table-column align="center" label="序号" prop="id" width="50px">
           <template slot-scope="scope">

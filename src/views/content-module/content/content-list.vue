@@ -37,7 +37,7 @@
           <el-button type="success" size="small" @click="handleEditor">添加</el-button>
         </div>
       </div> -->
-      <el-table ref="table" v-loading="listLoading" height="460px" :data="formData"
+      <el-table ref="table" v-loading="listLoading" max-height="490px" :data="formData"
         element-loading-text="加载中..." fit highlight-current-row>
         <el-table-column label="序号" width="50" align="center">
           <template slot-scope="scope">
