@@ -78,17 +78,26 @@
           <td width="5%"></td>
           <td width="30%">
             <el-form-item label="售卖区域：" prop="salesArea" class="item">
-              <el-cascader class="_cascader" v-model="dataForm.salesArea" :options="areaList" :props="{multiple:true, value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="请选择售卖区域..." style="width:80%"/>
+              <el-select v-if="$route.params.id == 1" disabled multiple :value="['0']" size='small'  clearable placeholder="请选择售卖区域..." style="width:80%">
+                <el-option key="0" label="全国" value="0">全国</el-option>
+              </el-select>
+              <el-cascader v-else class="_cascader" v-model="dataForm.salesArea" :options="areaList" :props="{multiple:true, value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="请选择售卖区域..." style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="经营范围：" prop="businessScope" class="item">
-              <el-cascader class="_cascader"  v-model="dataForm.businessScope" :options="categoryOptions" placeholder="请选择经营范围..." clearable :props="{multiple:true, value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
+              <el-select v-if="$route.params.id == 1" disabled multiple :value="['0']" size='small'  clearable placeholder="请选择售卖区域..." style="width:80%">
+                <el-option key="0" label="全部" value="0">全部</el-option>
+              </el-select>
+              <el-cascader v-else class="_cascader"  v-model="dataForm.businessScope" :options="categoryOptions" placeholder="请选择经营范围..." clearable :props="{multiple:true, value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="经营品牌：" prop="operatingBrand" class="item">
-              <el-select v-model="dataForm.operatingBrand" multiple filterable style="width:80%" clearable placeholder="请选择经营品牌...">
+              <el-select v-if="$route.params.id == 1" disabled multiple :value="['0']" size='small'  clearable placeholder="请选择售卖区域..." style="width:80%">
+                <el-option key="0" label="全部" value="0">全部</el-option>
+              </el-select>
+              <el-select v-else v-model="dataForm.operatingBrand" multiple filterable style="width:80%" clearable placeholder="请选择经营品牌...">
                 <el-option v-for="item in brandOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -355,53 +364,6 @@ export default {
         // reviewComments: [{ required: true, message: "审核意见不能为空，请输入！", trigger: "blur" }],
       },
       props: { multiple: true },
-      options: [{
-        value: 1,
-        label: '东南',
-        children: [{
-          value: 2,
-          label: '上海',
-          children: [
-            { value: 3, label: '普陀' },
-            { value: 4, label: '黄埔' },
-            { value: 5, label: '徐汇' }
-          ]
-        }, {
-          value: 7,
-          label: '江苏',
-          children: [
-            { value: 8, label: '南京' },
-            { value: 9, label: '苏州' },
-            { value: 10, label: '无锡' }
-          ]
-        }, {
-          value: 12,
-          label: '浙江',
-          children: [
-            { value: 13, label: '杭州' },
-            { value: 14, label: '宁波' },
-            { value: 15, label: '嘉兴' }
-          ]
-        }]
-      }, {
-        value: 17,
-        label: '西北',
-        children: [{
-          value: 18,
-          label: '陕西',
-          children: [
-            { value: 19, label: '西安' },
-            { value: 20, label: '延安' }
-          ]
-        }, {
-          value: 21,
-          label: '新疆维吾尔族自治区',
-          children: [
-            { value: 22, label: '乌鲁木齐' },
-            { value: 23, label: '克拉玛依' }
-          ]
-        }]
-      }]
     };
   },
   async created() {},
