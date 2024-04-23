@@ -146,6 +146,7 @@ export default {
         object_resizing: false,
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
         menubar: this.menubar,
+        removed_menuitems: 'image, media, codesample, template, anchor',
         plugins: plugins,
         end_container_on_empty_block: true,
         powerpaste_word_import: 'clean',
