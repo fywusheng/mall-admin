@@ -26,14 +26,14 @@
   <div class="table-wrap">
     <el-table ref="noticeTable" v-loading="listLoading" :data="noticeList" element-loading-text="加载中..." highlight-current-row>
       <el-table-column type="index" label="序号" width="60"></el-table-column>
-      <el-table-column label="活动编码" align="center" prop="activityId"></el-table-column>
-      <el-table-column label="活动标题" align="center" prop="activityTitle"></el-table-column>
-      <el-table-column label="活动时间" align="center" prop="notcInfo" show-overflow-tooltip>
+      <el-table-column label="活动编码" width="120" align="center" prop="activityId" show-overflow-tooltip></el-table-column>
+      <el-table-column label="活动标题" align="center" prop="activityTitle" show-overflow-tooltip></el-table-column>
+      <el-table-column label="活动时间" align="center" prop="notcInfo" width="180" show-overflow-tooltip>
         <template slot-scope="scope">
           <span>{{scope.row.beginTime}} - {{scope.row.endTime}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="启用状态" align="center" prop="runStas">
+      <el-table-column label="启用状态" align="center" prop="runStas" width="120">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.yn"
@@ -43,7 +43,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作时间" align="center" prop="updateTime"></el-table-column> 
+      <el-table-column label="操作时间" align="center" prop="updateTime" width="180"></el-table-column> 
       <el-table-column align="center" label="操作" width="160" fixed="right">
         <template slot-scope="scope">
           <el-button :underline="false" size="mini" @click="onClickEditNotice(scope.row, 2)">编辑</el-button>
@@ -95,7 +95,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
-      <el-form-item label="重定向URL：">
+      <el-form-item label="重定向URL：" prop="activityUrl">
         <el-input v-model="noticeInfo.activityUrl" placeholder="请输入重定向URL" :disabled="curType == 3" maxlength="150"/>
       </el-form-item>
       <el-form-item label="门店所属地区：" prop="districtArea">
@@ -108,7 +108,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button size="small" @click="()=>{ addEditDialogVisible = false }">取 消</el-button>
+      <el-button size="small" @click="cancelNotice">取 消</el-button>
       <el-button v-if="curType != 3" type="primary" size="small" @click="handleAddEditNotice">保 存</el-button>
     </div>
   </el-dialog>
@@ -129,6 +129,7 @@ export default {
   name: "messageNoticeManage",
   data() {
     return {
+      timers: Date.now(),
       listLoading: false, // loading 效果
       showSearchBox: true, // 是否展示搜索框
       searchData: {
@@ -270,7 +271,7 @@ export default {
      */
     async loadNoticeList() {
       this.listLoading = true
-      if (this.searchData.time.length) {
+      if (this.searchData.time && Array.isArray(this.searchData.time) && this.searchData.time.length) {
         this.searchData.beginTime = this.searchData.time[0] ? dayjs(this.searchData.time[0]).format('YYYY-MM-DD') : ''
         this.searchData.endTime = this.searchData.time[1] ? dayjs(this.searchData.time[1]).format('YYYY-MM-DD') : ''
         // delete this.searchData.time
@@ -295,6 +296,19 @@ export default {
       }
       this.listLoading = false
     },
+    resetData () {
+      this.noticeInfo.activityTitle = "" // 标题
+      this.noticeInfo.activityAbstract = "" // 
+      this.noticeInfo.beginTime = "" // 公告内容
+      this.noticeInfo.endTime = "" // 公告标题
+      this.noticeInfo.activityDesc = "" // 描述
+      this.noticeInfo.activityPic = '' // 公告图片
+      this.noticeInfo.activityUrl = '' 
+      this.noticeInfo.districtArea = '' // 门店所属地区
+      this.noticeInfo.storeNos = []
+      this.noticeInfo.dateTime = []
+      delete this.noticeInfo.id
+    },
     /**
      * @description: 点击添加按钮
      * @author: chenwz
@@ -304,6 +318,8 @@ export default {
       // this.noticeInfo = {
       // }
       // this.isEdit = false
+      this.resetData()
+      delete this.noticeInfo.id
       this.curType = 1
       this.addEditDialogVisible = true
     },
@@ -413,6 +429,10 @@ export default {
         this.handleAddNotice()
       }
     },
+    cancelNotice () {
+      this.addEditDialogVisible = false
+      this.resetData()
+    },
 
     async changeDistrictArea (val) {
       this.storeListOptions = []
@@ -459,6 +479,7 @@ export default {
               type: "success",
               message: "添加活动成功!"
             })
+            this.resetData()
             this.loadNoticeList()
           } else {
             this.$message.error(message)
