@@ -315,19 +315,20 @@ export default {
     async onChangeStatus(row) {
       // 修改状态时显示loading效果, 防止重复操作
       this.listLoading = true
-      let status = null
-      if(row.yn == 1) {
-        status = 0
-      } else if (row.yn == 0) {
-        status = 1
-      }
-      const res = await clientPost("/srm/sh/activity/saveOrUpdate", {data: {data: { id: row.id, yn: status }}})
+      // let status = null
+      // if(row.yn == 1) {
+      //   status = 0
+      // } else if (row.yn == 0) {
+      //   status = 1
+      // }
+      const res = await clientPost("/srm/sh/activity/saveOrUpdate",  { id: row.id, yn: row.yn })
       if (res.code == 200) {
         this.listLoading = false
         this.$message({
           type: "success",
           message: res.msg
         })
+        this.loadNoticeList()
       }
     },
     /**
