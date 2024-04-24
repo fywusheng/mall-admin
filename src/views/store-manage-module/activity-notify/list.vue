@@ -291,7 +291,7 @@ export default {
       const res = await clientPost("/srm/sh/activity/listByPageNo", params)
       if (res.code == 200) {
         this.noticeList = res.data.list
-        this.total = res.data.total
+        this.total = res.data.totalCount
       }
       this.listLoading = false
     },
