@@ -414,7 +414,11 @@ export default {
         result.data.districtArea = result.data.districtArea.split(',')
         result.data.salesArea = this.formatSalesArea(result.data.salesArea)
         // result.data.businessScope = this.formatSalesArea(result.data.businessScope, 3)
-        result.data.businessScope = JSON.parse(result.data.businessScope)
+        try {
+          result.data.businessScope = JSON.parse(result.data.businessScope)
+        } catch (err) {
+          console.log(err)
+        }
         result.data.operatingBrand = result.data.operatingBrand.split(',')
 
         this.dataForm = { ...result.data }

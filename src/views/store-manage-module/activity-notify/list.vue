@@ -2,7 +2,7 @@
 <div class="app-container">
   <el-form class="notice-search-box-body search-form clearfix" v-show="showSearchBox" :inline="true" size="mini">
     <el-form-item label="活动标题：" label-width="110px" class="search-field fl">
-      <el-input v-model="searchData.notcTtl" placeholder="请输入公告标题" clearable size="mini"/>
+      <el-input v-model="searchData.activityTitle" placeholder="请输入公告标题" clearable size="mini"/>
     </el-form-item>
     <el-form-item label="生效时间：" label-width="110px" class="search-field fl">
       <el-date-picker 
@@ -26,18 +26,24 @@
   <div class="table-wrap">
     <el-table ref="noticeTable" v-loading="listLoading" :data="noticeList" element-loading-text="加载中..." highlight-current-row>
       <el-table-column type="index" label="序号" width="60"></el-table-column>
-      <el-table-column label="活动编码" align="center" prop="notcTtl"></el-table-column>
-      <el-table-column label="活动标题" align="center" prop="notcTtl"></el-table-column>
-      <el-table-column label="活动时间" align="center" prop="notcInfo" show-overflow-tooltip></el-table-column>
+      <el-table-column label="活动编码" align="center" prop="activityId"></el-table-column>
+      <el-table-column label="活动标题" align="center" prop="activityTitle"></el-table-column>
+      <el-table-column label="活动时间" align="center" prop="notcInfo" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span>{{scope.row.beginTime}} - {{scope.row.endTime}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="启用状态" align="center" prop="runStas">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.runStas"
+            v-model="scope.row.yn"
+            active-value="1"
+            inactive-value="0"
             @change="onChangeStatus(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作时间" align="center" prop="pshCnt"></el-table-column> 
+      <el-table-column label="操作时间" align="center" prop="updateTime"></el-table-column> 
       <el-table-column align="center" label="操作" width="160" fixed="right">
         <template slot-scope="scope">
           <el-button :underline="false" size="mini" @click="onClickEditNotice(scope.row, 2)">编辑</el-button>
@@ -55,16 +61,16 @@
   <!-- 新增/编辑活动通知 dialog -->
   <el-dialog :close-on-click-modal="false" :title="titleObj[curType]" :visible.sync="addEditDialogVisible" width="600px" class="add-notice-dialog">
     <el-form ref="noticeDialogForm" :model="noticeInfo" :rules="dialogRule" label-width="140px" size="small">
-      <el-form-item label="活动通知标题：" prop="notcTtl">
-        <el-input v-model="noticeInfo.notcTtl" placeholder="请输入活动通知标题" maxlength="50" :disabled="curType == 3"/>
+      <el-form-item label="活动通知标题：" prop="activityTitle">
+        <el-input v-model="noticeInfo.activityTitle" placeholder="请输入活动通知标题" maxlength="50" :disabled="curType == 3"/>
       </el-form-item>
-      <el-form-item label="活动通知摘要：" prop="notcTtl">
-        <el-input v-model="noticeInfo.notcTtl" placeholder="请输入活动通知摘要" maxlength="200" :disabled="curType == 3"/>
+      <el-form-item label="活动通知摘要：" prop="activityAbstract">
+        <el-input v-model="noticeInfo.activityAbstract" placeholder="请输入活动通知摘要" maxlength="200" :disabled="curType == 3"/>
       </el-form-item>
-      <el-form-item label="活动时间：" prop="expiryDate">
+      <el-form-item label="活动时间：" prop="dateTime">
         <el-date-picker
           style="width: 100% !important; "
-          v-model="noticeInfo.expiryDate" 
+          v-model="noticeInfo.dateTime" 
           type="daterange"
           range-separator="-"
           value-format="timestamp"
@@ -75,29 +81,29 @@
         >
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="活动描述：" prop="notcInfo">
-        <el-input type="textarea" v-model="noticeInfo.notcInfo" maxlength="1000" placeholder="请输入活动描述" :autosize="{ minRows: 3, maxRows: 3 }" :disabled="curType == 3"/>
+      <el-form-item label="活动描述：" prop="activityDesc">
+        <el-input type="textarea" v-model="noticeInfo.activityDesc" maxlength="1000" placeholder="请输入活动描述" :autosize="{ minRows: 3, maxRows: 3 }" :disabled="curType == 3"/>
       </el-form-item>
-      <el-form-item label="活动通知图片：" prop="imgUrl">
+      <el-form-item label="活动通知图片：" prop="activityPic">
         <el-upload class="avatar-uploader"
           :disabled="curType == 3"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
           :auto-upload="true">
-            <img v-if="noticeInfo.imgUrl" :src="noticeInfo.imgUrl" class="avatar">
+            <img v-if="noticeInfo.activityPic" :src="noticeInfo.activityPic" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
       <el-form-item label="重定向URL：">
-        <el-input v-model="noticeInfo.notcTtl" placeholder="请输入重定向URL" :disabled="curType == 3"/>
+        <el-input v-model="noticeInfo.activityUrl" placeholder="请输入重定向URL" :disabled="curType == 3" maxlength="150"/>
       </el-form-item>
       <el-form-item label="门店所属地区：" prop="districtArea">
-        <el-cascader v-model="noticeInfo.districtArea" :disabled="curType == 3" :options="areaList" :props="{ value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="请选择门店所属地区..." style="width:100%"/>
+        <el-cascader v-model="noticeInfo.districtArea" :disabled="curType == 3" :options="areaList" :props="{ value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="请选择门店所属地区..." style="width:100%" @change="changeDistrictArea"/>
       </el-form-item>
-      <el-form-item label="适用门店：" prop="msgType">
-        <el-select style="width: 100%;" v-model="noticeInfo.msgType" :disabled="curType == 3" placeholder="请选择适用门店" clearable>
-          <el-option label="系统通知" :value="3"></el-option>
+      <el-form-item label="适用门店：" prop="storeNos">
+        <el-select style="width: 100%;" v-model="noticeInfo.storeNos" :disabled="curType == 3" filterable multiple placeholder="请选择适用门店" clearable @change="changeStoreNos">
+          <el-option v-for="item in storeListOptions" :key="item.id" :label="item.storeName" :value="item.storeNo"></el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -114,8 +120,9 @@
 // import { msgManageApi as msgApi } from "@/api"
 
 import { fetch, post } from "@/utils/http-nepsp"
-import { fetch as clientFetch } from "@/utils/http-client"
-
+import { fetch as clientFetch, post as clientPost } from "@/utils/http-client"
+import dayjs from 'dayjs'
+import { deepClone } from '@/utils/index'
 // const path = "/ngcmn"
 
 export default {
@@ -127,18 +134,23 @@ export default {
       searchData: {
         pageNum: 1, // 当前页码
         pageSize: 10, // 当前页面最大显示条数
-        notcTtl: "", // 标题
+        activityTitle: "", // 标题
+        beginTime:'', 
+        endTime: '',
         time: [] // 时间范围
       }, // 筛选器内容
       rlsChnlStr: [], // 发布类型
       noticeInfo: {
-        crterTime: "", // 创建时间
-        msgTypeStr: "", // 消息类型
-        notcInfo: "", // 公告内容
-        notcTtl: "", // 公告标题
-        rediAddr: "", // 重定向地址
-        imgUrl: '', // 公告图片
+        activityTitle: "", // 标题
+        activityAbstract: "", // 
+        beginTime: "", // 公告内容
+        endTime: "", // 公告标题
+        activityDesc: "", // 描述
+        activityPic: '', // 公告图片
+        activityUrl: '', 
         districtArea: '', // 门店所属地区
+        storeNos: [],
+        dateTime: []
       },
       noticeList: [], // 公告列表
       total: 0, // 公告数量
@@ -151,13 +163,15 @@ export default {
         3: '活动通知详情',
       },
       areaList: [], // 门店所属地区数据
+      storeListOptions: [],
       dialogRule: {
-        notcTtl: [{ required: true, message: "活动通知标题不能为空，请输入！", trigger: "blur" }],
-        msgType: [{ required: true, message: "适用门店不能为空，请选择！", trigger: ["change", "blur"] }],
-        notcInfo: [{ required: true, message: "活动描述不能为空，请输入！", trigger: "blur" }],
-        imgUrl: [{ required: true, message: "活动通知图片不能为空，请选择！", trigger: "change" }],
-        expiryDate: [{ required: true, message: "活动时间不能为空，请选择！", trigger: "change" }],
+        activityTitle: [{ required: true, message: "活动通知标题不能为空，请输入！", trigger: "blur" }],
+        activityAbstract: [{ required: true, message: "活动通知摘要不能为空，请输入！", trigger: "blur" }],
+        dateTime: [{ required: true, message: "活动时间不能为空，请选择！", trigger: "change" }],
+        activityDesc: [{ required: true, message: "活动描述不能为空，请输入！", trigger: "blur" }],
+        activityPic: [{ required: true, message: "活动通知图片不能为空，请选择！", trigger: "change" }],
         districtArea: [{ required: true, message: "门店所属地区不能为空，请选择！", trigger: "change" }],
+        storeNos: [{ required: true, message: "适用门店不能为空，请选择！", trigger: ["change", "blur"] }],
       } // 弹窗表单校验规则
     }
   },
@@ -256,16 +270,30 @@ export default {
      */
     async loadNoticeList() {
       this.listLoading = true
-      try {
-        const { type, data } = await post("/ngcmn/notice/sys/selectNotice", {data: {data: this.searchData}})
-        if (type === "success") {
-          this.noticeList = data.list
-          this.total = data.total
-        }
-        this.listLoading = false
-      } catch (e) {
-        this.listLoading = false
+      if (this.searchData.time.length) {
+        this.searchData.beginTime = this.searchData.time[0] ? dayjs(this.searchData.time[0]).format('YYYY-MM-DD') : ''
+        this.searchData.endTime = this.searchData.time[1] ? dayjs(this.searchData.time[1]).format('YYYY-MM-DD') : ''
+        // delete this.searchData.time
+      } else {
+        this.searchData.beginTime = ''
+        this.searchData.endTime = ''
       }
+      const params = deepClone(this.searchData)
+      params.queryObject = {
+        activityTitle: params.activityTitle, // 标题
+        beginTime:params.beginTime, 
+        endTime: params.endTime,
+      }
+      delete params.activityTitle
+      delete params.beginTime
+      delete params.endTime
+      delete params.time
+      const res = await clientPost("/srm/sh/activity/listByPageNo", params)
+      if (res.code == 200) {
+        this.noticeList = res.data.list
+        this.total = res.data.total
+      }
+      this.listLoading = false
     },
     /**
      * @description: 点击添加按钮
@@ -273,23 +301,8 @@ export default {
      */
     onClickAddNotice() {
       // 清空数据再打开dialog
-      this.noticeInfo = {
-        notcCfgDTO: {
-          lginFlag: "",
-          popUpFlag: "",
-          notcType: "",
-          clikType: "",
-          clikStas: "",
-          beginTime: "",
-          clikCont: "",
-          clikUrl: "",
-          crteTime: "",
-          invdTime: "",
-          poolarea: null,
-          popNotcTtl: "",
-          imgUrl: ""
-        }
-      }
+      // this.noticeInfo = {
+      // }
       // this.isEdit = false
       this.curType = 1
       this.addEditDialogVisible = true
@@ -302,17 +315,19 @@ export default {
     async onChangeStatus(row) {
       // 修改状态时显示loading效果, 防止重复操作
       this.listLoading = true
-      try {
-        const { type } = await post("/ngcmn/notice/sys/updtNotcRunStas", {data: {data: { notcId: row.notcId, runStas: row.runStas ? 0 : 1 }}})
-        if (type === "success") {
-          this.listLoading = false
-          this.$message({
-            type: "success",
-            message: "修改成功!"
-          })
-        }
-      } catch (e) {
+      let status = null
+      if(row.yn == 1) {
+        status = 0
+      } else if (row.yn == 0) {
+        status = 1
+      }
+      const res = await clientPost("/srm/sh/activity/saveOrUpdate", {data: {data: { id: row.id, yn: status }}})
+      if (res.code == 200) {
         this.listLoading = false
+        this.$message({
+          type: "success",
+          message: res.msg
+        })
       }
     },
     /**
@@ -320,11 +335,23 @@ export default {
      * @param row Object 编辑的数据
      * @author: chenwz
      */
-    onClickEditNotice(row, type) {
+    async onClickEditNotice(row, type) {
       // this.isEdit = true
+      // 获取实用门店数据
+      await this.changeDistrictArea(row.districtArea.split(','))
+
       this.curType = type
       this.addEditDialogVisible = true
-      this.noticeInfo = row
+      const dateTime = [new Date(row.beginTime).getTime(), new Date(row.endTime).getTime()]
+      const districtArea = row.districtArea.split(',')
+      let storeNos = row.storeNos.split(',')
+      console.log(storeNos)
+      console.log(this.storeListOptions)
+      if (storeNos.length == this.storeListOptions.slice(1).length) {
+        storeNos.unshift('全部')
+      }
+
+      this.noticeInfo = {...row, dateTime, districtArea, storeNos}
     },
     /**
      * @description: 处理编辑公告记录事件
@@ -333,20 +360,7 @@ export default {
     async handleEditNotice() {
       this.$refs.noticeDialogForm.validate(async valid => {
         if (valid) {
-          const params = Object.assign({}, this.noticeInfo, { runStas: this.noticeInfo.runStas ? 0 : 1 })
-          try {
-            const { type } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: {data: params}})
-            if (type === "success") {
-              this.addEditDialogVisible = false
-              this.$message({
-                type: "success",
-                message: "保存成功!"
-              })
-              this.loadNoticeList()
-            }
-          } catch (e) {
-            this.addEditDialogVisible = true
-          }
+          // this.
         }
       })
     },
@@ -392,9 +406,28 @@ export default {
      */
     handleAddEditNotice() {
       if (this.curType == 2) {
-        this.handleEditNotice()
+        // this.handleEditNotice()
+        this.handleAddNotice()
       } else if (this.curType == 1) {
         this.handleAddNotice()
+      }
+    },
+
+    async changeDistrictArea (val) {
+      this.storeListOptions = []
+      await clientPost('/srm/sh/stores/selectListByAreaCode', {districtArea: val.join()}).then(res => {
+        if (res.code == 200) {
+          res.data.unshift({ storeName: '全部', storeNo: '全部' })
+          this.storeListOptions = res.data || []
+        }
+      })
+    },
+    changeStoreNos (val) {
+      if (!val.includes('全部')) {
+        if (val.length > 100) {
+          val.length = 100;
+          this.$message.warning('非全选状态下，最多选择 100 家门店！')
+        }
       }
     },
     /**
@@ -404,21 +437,30 @@ export default {
     async handleAddNotice() {
       this.$refs.noticeDialogForm.validate(async valid => {
         if (valid) {
-          const params = Object.assign({}, this.noticeInfo, { runStas: this.noticeInfo.runStas ? 0 : 1 })
-          try {
-            const { type, message } = await post("/ngcmn/notice/sys/addOrUpdateSysNoticeService", {data: {data: params}})
-            if (type === "success") {
-              this.addEditDialogVisible = false
-              this.$message({
-                type: "success",
-                message: "添加公告成功!"
-              })
-              this.loadNoticeList()
-            } else {
-              this.$message.error(message)
-            }
-          } catch (e) { 
-            this.addEditDialogVisible = true
+
+          const params = deepClone(this.noticeInfo)
+          console.log(params)
+          params.beginTime = params.dateTime[0] ? dayjs(params.dateTime[0]).format('YYYY-MM-DD') : ''
+          params.endTime = params.dateTime[1] ? dayjs(params.dateTime[1]).format('YYYY-MM-DD') : ''
+          params.districtArea = params.districtArea.join()
+          params.storeNos = params.storeNos.includes('全部') ? this.storeListOptions.map(i => i.storeNo).slice(1).join() : params.storeNos.join()
+          delete params.dateTime
+          delete params.districtAreaStr
+          delete params.updateTime
+          delete params.yn
+          delete params.createTime
+
+
+          const res = await clientPost("/srm/sh/activity/saveOrUpdate", params)
+          if (res.code == 200) {
+            this.addEditDialogVisible = false
+            this.$message({
+              type: "success",
+              message: "添加活动成功!"
+            })
+            this.loadNoticeList()
+          } else {
+            this.$message.error(message)
           }
         }
       })
@@ -462,8 +504,8 @@ export default {
       if (!response || response.code != 0) {
         return;
       }
-      // this.noticeInfo.imgUrl = file.response.data.absoluteUrl;
-      this.$set(this.noticeInfo, 'imgUrl', file.response.data.absoluteUrl)
+      // this.noticeInfo.activityPic = file.response.data.absoluteUrl;
+      this.$set(this.noticeInfo, 'activityPic', file.response.data.absoluteUrl)
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png';
