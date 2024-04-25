@@ -365,7 +365,8 @@ export default {
       console.log(storeNos)
       console.log(this.storeListOptions)
       if (storeNos.length == this.storeListOptions.slice(1).length) {
-        storeNos.unshift('全部')
+        // storeNos.unshift('全部')
+        storeNos = ['全部']
       }
 
       this.noticeInfo = {...row, dateTime, districtArea, storeNos}
