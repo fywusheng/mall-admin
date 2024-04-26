@@ -362,8 +362,8 @@ export default {
       const dateTime = [new Date(row.beginTime).getTime(), new Date(row.endTime).getTime()]
       const districtArea = row.districtArea.split(',')
       let storeNos = row.storeNos.split(',')
-      console.log(storeNos)
-      console.log(this.storeListOptions)
+      // console.log(storeNos)
+      // console.log(this.storeListOptions)
       if (storeNos.length == this.storeListOptions.slice(1).length) {
         // storeNos.unshift('全部')
         storeNos = ['全部']
@@ -437,6 +437,7 @@ export default {
 
     async changeDistrictArea (val) {
       this.storeListOptions = []
+      this.noticeInfo.storeNos = []
       await clientPost('/srm/sh/stores/selectListByAreaCode', {districtArea: val.join()}).then(res => {
         if (res.code == 200) {
           res.data.unshift({ storeName: '全部', storeNo: '全部' })

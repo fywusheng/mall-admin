@@ -10,12 +10,18 @@
         </el-form-item>
       </el-form>
     </el-row>
-    <el-table :data="tableData" ref="multipleTable"
-      :header-cell-style="{background:'#FAF9F7',color:'#000000'}" size="mini" row-key="id" lazy
-      v-loading="loading" :load="loadTree" :highlight-current-row="false"
-      :default-expand-all="false" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column label="" type="" width="20px">
-      </el-table-column>
+    <el-table
+      :data="tableData"
+      :header-cell-style="{background:'#FAF9F7',color:'#000000'}" 
+      size="mini" 
+      row-key="id"
+      v-loading="loading" 
+      :highlight-current-row="false"
+      :default-expand-all="false" 
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+      <!-- <el-table-column label="" type="" width="20px">
+      </el-table-column> -->
       <el-table-column prop="name" label="类目名称">
       </el-table-column>
       <el-table-column prop="" label="LOGO" width="100px">
@@ -25,6 +31,7 @@
               <i class="el-icon-picture-outline"></i>
             </div>
           </el-image>
+          <!-- <img :src="scope.row.iconUrl" style="height:28px;width:28px" alt=""> -->
         </template>
       </el-table-column>
       <el-table-column prop="code" label="类目编码" width="100px">
@@ -75,48 +82,48 @@ export default {
   methods: {
     async refreshLoadTree() {
       await this.loadData()
-      this.allDataList.forEach(data => {
-        let dataList = []
-        if (data.children) {
-          data.children.forEach(child => {
-            dataList.push({
-              name: child.name,
-              code: child.code,
-              id: child.id,
-              level: child.level,
-              node: child.node,
-              creator: child.creator,
-              updatedTime: child.updatedTime,
-              delFlag: child.delFlag,
-              parentId: data.id,
-              children: child.children || [],
-              hasChildren: child.children && child.children.length > 0
-            })
-          })
-        }
-        this.$set(this.$refs.multipleTable.store.states.lazyTreeNodeMap, data.id, dataList)
-      })
-      this.allDataList.forEach(data => {
-        data.children && data.children.forEach(child => {
-          const subList = []
-          this.categoryMap[child.id].forEach(subChild => {
-            subList.push({
-              name: subChild.name,
-              code: subChild.code,
-              id: subChild.id,
-              level: subChild.level,
-              node: subChild.node,
-              creator: subChild.creator,
-              updatedTime: subChild.updatedTime,
-              delFlag: subChild.delFlag,
-              parentId: subChild.id,
-              children: subChild.children || [],
-              hasChildren: subChild.children && subChild.children.length > 0
-            })
-          })
-          this.$set(this.$refs.multipleTable.store.states.lazyTreeNodeMap, child.id, subList)
-        })
-      })
+      // this.allDataList.forEach(data => {
+      //   let dataList = []
+      //   if (data.children) {
+      //     data.children.forEach(child => {
+      //       dataList.push({
+      //         name: child.name,
+      //         code: child.code,
+      //         id: child.id,
+      //         level: child.level,
+      //         node: child.node,
+      //         creator: child.creator,
+      //         updatedTime: child.updatedTime,
+      //         delFlag: child.delFlag,
+      //         parentId: data.id,
+      //         children: child.children || [],
+      //         hasChildren: child.children && child.children.length > 0
+      //       })
+      //     })
+      //   }
+      //   this.$set(this.$refs.multipleTable.store.states.lazyTreeNodeMap, data.id, dataList)
+      // })
+      // this.allDataList.forEach(data => {
+      //   data.children && data.children.forEach(child => {
+      //     const subList = []
+      //     this.categoryMap[child.id].forEach(subChild => {
+      //       subList.push({
+      //         name: subChild.name,
+      //         code: subChild.code,
+      //         id: subChild.id,
+      //         level: subChild.level,
+      //         node: subChild.node,
+      //         creator: subChild.creator,
+      //         updatedTime: subChild.updatedTime,
+      //         delFlag: subChild.delFlag,
+      //         parentId: subChild.id,
+      //         children: subChild.children || [],
+      //         hasChildren: subChild.children && subChild.children.length > 0
+      //       })
+      //     })
+      //     this.$set(this.$refs.multipleTable.store.states.lazyTreeNodeMap, child.id, subList)
+      //   })
+      // })
     },
     loadTree(tree, treeNode, resolve) {
       resolve(this.categoryMap[tree.id])
@@ -145,46 +152,61 @@ export default {
     async loadData() {
       this.loading = true
       const result = await fetch('/category/list.sales', {})
-      this.loading = false
       if (result.code == 200) {
-        this.allDataList = result.data;
-        let dataList = []
-        result.data.forEach(data => {
-          let category = {
-            name: data.name,
-            iconUrl: data.iconUrl,
-            code: data.code,
-            id: data.id,
-            level: data.level,
-            node: data.node,
-            creator: data.creator,
-            updatedTime: data.updatedTime,
-            delFlag: data.delFlag,
-            children: [],
-            parentId: data.parentId,
-            hasChildren: data.children && data.children.length > 0
-          }
-          dataList.push(category)
-          const children = []
-          data.children && data.children.forEach(child => {
-            const subList = child.children || []
-            delete child.children
-            children.push({
-              ...child,
-              children: [],
-              hasChildren: subList.length > 0
-            })
-            this.categoryMap[child.id] = subList.map(item => {
-              return { ...item, hasChildren: item.children && item.children.length > 0 }
-            })
-          })
-          this.categoryMap[data.id] = children
-        })
-        this.tableData = dataList
+        // this.allDataList = result.data;
+        // let dataList = []
+        // result.data.forEach(data => {
+        //   let category = {
+        //     name: data.name,
+        //     iconUrl: data.iconUrl,
+        //     code: data.code,
+        //     id: data.id,
+        //     level: data.level,
+        //     node: data.node,
+        //     creator: data.creator,
+        //     updatedTime: data.updatedTime,
+        //     delFlag: data.delFlag,
+        //     children: [],
+        //     parentId: data.parentId,
+        //     hasChildren: data.children && data.children.length > 0
+        //   }
+        //   dataList.push(category)
+        //   const children = []
+        //   data.children && data.children.forEach(child => {
+        //     const subList = child.children || []
+        //     delete child.children
+        //     children.push({
+        //       ...child,
+        //       children: [],
+        //       hasChildren: subList.length > 0
+        //     })
+        //     this.categoryMap[child.id] = subList.map(item => {
+        //       return { ...item, hasChildren: item.children && item.children.length > 0 }
+        //     })
+        //   })
+        //   this.categoryMap[data.id] = children
+        // })
+        // this.tableData = dataList
+        // console.log(this.tableData)
+
+        this.addLevel(result.data)
+        this.tableData = result.data
+        this.loading = false
       } else {
         this.$message.error(result.msg)
+        this.loading = false
       }
     },
+    addLevel(tree, level = 1) {
+      tree.forEach(node => {
+        node.level = level;
+        // node.hasChildren = node.children && node.children.length > 0 ? false : true
+        if (node.children) {
+          this.addLevel(node.children, level + 1);
+        }
+      })
+    },
+
     forward2ProductList(row) {
       this.$router.push({ name: "SalesCategoryProduct", params: { id: row.id, name: row.name, node: row.node } });
     },
@@ -215,7 +237,8 @@ export default {
         const result = await post('/category/delete.sales', param)
         if (result.code == 200) {
           this.$message.success('删除成功!')
-          await this.refreshLoadTree()
+          this.loadData()
+          // await this.refreshLoadTree()
         } else {
           this.$message.error(result.msg)
         }
