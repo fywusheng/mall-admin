@@ -52,19 +52,19 @@
         <tr>
           <td width="5%"></td>
           <td width="45%">
-            <el-form-item label="名称前缀" prop="prefixName" class="item">
+            <!-- <el-form-item label="名称前缀" prop="prefixName" class="item">
               <el-input v-model="dataForm.prefixName" placeholder="请输入商品名称前缀..."
                 :disabled="dataForm.saleState==5" maxlength="32" style="width:80%"></el-input>
-            </el-form-item>
+            </el-form-item> -->
           </td>
         </tr>
         <tr>
           <td width="5%"></td>
           <td width="45%">
-            <el-form-item label="名称后缀" prop="suffixName" class="item">
+            <!-- <el-form-item label="名称后缀" prop="suffixName" class="item">
               <el-input v-model="dataForm.suffixName" placeholder="请输入商品名称后缀..."
                 :disabled="dataForm.saleState==5" maxlength="32" style="width:80%"></el-input>
-            </el-form-item>
+            </el-form-item> -->
           </td>
         </tr>
         <tr>
@@ -375,7 +375,7 @@
       <tr>
         <td style="width:5%"></td>
         <td align="center">
-          <editor class="editor" id="editor" @onInit="initEditor"
+          <editor class="editor" :id="'editor'" @onInit="initEditor"
             apiKey="n6lxhfc42kw4ihomm7bg3sm81oxv33otyiwukx8y15x8ncbd" v-model="productDetail"
             style="width:100%" :init="editorOptions">
           </editor>
@@ -602,9 +602,9 @@ export default {
     Editor
   },
   watch: {
-    productDetail (val) {
-      console.log('----', val)
-    }
+    // productDetail (val) {
+    //   console.log('----', val)
+    // }
   },
   async mounted() {
     const user = localStorage.getItem('userInfor')
@@ -930,7 +930,7 @@ export default {
         this.oldMoneyForm.discountAmount = result.data.discountAmount,
         this.oldMoneyForm.pointDiscountPoint = result.data.pointDiscountPoint,
         this.oldMoneyForm.registerPoint = result.data.registerPoint,
-        this.productDetail = result.data.productDetail,
+        this.productDetail = result.data.productDetail
         this.dataForm = dataForm,
         this.oldMoneyForm.money = result.data.isRebate + '',
         this.moneyValue = result.data.rebateMoney,//返利

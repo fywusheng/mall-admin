@@ -23,12 +23,12 @@
         <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
       </div>
       <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
-      <el-table-column prop="address" label="商家退货地址" :formatter="formatReceiveAddress"
+      <el-table-column prop="address" label="收货地址" :formatter="formatReceiveAddress"
         show-overflow-tooltip></el-table-column>
       <el-table-column prop="exchangedName" label="收货人" width="120px"></el-table-column>
       <el-table-column prop="exchangedPhone" label="联系电话" width="120px"
         show-overflow-tooltip></el-table-column>
-      <el-table-column prop="supplierId" label="所属商家" width="80px" align="center"></el-table-column>
+      <!-- <el-table-column prop="supplierId" label="所属商家" width="80px" align="center"></el-table-column> -->
       <el-table-column prop="createdTime" label="创建时间" width="150px"
         align="center"></el-table-column>
       <el-table-column prop="updatedTime" label="修改时间" width="150px"

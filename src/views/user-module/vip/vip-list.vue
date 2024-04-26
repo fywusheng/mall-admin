@@ -3,7 +3,7 @@
     <!-- 查询条件区开始 -->
     <el-form ref="formSearch" :model="formSearch" :inline="true" class="search-form clearfix"
       size="small">
-      <el-form-item class="search-field fl" label="所在地市" prop="uactAttribution">
+      <el-form-item class="search-field fl" label="所在地市" prop="districtArea">
         <y-united-select size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="handdleSearch" :data="cityList" clearable v-model="formSearch.districtArea"></y-united-select>
       </el-form-item>
       <el-form-item class="search-field fl" label="会员使用状态" prop="cardStatus">
@@ -158,6 +158,18 @@ export default {
         })
       })
     },
+
+    addLevel(tree, level = 1) {
+      tree.forEach(node => {
+        node.level = level;
+        if (level == 2) {
+          delete node.children
+        }
+        if (node.children) {
+          this.addLevel(node.children, level + 1);
+        }
+      })
+    },
     /**
      * @description: 获取城市列表
      * @param {type} 
@@ -166,6 +178,7 @@ export default {
      */
     getCityList() {
       clientFetch("/area/getAreaTree").then(res => {
+        this.addLevel(res.data)
         this.cityList = res.data  
       }).catch(e => {
         console.log(e)
@@ -193,9 +206,10 @@ export default {
     },
     // 重置表单
     onReset(formName) {
-      // this.formSearch.startDate = "" 让resetFields清除
+      this.formSearch.startDate = ""
       this.formSearch.endDate = ""
       this.daterange = ""
+      this.formSearch.districtArea = ''
       this.$refs[formName].resetFields()
       this.handdleSearch()
     },

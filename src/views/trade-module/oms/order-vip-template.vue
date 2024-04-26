@@ -39,8 +39,12 @@
         <td width="5%"></td>
         <td width="10%" class="td-colspan-label">订单编号：</td>
         <td width="20%" class="td-colspan-value">{{orderId}}</td>
-        <td width="10%" class="td-colspan-label">订单ID：</td>
-        <td width="20%" class="td-colspan-value">--</td>
+        <!-- <td width="10%" class="td-colspan-label">订单ID：</td>
+        <td width="20%" class="td-colspan-value">{{orderId}}</td> -->
+        <td width="10%" class="td-colspan-label">当前状态：</td>
+        <td width="20%" class="td-colspan-value">{{orderStatusLabel}}</td>
+        <td width="10%" class="td-colspan-label">创建时间：</td>
+        <td width="25%" class="td-colspan-value">{{orderTime}}</td>
       </tr>
       <tr style="height:40px">
         <td width="5%"></td>
@@ -56,14 +60,14 @@
         <td width="10%" class="td-colspan-label">下单人：</td>
         <td width="20%" class="td-colspan-value">{{crterName}}</td>
         <td width="10%" class="td-colspan-label">手机号码：</td>
-        <td width="20%" class="td-colspan-value">{{updterName}}</td>
-        <td width="10%" class="td-colspan-label">创建时间：</td>
-        <td width="25%" class="td-colspan-value">{{orderTime}}</td>
+        <td width="20%" class="td-colspan-value">{{updterName || '--'}}</td>
+        <!-- <td width="10%" class="td-colspan-label">创建时间：</td>
+        <td width="25%" class="td-colspan-value">{{orderTime}}</td> -->
       </tr>
       <tr style="height:40px">
         <td width="5%"></td>
-        <td width="10%" class="td-colspan-label">当前状态：</td>
-        <td width="20%" class="td-colspan-value">{{orderStatusLabel}}</td>
+        <!-- <td width="10%" class="td-colspan-label">当前状态：</td>
+        <td width="20%" class="td-colspan-value">{{orderStatusLabel}}</td> -->
         <!-- <td width="10%" class="td-colspan-label">创建时间：</td>
         <td width="25%" class="td-colspan-value">{{orderTime}}</td> -->
       </tr>
@@ -78,7 +82,7 @@
           <td>
             <el-table class="custom-table" :data="dataList"
               :header-cell-style="{background:'#F9F9F9',color:'#000000'}" size="mini"
-              v-loading="loading" style="width:90%">
+              v-loading="loading" style="width:80%">
               <div slot="empty" class="empty-wrap">
                 <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
               </div>
@@ -95,7 +99,7 @@
       </table>
     </div>
     <el-row style="height:30px"><el-col :span="24"></el-col></el-row>
-    <el-divider content-position="left">&nbsp;收货信息</el-divider>
+    <!-- <el-divider content-position="left">&nbsp;收货信息</el-divider>
     <el-row style="height:30px"><el-col :span="24"></el-col></el-row>
     <table width="100%">
       <tr style="height:40px">
@@ -104,12 +108,11 @@
         <td width="20%" class="td-colspan-value">{{crterName}}</td>
         <td width="10%" class="td-colspan-label">联系电话：</td>
         <td width="20%" class="td-colspan-value">{{updterName}}</td>
-        <!-- 空标签，占位 -->
         <td width="10%" class="td-colspan-label"></td>
         <td width="20%" class="td-colspan-value"></td>
         <td width="5%"></td>
       </tr>
-    </table>
+    </table> -->
 
     <!-- <div v-for="item in orderExpressList" :key="item.id">
       <el-row style="height:30px"><el-col :span="24"></el-col></el-row>
@@ -199,8 +202,9 @@ export default {
         this.payAmount = result.data.payAmount,
         this.paymentAmount = result.data.paymentAmount,
         this.userId = result.data.userId,
-        this.crterName = result.data.crterName,
-        this.updterName = result.data.updterName,
+        this.crterName = result.data?.detailDTO?.crterName,
+        this.userName = result.data.userName,
+        this.updterName = result.data?.detailDTO?.updterName,
         this.orderTime = result.data.orderTime,
         // this.receiveName = result.data.receiveName,
         // this.receivePhone = result.data.receivePhone,

@@ -81,7 +81,11 @@ export default {
       dataList: [],
       totalCount: 20,
       loading: false,
-      orderStatusOptions: [{ name: '待发货', code: '20' }, { name: '待收货', code: '30' }, { name: '待评价', code: '50' }, { name: '交易完成', code: '40' }],
+      orderStatusOptions: [
+        { name: '待发货', code: '20' }, 
+        { name: '待收货', code: '30' }, 
+        // { name: '待评价', code: '50' }, 
+        { name: '交易完成', code: '40' }],
       searchParams: {
         orderStatus: '20'
       },

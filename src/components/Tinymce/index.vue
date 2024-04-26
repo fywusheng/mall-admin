@@ -91,10 +91,10 @@ export default {
   },
   watch: {
     value(val) {
-      if (!this.hasChange && this.hasInit) {
-        this.$nextTick(() => {
-          window.tinymce.get(this.tinymceId).setContent(val || '')
-        })
+      if (!this.hasChange && !this.hasInit) {
+        setTimeout(() => {
+          window.tinymce.get(this.tinymceId).setContent(val)
+        }, 1000)
       }
     }
   },
@@ -165,7 +165,8 @@ export default {
             if(_this.value){
               this.hasChange = true
             }
-            this.$emit('input', editor.getContent())
+            const v = editor.getContent() || _this.value
+            this.$emit('input', v)
           })
 
           // if (_this.value) {

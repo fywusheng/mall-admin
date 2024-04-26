@@ -31,10 +31,17 @@ export default {
       default: ""
     },
     // 工具栏配置
-    toolbarConfig: {
-      type: Object,
-      default: () => {}
-    },
+    // toolbarConfig: {
+    //   type: Object,
+    //   default: () => {
+    //     excludeKeys: [
+    //       "insertVideo",
+    //       "uploadVideo",
+    //       "group-video",
+    //       "emotion" // 排除菜单组，写菜单组 key 的值即可
+    //     ]
+    //   }
+    // },
     mode: {
       type: String,
       default: "default"
@@ -42,6 +49,14 @@ export default {
   },
   data() {
     return {
+      toolbarConfig: {
+        excludeKeys: [
+          "insertVideo",
+          "uploadVideo",
+          "group-video",
+          // "emotion" // 排除菜单组，写菜单组 key 的值即可
+        ]
+      },
       editor: null,
       editorConfig: {
         placeholder: "请输入内容...",
@@ -72,8 +87,9 @@ export default {
         imageName: Date.now() + "." + fileName,
         imageExt: fileExt
       })
-      if (result.code == 0) {
-        const url = result.data.absoluteUrl
+      console.log(result)
+      if (result.data.code == 0) {
+        const url = result.data.data.absoluteUrl
         insertImgFn(url, "", url)
       } else {
         this.$emit("on-error")
@@ -131,3 +147,35 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+::v-deep .w-e-text-container {
+  h1 {
+    font-size: 24px; /* 你可以根据需要调整字体大小 */
+    font-weight: bold; /* 你可以根据需要调整字体粗细 */
+    /* 其他需要的样式 */
+  }
+  h2 {
+    font-size: 22px; /* 你可以根据需要调整字体大小 */
+    font-weight: bold; /* 你可以根据需要调整字体粗细 */
+    /* 其他需要的样式 */
+  }
+  h3 {
+    font-size: 20px; /* 你可以根据需要调整字体大小 */
+    font-weight: bold; /* 你可以根据需要调整字体粗细 */
+    /* 其他需要的样式 */
+  }
+  h4 {
+    font-size: 18px; /* 你可以根据需要调整字体大小 */
+    font-weight: bold; /* 你可以根据需要调整字体粗细 */
+    /* 其他需要的样式 */
+  }
+  h5 {
+    font-size: 16px; /* 你可以根据需要调整字体大小 */
+    font-weight: bold; /* 你可以根据需要调整字体粗细 */
+    /* 其他需要的样式 */
+  }
+  em {
+    font-style: italic;
+  }
+}
+</style>

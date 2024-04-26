@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <el-row class="mb-2">
+    <!-- <el-row class="mb-2">
       <el-form :inline="true">
         <el-form-item>
           <el-select v-model="searchParams.bizCode" placeholder="请选择业务模块..." style="width:200px">
@@ -10,10 +10,10 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="loadData" size="small">查询(Q)</el-button>
-          <!-- <el-button type="default" @click="add(0)" size="small">新增一级菜单(A)</el-button> -->
+           <el-button type="default" @click="add(0)" size="small">新增一级菜单(A)</el-button>
         </el-form-item>
       </el-form>
-    </el-row>
+    </el-row> -->
     <el-table :data="tableData" :header-cell-style="{background:'#FAF9F7',color:'#000000'}"
       size="mini" row-key="id" :highlight-current-row="false" v-loading="loading"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">

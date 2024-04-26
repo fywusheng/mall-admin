@@ -109,8 +109,9 @@
           </div>
           <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
           <el-table-column prop="orderId" label="订单编号" width="200px" show-overflow-tooltip  align="center"></el-table-column>
-          <el-table-column prop="orderAmount" label="订单金额" width="70px" show-overflow-tooltip
-            align="center"></el-table-column>
+          <!-- <el-table-column prop="orderAmount" label="订单金额" width="70px" show-overflow-tooltip
+            align="center">
+            </el-table-column> -->
           <el-table-column prop="payAmount" label="应付金额" width="70px"
             align="center"></el-table-column>
           <el-table-column prop="paymentAmount" label="实付金额" width="70px" align="center"></el-table-column>
@@ -168,7 +169,7 @@ export default {
         { name: '待支付', code: '10' },
         { name: '待发货', code: '20' },
         { name: '待收货', code: '30' },
-        { name: '待评价', code: '50' },
+        // { name: '待评价', code: '50' },
         { name: '交易完成', code: '40' },
         { name: '已取消', code: '90' }],
       // 会员订单状态 TODO 

@@ -47,8 +47,8 @@
           </template>
         </el-table-column>
         <el-table-column align="center" label="专题名称" prop="colName" show-overflow-tooltip />
-        <el-table-column align="center" label="展示顺序" prop="srt" show-overflow-tooltip>
-        </el-table-column>
+        <!-- <el-table-column align="center" label="展示顺序" prop="srt" show-overflow-tooltip>
+        </el-table-column> -->
         <el-table-column align="center" label="图标" prop="absoluteUrl" show-overflow-tooltip>
           <template slot-scope="scope">
             <el-button icon="el-icon-document" @click="handleImg(scope.row)" size="mini">缩略图</el-button>
@@ -91,7 +91,7 @@
         <el-form-item label="文件缩略图">
           <img :src="formAdd.absoluteUrl" alt="" style="width: 100px" />
         </el-form-item>
-        <el-form-item label="展示顺序" prop="srt">
+        <!-- <el-form-item label="展示顺序" prop="srt">
           <el-row>
             <el-col :span="12">
               <el-select v-model="formAdd.srt" placeholder="全部" size="small">
@@ -101,7 +101,7 @@
               </el-select>
             </el-col>
           </el-row>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="是否启用:" :label-width="formLabelWidth" prop="dispFlag">
           <el-radio-group v-model="formAdd.dispFlag">
             <el-radio :label="true">启用</el-radio>

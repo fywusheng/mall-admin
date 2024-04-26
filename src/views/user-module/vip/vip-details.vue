@@ -14,7 +14,7 @@
         <div class="right-info clearfix">
           <div class="block fl clearfix" v-for="(item,index) in fiedlList" :key="index" >
             <div class="field fl">{{item.value}}</div>
-            <div class="content" v-if="item.key == 'idCard'">{{info[item.key] ? '已录' : "--"}}</div>
+            <div class="content" v-if="item.key == 'idCard'">{{info[item.key] || "--"}}</div>
             <div class="content" v-else-if="item.key == 'storeName'">{{(info.shStoreDTO && info.shStoreDTO.storeName) || "--"}}</div>
             <div class="content" v-else-if="item.key == 'shStoreDTO-address'">{{(info.shStoreDTO && info.shStoreDTO.address) || "--"}}</div>
             <!-- <div class="content" v-else-if="item.key == 'shStoreDTO-expirationTime'">{{(info.shStoreDTO && info.shStoreDTO.expirationTime) || "--"}}</div> -->
