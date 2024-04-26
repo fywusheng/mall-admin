@@ -243,9 +243,14 @@
           <el-radio v-model="formAdd.voiceFlag" @change="$refs.formAdd.clearValidate('voiceFlag')"
             v-for="(item, index) in voiceFlagList" :key="index" :label="item.value">{{item.label}}
           </el-radio>
-          <y-upload-file deleteTips="删除后不可恢复，是否删除？" ref="audioFile" :max="1"
+          <!-- <y-upload-file deleteTips="删除后不可恢复，是否删除？" ref="audioFile" :max="1"
             @fileChange="$refs.formAdd.validateField('voiceFlag')" :fileList="audioFileList"
-            v-show="formAdd.voiceFlag === '1'" tips="" accept=".mp3"></y-upload-file>
+            v-show="formAdd.voiceFlag === '1'" tips="" accept=".mp3"></y-upload-file> -->
+          <el-upload v-show="formAdd.voiceFlag === '1'" :file-list="audioFileList"	 class="upload-demo" style="width: 80%" action="#" accept=".mp3" :limit="1"  ref="audioFile"
+              :before-upload="beforeAvatarUpload"
+              :on-success="handleAvatarSuccess">
+              <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
         </el-form-item>
         <el-form-item label="视频文件" class="half" prop="mediaUrl" v-show="formAdd.artiType === '1'">
 
@@ -257,9 +262,14 @@
           </div>
           <div class="mediaUrl">
             <el-radio v-model="hanUrl" label="0">无链接</el-radio>
-            <y-upload-file v-show="hanUrl === '0'" deleteTips="删除后不可恢复，是否删除？" ref="vedioFile"
+            <!-- <y-upload-file v-show="hanUrl === '0'" deleteTips="删除后不可恢复，是否删除？" ref="vedioFile"
               :max="1" tips="" accept=".mp4">
-            </y-upload-file>
+            </y-upload-file> -->
+            <el-upload  v-show="hanUrl === '0'" :file-list="videoFileList" class="upload-demo" style="width: 80%" action="#" accept=".mp4" :limit="1"  ref="vedioFile"
+                :before-upload="beforeAvatarUpload"
+                :on-success="handleAvatarSuccess">
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
           </div>
 
         </el-form-item>
@@ -303,7 +313,7 @@
 
 // import { commonApi, operationApi } from "@api"
 
-import { fetch, post } from "@/utils/http-nepsp"
+import HttpService, { fetch, post } from "@/utils/http-nepsp"
 import YCascader from "@/components/y-cascader/index"
 import YUploadImg from "@/components/y-upload-img"
 import YUploadFile from "@/components/y-upload-file"
@@ -420,7 +430,7 @@ export default {
       }
     }
     const handleJudgeVoice = (rule, value, callback) => {
-      const audioFileList = this.$refs.audioFile.getFileList()
+      const audioFileList = this.$refs.audioFile.uploadFiles
       if (this.formAdd.artiType === "0" && value === "1" && audioFileList.length === 0) {
         return callback(new Error("请上传录音文件"))
       }
@@ -428,7 +438,7 @@ export default {
     }
 
     const handleJudgemediaUrl = (rule, value, callback) => {
-      const vedioFileList = this.$refs.vedioFile.getFileList()
+      const vedioFileList = this.$refs.vedioFile.uploadFiles
       if (this.formAdd.artiType === "1" &&
         this.hanUrl === "0" &&
         vedioFileList.length === 0) {
@@ -696,7 +706,10 @@ export default {
           for (const key in params) {
             formData.append(key, params[key])
           }
-          post("/cms/iep/web/cms/singleFileUpload", {data: formData}, {
+          HttpService({
+            url: "/cms/iep/web/cms/singleFileUpload",
+            method: 'post',
+            data: formData,
             headers: {
               "Content-Type": "application/x-www-form-urlencoded"
             },
@@ -706,6 +719,17 @@ export default {
           }).catch(err => {
             reject(err)
           })
+          // HttpService("/cms/iep/web/cms/singleFileUpload", {data: formData}, {
+          //   headers: {
+          //     "Content-Type": "application/x-www-form-urlencoded"
+          //   },
+          //   timeout: 120000
+          // })
+          // .then(data => {
+          //   resolve(data.data.absoluteUrl)
+          // }).catch(err => {
+          //   reject(err)
+          // })
         } else {
           resolve("")
         }
@@ -1265,11 +1289,12 @@ export default {
         if (valid) {
 
           if (!(this.formAdd.voiceFlag === "0" && this.formAdd.artiType === "0")) { //非文章类型且非文字转语音 是 上传 文件
-            const files = this.formAdd.artiType === "0" ? this.$refs.audioFile.getFileList() : this.$refs.vedioFile.getFileList()
+            const files = this.formAdd.artiType === "0" ? this.$refs.audioFile.uploadFiles : this.$refs.vedioFile.uploadFiles
             //渲染base64String
             if (this.formAdd.artiType !== "0" && this.hanUrl === "0") {
-              const mediaUrl = await this.fileToBase64String(files)
-              this.formAdd.mediaUrl = mediaUrl
+              console.log(1111111,files)
+              // const mediaUrl = await this.fileToBase64String(files)
+              // this.formAdd.mediaUrl = mediaUrl
             }
 
             // console.log("🚀 ~ file: index.vue ~ line 953 ~ this.$refs[formName].validate ~ mediaUrl", mediaUrl)
@@ -1300,6 +1325,26 @@ export default {
           })
         }
       })
+    },
+
+    handleAvatarSuccess(response, file) {
+      console.log(22222, response, file)
+      if (response?.code == 0) {
+        this.formAdd.mediaUrl = response.data.absoluteUrl;
+      }
+    },
+    beforeAvatarUpload(file) {
+      let fileType = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const isFile = ['mp4', 'mp3'].includes(fileType);
+      // const isLt30M = file.size / 1024 / 1024 < 30;
+      if (!isFile) {
+        this.$message.error('上传文件只能是 mp4 格式!');
+      }
+      // if (!isLt30M) {
+      //   this.$message.error('上传文件大小不能超过 30MB!');
+      // }
+      // return isFile && isLt30M;
+      return isFile
     },
     /**
  * @description: 获取所有地区

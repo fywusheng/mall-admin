@@ -8,6 +8,7 @@ let _uploader = Upload.components.Upload
 // let _ajax = _uploader.props.httpRequest.default
 
 _uploader.props.httpRequest.default = async function (options) {
+  console.log('1111', options)
   // const onSuccess = options.onSuccess;
   // options.onSuccess = function(result){
   //   if(result.code){

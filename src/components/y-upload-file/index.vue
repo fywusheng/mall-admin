@@ -1,5 +1,5 @@
 <template>
-  <el-upload ref="uploadFile" :before-remove="beforeRemove" :accept="accept" v-on="$listeners" v-bind="$attrs" :file-list="fileList" class="upload-demo" action="#" :auto-upload="false" :on-remove="removeFile" :on-change="fileChange" :limit="max" :on-exceed="handleExceed">
+  <el-upload ref="uploadFile" :before-remove="beforeRemove" :accept="accept" v-on="$listeners" v-bind="$attrs" :file-list="fileList" class="upload-demo" action="#" :on-remove="removeFile" :on-change="fileChange" :limit="max" :on-exceed="handleExceed">
     <el-button size="small"  :type="fileLength === max ? 'info' : 'primary'" @click="stopUpload">{{uploadText}}</el-button>
     <div slot="tip" class="el-upload__tip" v-show="tips">{{tips}}</div>
   </el-upload>

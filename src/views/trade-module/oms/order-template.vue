@@ -184,7 +184,7 @@
       <tr style="height:40px">
         <td width="5%"></td>
         <td width="10%" class="td-colspan-label">支付单号：</td>
-        <td width="20%" class="td-colspan-value">{{receiveName}}</td>
+        <td width="20%" class="td-colspan-value">{{payOrderId}}</td>
         <td width="10%" class="td-colspan-label">实付金额：</td>
         <td width="20%" class="td-colspan-value">{{paidAmount}}</td>
         <td width="10%" class="td-colspan-label">获得积分：</td>
@@ -227,6 +227,7 @@ export default {
           this.mobile = '--',
           this.createdTime = result.data.createdTime,
           this.receiveName = result.data.receiveName,
+          this.payOrderId = result.data.orderId?.replace('CO', '')
           this.receivePhone = result.data.receivePhone,
           this.orderStatusLabel = result.data.orderStatusLabel,
           this.sceneType = result.data.sceneType,
