@@ -45,7 +45,7 @@
           <el-table-column label="内容标题" prop="ttl" min-width="120" align="center" show-overflow-tooltip/>
           <el-table-column label="封面图" prop="imgs" min-width="120" align="center">
             <template slot-scope="scope">
-              <el-image v-if="scope.row.imgs.length>0" style="width: 50px; height: 50px"
+              <el-image v-if="scope.row.imgs.length>0" style="width: 30px; height: 30px"
                 :src="scope.row.imgs[0]" :preview-src-list="scope.row.imgs">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline" style="font-size:20px"></i>
@@ -61,7 +61,7 @@
             show-overflow-tooltip>
             <template slot-scope="scope">
 
-              <div>{{scope.row.chkStas | chkStasFilter}}</div>
+              <span>{{scope.row.chkStas | chkStasFilter}}</span>
               <el-button style="display:inline-block" v-if="scope.row.chkStas === '-1'" size="small"
                 type="text" @click="lookReason(scope.row)">查看原因</el-button>
             </template>
@@ -190,7 +190,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-form-item v-if="categoryChildTypeOPt.length>0" label-width="20px" label=""
               class="w-100" prop="subColId">
               <el-select v-model="formAdd.subColId" clearable placeholder="请选择所属子栏目">
@@ -198,7 +198,7 @@
                   :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-form-item label="是否置顶" class="half" prop="moveFlag" v-show="formAdd.artiType === '0'">
           <el-radio v-model="formAdd.moveFlag" v-for="(item, index) in moveFlagList" :key="index"

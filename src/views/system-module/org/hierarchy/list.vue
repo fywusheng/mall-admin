@@ -29,7 +29,7 @@
         <template slot-scope="scope">
           <el-button size="mini" @click="add(1,scope.row)">添加子部门</el-button>
           <el-button size="mini" @click="edit(scope.row)" icon="el-icon-edit">编辑</el-button>
-          <el-button :disabled="scope.row.hasChildren" size="mini" @click="del(scope.row)"
+          <el-button :disabled="scope.row.level == 1" size="mini" @click="del(scope.row)"
             icon="el-icon-delete">删除</el-button>
         </template>
       </el-table-column>
@@ -55,11 +55,21 @@ export default {
     this.loadData()
   },
   methods: {
+     addLevel(tree, level = 1) {
+      tree.forEach(node => {
+        node.level = level;
+        if (node.children) {
+          this.addLevel(node.children, level + 1);
+        }
+      })
+    },
     async loadData() {
       this.Loading = true
       const result = await fetch('/org/list.tree', {});
       if (result.code == 200) {
+        this.addLevel(result.data)
         this.tableData = result.data;
+        console.log(this.tableData)
         this.Loading = false
       }
       else {
