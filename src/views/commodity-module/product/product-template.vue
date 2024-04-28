@@ -474,13 +474,16 @@ export default {
         { key: 2, label: "重量" },
         { key: 3, label: "体积" }
       ],
+      // 心脑血管、骨质疏松、糖尿病、慢性疼痛、脑血管疾病、日常保健、心脑血管、脑卒中、生理监测
       targetAudienceOptions: [
-        { key: "高血压", label: "高血压" },
-        { key: "高血脂", label: "高血脂" },
-        { key: "高血糖", label: "高血糖" },
-        { key: "高尿酸", label: "高尿酸" },
-        { key: "脂肪肝", label: "脂肪肝" },
-        { key: "肾囊肿", label: "肾囊肿" },
+        { key: "骨质疏松", label: "骨质疏松" },
+        { key: "糖尿病", label: "糖尿病" },
+        { key: "慢性疼痛", label: "慢性疼痛" },
+        { key: "脑血管疾病", label: "脑血管疾病" },
+        { key: "日常保健", label: "日常保健" },
+        { key: "心脑血管", label: "心脑血管" },
+        { key: "脑卒中", label: "脑卒中" },
+        { key: "生理监测", label: "生理监测" },
       ],
       SuppliedTypeOptions: [
         { key: 0, label: "平台自营" },

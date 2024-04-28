@@ -47,8 +47,8 @@
       </el-table-column>
       <el-table-column prop="" label="操作" width="380px" align="center" fixed="right">
         <template slot-scope="scope">
-          <el-button :disabled="scope.row.level!=3" size="mini"
-            @click="forward2ProductList(scope.row)">关联商品</el-button>
+          <!-- <el-button :disabled="scope.row.level!=3" size="mini"
+            @click="forward2ProductList(scope.row)">关联商品</el-button> -->
           <el-button :disabled="scope.row.level>2" size="mini"
             @click="add(scope.row)">添加子类</el-button>
           <el-button size="mini" icon="el-icon-edit" @click="edit(scope.row)">编辑</el-button>
