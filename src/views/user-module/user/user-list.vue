@@ -4,7 +4,7 @@
     <el-form ref="formSearch" :model="formSearch" :inline="true" class="search-form clearfix"
       size="small">
       <el-form-item class="search-field fl" label="所在地市" prop="districtArea">
-        <y-united-select size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="handdleSearch" :data="cityList" clearable v-model="formSearch.districtArea"></y-united-select>
+        <y-united-select ref="unitedSelect" size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="codeChange" :data="cityList" clearable ></y-united-select>
       </el-form-item>
       <el-form-item class="search-field fl" label="所属门店" prop="storeNo">
         <sotre-select v-model="formSearch.storeNo" placeholder="请输入所属门店..." size="mini"/>
@@ -201,7 +201,17 @@ export default {
       this.formSearch.crteStartTime = ""
       this.formSearch.crteEndTime = ""
       this.daterange = []
+      this.formSearch.districtArea = ''
       this.$refs[formName].resetFields()
+      this.$refs.unitedSelect.$refs.select?.handleClear()
+      this.handdleSearch()
+    },
+    codeChange (val, node) {
+      if (node && node.length && node[0]) {
+        this.formSearch.districtArea = node[0]?.label
+      } else {
+        this.formSearch.districtArea = ''
+      }
       this.handdleSearch()
     },
     /**

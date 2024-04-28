@@ -4,7 +4,7 @@
     <el-form ref="formSearch" :model="formSearch" :inline="true" class="search-form clearfix"
       size="small">
       <el-form-item class="search-field fl" label="所在地市" prop="districtArea">
-        <y-united-select size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="handdleSearch" :data="cityList" clearable v-model="formSearch.districtArea"></y-united-select>
+        <y-united-select ref="unitedSelect" size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="codeChange" :data="cityList" clearable ></y-united-select>
       </el-form-item>
       <el-form-item class="search-field fl" label="会员使用状态" prop="cardStatus">
         <el-select @change="handdleSearch" clearable v-model="formSearch.cardStatus" size="mini"
@@ -133,7 +133,7 @@ export default {
         type: "error"
       }).then(() => {
         //谨慎操作
-        post('/nun/api/userWeb/alterLoginPwd', { uactId }).then(data => {
+        post('/nun/api/userWeb/alterLoginPwd',{data:  {data: { uactId }}}).then(data => {
           this.$message.success("重置密码成功")
           console.log("resetPwd -> data", data)
         })
@@ -211,6 +211,15 @@ export default {
       this.daterange = ""
       this.formSearch.districtArea = ''
       this.$refs[formName].resetFields()
+      this.$refs.unitedSelect.$refs.select?.handleClear()
+      this.handdleSearch()
+    },
+    codeChange (val, node) {
+      if (node && node.length && node[0]) {
+        this.formSearch.districtArea = node[0]?.label
+      } else {
+        this.formSearch.districtArea = ''
+      }
       this.handdleSearch()
     },
     /**

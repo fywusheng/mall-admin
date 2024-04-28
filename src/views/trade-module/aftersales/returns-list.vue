@@ -3,7 +3,7 @@
     <el-row class="mb-2">
       <el-form :inline="true">
         <el-form-item label="">
-          <el-input v-model="searchParams.orderId" placeholder="请输入订单编号..." clearable
+          <el-input v-model="searchParams.orderCode" placeholder="请输入订单编号..." clearable
             size="mini"></el-input>
         </el-form-item>
         <el-form-item label="">

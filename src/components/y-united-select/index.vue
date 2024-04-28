@@ -1,7 +1,7 @@
 <template>
   <el-cascader ref="select" class="united-select-component" :size="size" :props="props" v-on="$listeners" :options="options" v-bind="$attrs" @change="change">
     <template slot-scope="{ data }">
-      <div :class="{'united-select-component-span':true, 'disabled': data.disabled}" @click.prevent="change(data[props.value])">
+      <div :class="{'united-select-component-span':true, 'disabled': data.disabled}">
         <span>{{ data[props.label] }}</span>
         <!-- <span v-if="data[props.children]"> ({{ data[props.children].length }}) </span> -->
       </div>
@@ -216,15 +216,16 @@ export default {
       return r
     },
     change(val){
+      const nodeVal = this.$refs.select.getCheckedNodes()
       const props = Object.assign(this.defaultSettings, this.settings)
       const item = this.list.find(item => { return item[this.props.value] === val })
-      if (item[props.children] && !props.checkStrictly) {
+      if (item && props.children && item[props.children] && !props.checkStrictly) {
         event.preventDefault()
         return 
       }
       const callbackData = this.keyValue ? item : val
-      this.$emit("input", val)
-      this.$emit("codeChange", callbackData)
+      this.$emit("input", val, nodeVal)
+      this.$emit("codeChange", callbackData, nodeVal)
       this.$refs.select.dropDownVisible = false
     }
   }
