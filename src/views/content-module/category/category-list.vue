@@ -69,37 +69,15 @@
           <el-table-column label="创建时间" prop="crteTime" min-width="120" align="center"
             show-overflow-tooltip>
             <template slot-scope="scope">
-              {{scope.row.crteTime}}
+              {{formatTime(scope.row.crteTime)}}
             </template>
           </el-table-column>
           <el-table-column label="发布时间" prop="rlsTime" min-width="120" align="center"
             show-overflow-tooltip>
             <template slot-scope="scope">
-              {{scope.row.rlsTime}}
+              {{formatTime(scope.row.rlsTime)}}
             </template>
           </el-table-column>
-          <!-- <el-table-column align="center" prop="created_at" label="操作" width="250" fixed="right">
-            <template slot-scope="scope">
-              <el-link type="primary" size="small"
-                v-if="btnPermissions.includes('查看') && ['1', '3'].includes(scope.row.chkStas)"
-                @click="addOrEdit(scope.row,1)">查看</el-link>
-              <el-link type="primary" size="small"
-                v-if="btnPermissions.includes('下架') && scope.row.chkStas === '3'"
-                @click="downShelf(scope.row)">下架</el-link>
-              <el-link type="primary" size="small"
-                v-if="btnPermissions.includes('编辑') && (scope.row.chkStas === '0' || scope.row.chkStas ==='-1')"
-                @click="addOrEdit(scope.row,2)">修改</el-link>
-              <el-link type="warning" size="small"
-                v-if="btnPermissions.includes('提交审核') && (scope.row.chkStas === '0' || scope.row.chkStas ==='-1')"
-                @click="submitExamine(scope.row.contId)">提交审核</el-link>
-              <el-link type="warning" size="small"
-                v-if="btnPermissions.includes('审核') && scope.row.chkStas === '1'"
-                @click="examine(scope.row)">审核</el-link>
-              <el-link type="danger" size="small"
-                v-if="btnPermissions.includes('删除') && scope.row.chkStas !== '1'"
-                @click="handleDelete(scope.row.contId)">删除</el-link>
-            </template>
-          </el-table-column> -->
           <el-table-column align="center" prop="created_at" label="操作" width="250">
             <template slot-scope="scope">
               <el-button size="mini"
@@ -321,6 +299,7 @@ import YEditor from '@/components/y-editor'
 import { convertUrlToBase64, fileToBase64 } from "@/utils/downloadImg"
 import { deepClone } from "@/utils/index"
 import { dayFormat } from '@/utils/dayjs'
+import dayjs from 'dayjs'
 const chkStasList = [
   {
     label: "待提交",
@@ -412,6 +391,7 @@ export default {
         if (this.formAdd.tempType === "0") {
           return callback()
         } else {
+          // if (this.formAdd.picList.length === 0) {
           if (this.formAdd.picList.length === 0) {
             return callback(new Error("请上传展示封面"))
           } else {
@@ -439,14 +419,10 @@ export default {
 
     const handleJudgemediaUrl = (rule, value, callback) => {
       const vedioFileList = this.$refs.vedioFile.uploadFiles
-      if (this.formAdd.artiType === "1" &&
-        this.hanUrl === "0" &&
-        vedioFileList.length === 0) {
+      if (this.formAdd.artiType === "1" && this.hanUrl === "0" && vedioFileList.length === 0) {
         return callback(new Error("请上传视频文件"))
       }
-      if (this.formAdd.artiType === "1" &&
-        this.hanUrl === "1" &&
-        this.formAdd.mediaUrl === "") {
+      if (this.formAdd.artiType === "1" && this.hanUrl === "1" && this.formAdd.mediaUrl === "") {
         return callback(new Error("请上传视频文件"))
       }
       callback()
@@ -550,10 +526,13 @@ export default {
         printId: [{ required: true, message: "请选择所属栏目", trigger: "change" }],
         subColId: [{ required: true, message: "请选择所属子栏目", trigger: "change" }],
         cityCodg: [{ required: true, message: "请选择城市", trigger: "change" }],
-        picList: [{ required: true, validator: handleJudgepicList, trigger: "change" }],
-        // tagNameArr: [{ required: true, message: "请添加内容标签", trigger: "change" }],
-        voiceFlag: [{ required: true, validator: handleJudgeVoice, trigger: "change" }],
-        mediaUrl: [{ required: true, validator: handleJudgemediaUrl, trigger: "change" }]
+        // 视频封面图、展示封面 公用
+        // picList: [{ required: true, validator: handleJudgepicList, trigger: "change" }],
+                  // tagNameArr: [{ required: true, message: "请添加内容标签", trigger: "change" }],
+        // 录音文件
+        // voiceFlag: [{ required: true, validator: handleJudgeVoice, trigger: "change" }],
+        // 视频文件
+        // mediaUrl: [{ required: true, validator: handleJudgemediaUrl, trigger: "change" }]
       },
       artImgList: [], //点击编辑后的图片列表展示
       videoImgList: [], //视频封面
@@ -633,6 +612,10 @@ export default {
 
   },
   methods: {
+    formatTime (val) {
+      if (!val) return '--'
+      return dayjs(val).format('YYYY-MM-DD hh:mm:ss')
+    },
     // 获取按钮权限
     handleBtnPermission() {
       const menuList = deepClone(this.$store.getters.menuList)
@@ -750,13 +733,18 @@ export default {
       }
       const files = this.formAdd.artiType === "0" ? this.$refs.articleImg.getImgList() : this.$refs.vedioImg.getImgList()
       const arr = []
+      console.log(222, files)
       for (let i = 0; i < files.length; i++) {
         const item = files[i]
         let base64
-        if (item.raw) {
-          base64 = await fileToBase64(item.raw)
-        } else if (item.url) {
-          base64 = await convertUrlToBase64(item.url)
+        try {
+          if (item.raw) {
+            base64 = await fileToBase64(item.raw)
+          } else if (item.url) {
+            base64 = await convertUrlToBase64(item.url)
+          }
+        } catch (error) {
+          console.log(error)
         }
 
         const nameArray = item.name.split(".")
@@ -769,10 +757,11 @@ export default {
         }
         arr.push(obj)
       }
+      console.log('123', arr)
       this.formAdd.picList = arr
       this.$nextTick(() => {
         //封面的校验
-        this.$refs.formAdd.validateField("picList")
+        // this.$refs.formAdd.validateField("picList")
       })
     },
     /**
@@ -789,7 +778,7 @@ export default {
       } else {
         this.$nextTick(() => {
           //封面的校验
-          this.$refs.formAdd.clearValidate("picList")
+          // this.$refs.formAdd.clearValidate("picList")
         })
       }
     },
@@ -1196,7 +1185,6 @@ export default {
      * @author: syx
      */
     async addOrEdit(data = {}, flag) {
-      debugger
       console.log("组建", this.$refs.formAdd)
       this.addFlag = !data.contId
       this.flag = flag
@@ -1241,11 +1229,13 @@ export default {
         } else { //视频封面
           this.videoImgList = list
         }
+    
         if (data.subColId) {
           this.handleChangePrintId(data.printId)
         }
         //渲染 formAdd.picList
         this.$nextTick(() => {
+          console.log(111)
           this.articleImgChange()
         })
       } else {
@@ -1283,11 +1273,11 @@ export default {
  * @author: syx
  */
     saveContent(formName) {
-
+      console.log(this.formAdd)
+      
       // eslint-disable-next-line space-before-function-paren
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-
           if (!(this.formAdd.voiceFlag === "0" && this.formAdd.artiType === "0")) { //非文章类型且非文字转语音 是 上传 文件
             const files = this.formAdd.artiType === "0" ? this.$refs.audioFile.uploadFiles : this.$refs.vedioFile.uploadFiles
             //渲染base64String
@@ -1300,7 +1290,8 @@ export default {
             // console.log("🚀 ~ file: index.vue ~ line 953 ~ this.$refs[formName].validate ~ mediaUrl", mediaUrl)
             // this.formAdd.mediaUrl = mediaUrl
           }
-
+          debugger
+          console.log(this.formAdd)
           this.formAdd.tempType = this.formAdd.artiType === "1" ? "3" : this.formAdd.tempType //模板类型（“0”：文章无图，“1”：文章一张图，“2”：文章三张图，“3”：视频截图
           if (this.formAdd.tempType === "0") {
             this.formAdd.picList = []
