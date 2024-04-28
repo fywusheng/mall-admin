@@ -9,7 +9,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item class="search-field fl" label="反馈人联系方式">
+      <el-form-item class="search-field fl" label="反馈人联系方式" prop="crterMob">
         <el-input v-model="formSearch.crterMob" placeholder="请输入联系方式"></el-input>
       </el-form-item>
       <el-form-item class="search-field fl" label="反馈时间" prop="selectedDate">
