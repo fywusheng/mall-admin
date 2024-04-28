@@ -120,7 +120,7 @@ export default {
      * @author: syx
      */
     resetPwd(uactId) {
-      this.$confirm("是否确认重置密码？", "警告", {
+      this.$confirm("是否确认重置密码？密码重置后会自动变更为手机号前 8 位！", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "error"

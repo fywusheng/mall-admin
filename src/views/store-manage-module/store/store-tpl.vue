@@ -479,52 +479,59 @@ export default {
       //     res = valid
       //   })
       // }
-      this.$refs.dataFormInfor.validate(async valid => {
-        if (valid) {
-          
-          if (!this.dataForm.address) return this.$message.warning('门店详细地址不能为空，请输入！')
-
-
-          if (this.dataForm.businessScope) {
-            console.log(this.dataForm.businessScope)
-            if (this.dataForm.businessScope.length > 60) {
-              return this.$message.warning('经营范围选择数量超出限制，请重新选择！')
-            }
-          }
-          this.sending = true;
-
-          const params = deepClone(this.dataForm)
-          // 编辑
-          if (this.$route.params.id != -1) {
-            params.id = this.$route.params.id
-            // 审核相关字段不传
-            params.reviewStatus = ''
-            params.reviewComments = ''
-          }
-
-          params.periodStartValidity = params.periodData[0]
-          params.periodEndValidity = params.periodData[1]
-          delete params.periodData
-          params.districtArea = params.districtArea.join()
-          params.salesArea = params.salesArea.join()
-          // params.businessScope = params.businessScope.join()
-          params.businessScope = JSON.stringify(params.businessScope)
-          params.operatingBrand = params.operatingBrand.join()
-          console.log(params)
-          const result = await post("/srm/sh/stores/saveStores", params)
-          this.sending = false;
-          if (result.code == 200) {
-            this.$message.success("门店信息保存成功！");
-            this.back2Prev()
-          } else if (result.code == 500) {
-            this.$message.warning(result.data);
+      // 总店
+      if (this.$route.params.id == 1) {
+        this.handlerSave()
+      // 非总店
+      } else {
+        this.$refs.dataFormInfor.validate(async valid => {
+          if (valid) {
+            this.handlerSave()
           } else {
-            this.$message.error(result.msg);
+            return false;
           }
-        } else {
-          return false;
+        });
+      }
+    },
+
+    // 去提交数据
+    async handlerSave() {
+      if (!this.dataForm.address) return this.$message.warning('门店详细地址不能为空，请输入！')
+      if (this.dataForm.businessScope) {
+        if (this.dataForm.businessScope.length > 60) {
+          return this.$message.warning('经营范围选择数量超出限制，请重新选择！')
         }
-      });
+      }
+      this.sending = true;
+
+      const params = deepClone(this.dataForm)
+      // 编辑
+      if (this.$route.params.id != -1) {
+        params.id = this.$route.params.id
+        // 审核相关字段不传
+        params.reviewStatus = ''
+        params.reviewComments = ''
+      }
+
+      params.periodStartValidity = params.periodData[0]
+      params.periodEndValidity = params.periodData[1]
+      delete params.periodData
+      params.districtArea = params.districtArea.join()
+      params.salesArea = params.salesArea.join()
+      // params.businessScope = params.businessScope.join()
+      params.businessScope = JSON.stringify(params.businessScope)
+      params.operatingBrand = params.operatingBrand.join()
+      console.log(params)
+      const result = await post("/srm/sh/stores/saveStores", params)
+      this.sending = false;
+      if (result.code == 200) {
+        this.$message.success("门店信息保存成功！");
+        this.back2Prev()
+      } else if (result.code == 500) {
+        this.$message.warning(result.data);
+      } else {
+        this.$message.error(result.msg);
+      }
     },
     back2Prev() {
       this.$router.back();
