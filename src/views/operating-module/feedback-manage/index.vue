@@ -10,7 +10,7 @@
         </el-select>
       </el-form-item>
       <el-form-item class="search-field fl" label="反馈人联系方式">
-        <el-input v-model="contactInfo" placeholder="请输入联系方式"></el-input>
+        <el-input v-model="formSearch.crterMob" placeholder="请输入联系方式"></el-input>
       </el-form-item>
       <el-form-item class="search-field fl" label="反馈时间" prop="selectedDate">
         <el-date-picker v-model="formSearch.selectedDate" type="daterange" range-separator="-"
@@ -18,9 +18,9 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item class="">
-        <!-- <el-button class="two-words" plain size="mini" @click="onReset('formSearch')">重置
-        </el-button> -->
         <el-button class="two-words" type="primary" icon="el-icon-search" size="mini" @click="fetchData(1)">查询
+        </el-button>
+        <el-button class="two-words" plain size="mini" @click="onReset('formSearch')">重置
         </el-button>
       </el-form-item>
     </el-form>
@@ -34,7 +34,11 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="反馈人姓名" prop="crterName" show-overflow-tooltip />
+        <el-table-column align="center" label="反馈人姓名" prop="crterName" show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{ scope.row.crterName || '--' }}
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="联系方式" prop="crterMob" show-overflow-tooltip>
         </el-table-column>
         <el-table-column align="center" label="反馈内容" prop="prbDscr" show-overflow-tooltip>
@@ -76,14 +80,14 @@
         </el-form-item>
         <el-form-item label="回复方式:" prop="replyWay">
           <el-radio-group v-model="formAdd.replyWay">
-            <el-radio label="0">短信回复</el-radio>
-            <el-radio label="1">站内信</el-radio>
+            <!-- <el-radio label="0">短信回复</el-radio> -->
+            <el-radio :label="1">站内信</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer">
         <el-button @click="editVisible = false">取 消</el-button>
-        <el-button @click="handleSave('formAdd')" type="success">保 存</el-button>
+        <!-- <el-button @click="handleSave('formAdd')" type="success">保 存</el-button> -->
         <el-button type="primary" @click="handleReply('formAdd')">回复</el-button>
       </div>
     </el-dialog>
@@ -125,7 +129,7 @@ export default {
         prbDscr: "",
         crterId: "",
         crterName: "",
-        replyWay: "",
+        replyWay: 1,
         rid: "",
         replyStas: "",
         replierId: userinfor.loginName,
@@ -208,8 +212,10 @@ export default {
       this.editTitle = "意见详情"
       this.formAdd = {
         ...this.formAdd,
-        ...row
+        ...row,
+        replyWay: 1
       }
+      console.log(this.formAdd)
     },
     /**
      * @description: 回复
@@ -223,7 +229,7 @@ export default {
         this.editVisible = false
         await this._saveFeedback({
           ...this.formAdd,
-          ...this.replyData
+          // ...this.replyData
         })
         this.$message.success("已回复")
       } catch (error) {
@@ -314,7 +320,7 @@ export default {
       try {
         data.replierId = this.userinfor.loginName
         data.replierName = this.userinfor.userName
-        await post('/common/app/prb/reply', {data: data})
+        await post('/nun/app/prb/reply', {data: data})
         await this._getFeedbackList()
       } catch (error) {
         this.$message("未保存成功")
@@ -366,17 +372,19 @@ export default {
       console.log(val)
       console.log(this.userinfor)
       if (!val) {
-        this.formAdd = {
-          prbDscr: "",
-          img: "",
-          crterId: "",
-          crterName: "",
-          replyWay: "",
-          // replierId: this.$store.getters.id,
-          // replierName: this.$store.getters.name
-          replierId: this.userinfor.loginName,
-          replierName: this.userinfor.userName
-        }
+        setTimeout(() => {
+          this.formAdd = {
+            prbDscr: "",
+            img: "",
+            crterId: "",
+            crterName: "",
+            replyWay: "",
+            // replierId: this.$store.getters.id,
+            // replierName: this.$store.getters.name
+            replierId: this.userinfor.loginName,
+            replierName: this.userinfor.userName
+          }
+        }, 1000)
       }
       this.$nextTick(() => {
         this.$refs.formAdd.clearValidate()
