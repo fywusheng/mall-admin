@@ -338,9 +338,9 @@ export default {
         openingTime: [{ required: true, message: "开店时间不能为空，请选择！", trigger: "change" }],
         periodData: [{ required: true, message: "门店有效期不能为空，请选择！", trigger: "change" }],
         infomationNo: [{ required: true, message: "所属加盟商不能为空，请完整输入！", trigger: "change" }],
-        salesArea: [{ required: true, message: "售卖区域不能为空，请选择！", trigger: "change" }],
-        businessScope: [{ required: true, message: "经营范围不能为空，请选择！", trigger: "change" }],
-        operatingBrand: [{ required: true, message: "经营品牌不能为空，请选择！", trigger: "blur" }],
+        // salesArea: [{ required: true, message: "售卖区域不能为空，请选择！", trigger: "change" }],
+        // businessScope: [{ required: true, message: "经营范围不能为空，请选择！", trigger: "change" }],
+        // operatingBrand: [{ required: true, message: "经营品牌不能为空，请选择！", trigger: "blur" }],
         commissionCalculation: [{ required: true, message: "佣金计算方式不能为空，请完整输入！", trigger: "blur" }],
         commissionSettlement: [{ required: true, message: "佣金结算方式不能为空，请完整输入！", trigger: "blur" }],
         corporateAccount: [{ required: true, message: "对公账户户名不能为空，请完整输入！", trigger: "blur" }],
@@ -366,7 +366,16 @@ export default {
       props: { multiple: true },
     };
   },
-  async created() {},
+  async created() {
+    if (this.$route.params.id != 1) {
+      this.dataRules = {
+        ...this.dataRules,
+        salesArea: [{ required: true, message: "售卖区域不能为空，请选择！", trigger: "change" }],
+        businessScope: [{ required: true, message: "经营范围不能为空，请选择！", trigger: "change" }],
+        operatingBrand: [{ required: true, message: "经营品牌不能为空，请选择！", trigger: "blur" }],
+      }
+    }
+  },
   components: {
     FranchiseeSelect
   },
@@ -479,19 +488,13 @@ export default {
       //     res = valid
       //   })
       // }
-      // 总店
-      if (this.$route.params.id == 1) {
-        this.handlerSave()
-      // 非总店
-      } else {
-        this.$refs.dataFormInfor.validate(async valid => {
-          if (valid) {
-            this.handlerSave()
-          } else {
-            return false;
-          }
-        });
-      }
+      this.$refs.dataFormInfor.validate(async valid => {
+        if (valid) {
+          this.handlerSave()
+        } else {
+          return false;
+        }
+      });
     },
 
     // 去提交数据
