@@ -233,7 +233,7 @@ export default {
       const params = {
         ...this.messageInfo,
         sender: this.$store.state.user.id ? this.$store.state.user.id : "admin",
-        msgType: 1
+        msgType: 2
       }
       try {
         const { type } = await post("/ngcmn/wbst/send/singlemsg", {data: {data: params}})
