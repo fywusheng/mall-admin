@@ -14,7 +14,7 @@
       </el-form-item>
       <el-form-item class="search-field fl" label="反馈时间" prop="selectedDate">
         <el-date-picker v-model="formSearch.selectedDate" type="daterange" range-separator="-"
-          start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
+          start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" >
         </el-date-picker>
       </el-form-item>
       <el-form-item class="">
@@ -112,14 +112,16 @@ export default {
     return {
       /* 回复状态 */
       feedbackStatusOptions: [
+        { value: "", label: "全部" },
         { value: "0", label: "未回复" },
-        { value: "1", label: "待回复" },
+        // { value: "1", label: "待回复" },
         { value: "2", label: "已回复" }
       ],
       /* 查询依赖 */
       formSearch: {
         pageNum: 1,
         pageSize: 10,
+        replyStas: "",
         selectedDate: ""
       },
       listLoading: false,
@@ -195,8 +197,8 @@ export default {
         this.formSearch.pageNum = 1
         this.formSearch = {
           ...this.formSearch,
-          startTime: selectedDate[0],
-          endTime: selectedDate[1]
+          startTime: selectedDate && selectedDate[0] ?  selectedDate[0] : '',
+          endTime: selectedDate && selectedDate[1] ? selectedDate[1] : ''
         }
       }
       this._getFeedbackList()
