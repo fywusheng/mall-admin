@@ -90,9 +90,9 @@
         <el-form-item label="接收人号码" prop="recerMobile">
           <el-input v-model="messageInfo.recerMobile" placeholder="输入接收人号码" />
         </el-form-item>
-        <el-form-item label="重定向地址" prop="rediAddr">
+        <!-- <el-form-item label="重定向地址" prop="rediAddr">
           <el-input v-model="messageInfo.rediAddr" placeholder="请输入重定向地址" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="消息内容" prop="cont">
           <el-input type="textarea" v-model="messageInfo.cont" :autosize="{ minRows: 4, maxRows: 4 }" :maxlength="500" placeholder="请输入消息内容" />
         </el-form-item>
