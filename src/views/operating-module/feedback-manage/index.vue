@@ -25,7 +25,7 @@
       </el-form-item>
     </el-form>
     <div class="table-wrap">
-      <el-table v-loading="listLoading" height="460px" :data="formData"
+      <el-table v-loading="listLoading" min-height="460px" :data="formData"
         element-loading-text="加载中..." fit highlight-current-row>
         <el-table-column label="序号" width="50" align="center">
           <template slot-scope="scope">
@@ -83,6 +83,13 @@
             <!-- <el-radio label="0">短信回复</el-radio> -->
             <el-radio :label="1">站内信</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="反馈图片:">
+          <el-image 
+            style="width: 100px; height: 100px"
+            :src="formAdd.img" 
+            :preview-src-list="[formAdd.img]">
+          </el-image>
         </el-form-item>
       </el-form>
       <div slot="footer">
