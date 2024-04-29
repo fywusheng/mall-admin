@@ -75,7 +75,7 @@
           <el-input v-model="formAdd.prbDscr" disabled type="textarea">
           </el-input>
         </el-form-item>
-        <el-form-item label="反馈内容:">
+        <el-form-item label="回复内容:">
           <el-input v-model="formAdd.replyDscr" type="textarea"> </el-input>
         </el-form-item>
         <el-form-item label="回复方式:" prop="replyWay">
