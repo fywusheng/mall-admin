@@ -87,8 +87,8 @@
         <el-form-item label="反馈图片:">
           <el-image 
             style="width: 100px; height: 100px"
-            :src="formAdd.img" 
-            :preview-src-list="[formAdd.img]">
+            :src="formAdd.imgList[0]" 
+            :preview-src-list="formAdd.imgList">
           </el-image>
         </el-form-item>
       </el-form>
@@ -142,7 +142,8 @@ export default {
         rid: "",
         replyStas: "",
         replierId: userinfor.loginName,
-        replierName: userinfor.userName
+        replierName: userinfor.userName,
+        imgList: []
       },
       /* 表单验证 */
       formAddRule: {
@@ -222,9 +223,10 @@ export default {
       this.formAdd = {
         ...this.formAdd,
         ...row,
-        replyWay: 1
+        replyWay: 1,
+        imgList: row.img?.split(',') || []
       }
-      console.log(this.formAdd)
+      console.log(11111, this.formAdd)
     },
     /**
      * @description: 回复
@@ -327,9 +329,25 @@ export default {
      */
     async _saveFeedback(data) {
       try {
-        data.replierId = this.userinfor.loginName
-        data.replierName = this.userinfor.userName
-        await post('/nun/app/prb/reply', {data: data})
+        // data.replierId = this.userinfor.loginName
+        // data.replierName = this.userinfor.userName
+        // data.noticeTmplId  = 'bfck_id'
+        // data.msgType  = '2'
+        // delete data.imgList
+        const params = {
+          crterMob: data.crterMob,
+          msgType: 2,
+          noticeSender: this.userinfor.userName,
+          noticeTmplId: 'bfck_id',
+          noticeTtl: '意见反馈',
+          opterId: this.userinfor.loginName,
+          opterName: this.userinfor.userName,
+          replyDscr: data.replyDscr,
+          replyStas: data.replyStas,
+          replyWay: data.replyWay,
+          rid: data.rid,
+        }
+        await post('/nun/app/prb/publish', {data: params})
         await this._getFeedbackList()
       } catch (error) {
         this.$message("未保存成功")
@@ -391,7 +409,8 @@ export default {
             // replierId: this.$store.getters.id,
             // replierName: this.$store.getters.name
             replierId: this.userinfor.loginName,
-            replierName: this.userinfor.userName
+            replierName: this.userinfor.userName,
+            imgList: []
           }
         }, 1000)
       }
