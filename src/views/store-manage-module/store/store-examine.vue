@@ -80,19 +80,22 @@
           <td width="30%">
             <el-form-item label="售卖区域：">
               <!-- <p class="_text">{{ dataForm.salesArea }}</p> -->
-              <el-cascader class="_cascader _border_none" disabled v-model="dataForm.salesArea" :options="areaList" :props="{multiple:true, value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="" style="width:80%"/>
+              <p v-if="routeParamsType == 0 && $route.params.id == 1" class="_text">全国</p>
+              <el-cascader v-else class="_cascader _border_none" disabled v-model="dataForm.salesArea" :options="areaList" :props="{multiple:true, value:'code',label:'name',leaf:'pid',children: 'children',expandTrigger: 'hover'}" size='small'  clearable placeholder="" style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="经营范围：">
               <!-- <p class="_text">{{ dataForm.businessScopeStr }}</p> -->
-              <el-cascader class="_cascader _border_none" disabled v-model="dataForm.businessScope" :options="categoryOptions" placeholder="" clearable :props="{multiple:true, value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
+              <p v-if="routeParamsType == 0 && $route.params.id == 1" class="_text">全部</p>
+              <el-cascader v-else class="_cascader _border_none" disabled v-model="dataForm.businessScope" :options="categoryOptions" placeholder="" clearable :props="{multiple:true, value:'id',label:'name',leaf:'parentCode',children: 'children',expandTrigger: 'hover'}" style="width:80%"/>
             </el-form-item>
           </td>
           <td width="30%">
             <el-form-item label="经营品牌：">
               <!-- <p class="_text">{{ dataForm.operatingBrand }}</p> -->
-              <el-select class="_border_none" v-model="dataForm.operatingBrand" multiple disabled  filterable style="width:80%" clearable placeholder="">
+              <p v-if="routeParamsType == 0 && $route.params.id == 1" class="_text">全部</p>
+              <el-select v-else class="_border_none" v-model="dataForm.operatingBrand" multiple disabled  filterable style="width:80%" clearable placeholder="">
                 <el-option v-for="item in brandOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -411,7 +414,11 @@ export default {
         result.data.districtArea = result.data.districtArea.split(',')
         result.data.salesArea = this.formatSalesArea(result.data.salesArea)
         // result.data.businessScope = this.formatSalesArea(result.data.businessScope, 3)
-        result.data.businessScope = JSON.parse(result.data.businessScope)
+        try {
+          result.data.businessScope = JSON.parse(result.data.businessScope)
+        } catch (err) {
+          console.log(err)
+        }
         result.data.operatingBrand = result.data.operatingBrand.split(',')
 
         this.dataForm = { ...result.data }

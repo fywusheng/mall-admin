@@ -425,6 +425,12 @@ export const constantRoutes = [
         name: 'Renewal-Info',
         meta: { title: '商城  / 门店管理 / 门店续签' }
       },
+      {
+        path: 'activity-notify',
+        component: resolve => require(['../views/store-manage-module/activity-notify/list.vue'], resolve),
+        name: 'Renewal-List',
+        meta: { title: '商城  / 门店管理 / 活动通知' }
+      },
     ]
   },
 

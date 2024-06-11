@@ -8,6 +8,7 @@ let _uploader = Upload.components.Upload
 // let _ajax = _uploader.props.httpRequest.default
 
 _uploader.props.httpRequest.default = async function (options) {
+  console.log('1111', options)
   // const onSuccess = options.onSuccess;
   // options.onSuccess = function(result){
   //   if(result.code){
@@ -23,10 +24,10 @@ _uploader.props.httpRequest.default = async function (options) {
     formData.append('fileName', fileName)
     formData.append('fileExt', fileExt)
     const result = await clientFileUpload(formData)
-    if (result.code == 0) {
-      options.onSuccess(result)
+    if (result.data.code == 0) {
+      options.onSuccess(result.data)
     }else{
-      options.onError(result)
+      options.onError(result.data)
     }
   } else {
     const base64String = await _uploader.getBase64(options.file)
@@ -35,10 +36,11 @@ _uploader.props.httpRequest.default = async function (options) {
       imageName: Date.now() + '.' + fileName,
       imageExt: fileExt
       })
-    if (result.code == 0) {
-      options.onSuccess(result)
+      // console.log(result)
+    if (result.data.code == 0) {
+      options.onSuccess(result.data)
     }else{
-      options.onError(result)
+      options.onError(result.data)
     }
   }
   

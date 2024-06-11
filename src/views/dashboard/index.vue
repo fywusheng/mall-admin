@@ -959,6 +959,7 @@ export default {
       ::v-deep .el-table__body-wrapper {
         table tbody tr td {
           height: 80px;
+          font-size: 12px !important;
           &:nth-child(1) {
             color: #FF5500 !important;
           }

@@ -4,7 +4,7 @@
     <el-form-item label="公告标题：" label-width="110px" class="search-field fl">
       <el-input v-model="searchData.notcTtl" placeholder="请输入公告标题" clearable size="mini"/>
     </el-form-item>
-    <el-form-item label="发布时间：" label-width="110px" class="search-field fl">
+    <!-- <el-form-item label="发布时间：" label-width="110px" class="search-field fl">
       <el-date-picker 
         size="mini"
        v-model="searchData.time" 
@@ -15,7 +15,7 @@
        end-placeholder="结束日期"
        clearable
       ></el-date-picker>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item class="fr">
       <!-- <el-button class="two-words" plain size="small" @click="onClickReset">重置</el-button> -->
       <el-button class="two-words" icon="el-icon-search" type="primary" size="mini" @click="onClickSearch">查询</el-button>
@@ -40,7 +40,7 @@
           <span>{{ scope.row.rlsChnlStr ? '小程序' : '--' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="推送次数" align="center" prop="pshCnt"></el-table-column>
+      <!-- <el-table-column label="推送次数" align="center" prop="pshCnt"></el-table-column>
       <el-table-column label="运行状态" align="center" prop="runStas">
         <template slot-scope="scope">
           <el-switch
@@ -48,7 +48,7 @@
             @change="onChangeStatus(scope.row)">
           </el-switch>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column align="center" label="操作" width="220" fixed="right">
         <template slot-scope="scope">
           <el-button :underline="false" size="mini" @click="onClickEditNotice(scope.row)">修改</el-button>
@@ -90,7 +90,7 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
-      <el-form-item label="运行状态：">
+      <!-- <el-form-item label="运行状态：">
         <el-switch v-model="noticeInfo.runStas"></el-switch>
       </el-form-item>
       <el-form-item label="重定向地址：">
@@ -143,7 +143,7 @@
          end-placeholder="请选择结束日期"
          clearable
         ></el-date-picker>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button size="small" @click="()=>{ addEditDialogVisible = false }">取 消</el-button>

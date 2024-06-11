@@ -29,7 +29,7 @@
       <el-table-column type="index" label="序号" width="50px" align="center"></el-table-column>
       <el-table-column prop="storeNo" label="门店编号" show-overflow-tooltip width="200px"></el-table-column>
       <el-table-column prop="storeName" label="门店名称"  show-overflow-tooltip></el-table-column>
-      <el-table-column prop="storeManagerName" label="店长姓名" width="100px" align="center">
+      <el-table-column prop="storeManagerName" label="店长姓名" width="130px" align="center" show-overflow-tooltip>
         <template slot-scope="scope">
           <span>{{ scope.row.storeManagerName || '--' }}</span>
         </template>
@@ -58,15 +58,15 @@
           <span>{{ scope.row.yn == 1 ? '启用' : '停用' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" align="center" width="280px" fixed="right">
+      <el-table-column prop="" label="操作" align="center" width="350px" fixed="right">
         <template slot-scope="scope">
           <el-button v-if="scope.row.reviewStatus == 0 || scope.row.reviewStatus == 1" icon="el-icon-edit" size="mini" @click="edit(scope.row)">编辑</el-button>
-          <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 1" icon="el-icon-turn-off" size="mini" @click="toggle(scope.row, 0)">停用</el-button>
-          <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 0" icon="el-icon-open" size="mini" @click="toggle(scope.row, 1)">启用</el-button>
-          <el-button v-if="scope.row.reviewStatus == 1 && isExpire(scope.row)" icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button>
+          <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 1" :disabled="scope.row.id == 1" icon="el-icon-turn-off" size="mini" @click="toggle(scope.row, 0)">停用</el-button>
+          <el-button v-if="scope.row.reviewStatus == 1 && scope.row.yn == 0" :disabled="scope.row.id == 1" icon="el-icon-open" size="mini" @click="toggle(scope.row, 1)">启用</el-button>
+          <el-button v-if="scope.row.reviewStatus == 1 && isExpire(scope.row)" :disabled="scope.row.id == 1" icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button>
           <!-- <el-button v-if="scope.row.reviewStatus == 1 && scope.row.renewalStatus != 1 && isExpire(scope.row)" icon="el-icon-set-up" size="mini" @click="renewal(scope.row)">续签</el-button> -->
           <!-- 只有待审核显示审核按钮 -->
-          <el-button v-if="scope.row.reviewStatus == 2" icon="el-icon-folder-checked" size="mini" @click="check(scope.row, 1)">审核</el-button>
+          <el-button v-if="scope.row.reviewStatus == 2" :disabled="scope.row.id == 1" icon="el-icon-folder-checked" size="mini" @click="check(scope.row, 1)">审核</el-button>
           <el-button icon="el-icon-document" size="mini" @click="check(scope.row, 0)">详情</el-button>
         </template>
       </el-table-column>
@@ -195,6 +195,7 @@ export default {
       this.loading = false
       if (result.code == 200) {
         this.$nextTick(() => {
+          // result.data.list[0].id = 1
           this.dataList = result.data.list
           this.totalCount = result.data.totalCount * 1
           //this.pageSize = result.data.limit;

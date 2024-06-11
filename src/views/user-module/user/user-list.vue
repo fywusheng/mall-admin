@@ -4,7 +4,7 @@
     <el-form ref="formSearch" :model="formSearch" :inline="true" class="search-form clearfix"
       size="small">
       <el-form-item class="search-field fl" label="所在地市" prop="districtArea">
-        <y-united-select size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="handdleSearch" :data="cityList" clearable v-model="formSearch.districtArea"></y-united-select>
+        <y-united-select ref="unitedSelect" size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="codeChange" :data="cityList" clearable ></y-united-select>
       </el-form-item>
       <el-form-item class="search-field fl" label="所属门店" prop="storeNo">
         <sotre-select v-model="formSearch.storeNo" placeholder="请输入所属门店..." size="mini"/>
@@ -26,7 +26,7 @@
 
     <!-- 查询结果区开始 -->
     <div class="table-wrap ">
-      <el-table ref="table" v-loading="listLoading" height="446px" :data="list"
+      <el-table ref="table" v-loading="listLoading" max-height="490px" :data="list"
         element-loading-text="加载中..." highlight-current-row>
         <el-table-column align="center" label="序号" prop="id"  width="50px">
           <template slot-scope="scope">
@@ -58,7 +58,7 @@
             <el-button size="mini" @click="goDetail(scope.row)">详情</el-button>
             <el-button size="mini" @click="resetPwd(scope.row.memberId)">重置密码</el-button>
             <!-- <el-link type="warning" v-if="false" size="small" @click="goDetail(scope.row)">禁用</el-link> -->
-            <el-button size="mini" @click="deleteAccount(scope.row.memberId)">删除</el-button>
+            <!-- <el-button size="mini" @click="deleteAccount(scope.row.memberId)">删除</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -81,7 +81,7 @@ export default {
     return {
       showDetail: false, //展示详情
       cityList: [], //城市列表
-      daterange: "", //选择的日期范围
+      daterange: [], //选择的日期范围
       activateState: "", //激活状态
       formSearch: { //查询表单
         storeNo: "", // 门店编号
@@ -120,7 +120,7 @@ export default {
      * @author: syx
      */
     resetPwd(uactId) {
-      this.$confirm("是否确认重置密码？", "警告", {
+      this.$confirm("是否确认重置密码？密码重置后会自动变更为手机号前 8 位！", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "error"
@@ -151,6 +151,17 @@ export default {
         })
       })
     },
+    addLevel(tree, level = 1) {
+      tree.forEach(node => {
+        node.level = level;
+        if (level == 2) {
+          delete node.children
+        }
+        if (node.children) {
+          this.addLevel(node.children, level + 1);
+        }
+      })
+    },
     /**
      * @description: 获取城市列表
      * @param {type} 
@@ -159,7 +170,8 @@ export default {
      */
     getCityList() {
       clientFetch("/area/getAreaTree").then(res => {
-        this.cityList = res.data  
+        this.addLevel(res.data)
+        this.cityList = res.data
       }).catch(e => {
         console.log(e)
       }).finally(() => {
@@ -186,10 +198,20 @@ export default {
     },
     // 重置表单
     onReset(formName) {
-      // this.formSearch.crteStartTime = "" 让resetFields清除
-      // this.formSearch.crteEndTime = ""
-      this.daterange = ""
+      this.formSearch.crteStartTime = ""
+      this.formSearch.crteEndTime = ""
+      this.daterange = []
+      this.formSearch.districtArea = ''
       this.$refs[formName].resetFields()
+      this.$refs.unitedSelect.$refs.select?.handleClear()
+      this.handdleSearch()
+    },
+    codeChange (val, node) {
+      if (node && node.length && node[0]) {
+        this.formSearch.districtArea = node[0]?.label
+      } else {
+        this.formSearch.districtArea = ''
+      }
       this.handdleSearch()
     },
     /**

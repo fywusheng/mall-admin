@@ -14,7 +14,7 @@
         <div class="right-info clearfix">
           <div class="block fl clearfix" v-for="(item,index) in fiedlList" :key="index" >
             <div class="field fl">{{item.value}}</div>
-            <div class="content" v-if="item.key == 'idCard'">{{info[item.key] ? '已录' : "--"}}</div>
+            <div class="content" v-if="item.key == 'idCard'">{{info[item.key] || "--"}}</div>
             <div class="content" v-else-if="item.key == 'storeName'">{{(info.shStoreDTO && info.shStoreDTO.storeName) || "--"}}</div>
             <div class="content" v-else-if="item.key == 'shStoreDTO-address'">{{(info.shStoreDTO && info.shStoreDTO.address) || "--"}}</div>
             <!-- <div class="content" v-else-if="item.key == 'shStoreDTO-expirationTime'">{{(info.shStoreDTO && info.shStoreDTO.expirationTime) || "--"}}</div> -->
@@ -25,21 +25,36 @@
         </div>
     </div>
     <!-- 用户信息结束 -->
-    <div class="page-title" v-if="list.length">会员开通记录</div>
+    <div class="page-title">会员开通记录</div>
     <!-- 查询结果区开始 -->
     <!-- TODO 表头字段调整，需核对 -->
-    <div class="table-wrap " v-if="list.length">
+    <div class="table-wrap">
       <el-table ref="table" v-loading="listLoading" height="446px" :data="list" element-loading-text="加载中..."   highlight-current-row>
-        <el-table-column align="center" label="序号" prop="id" min-width="75">
+        <el-table-column align="center" label="序号" prop="id" width="60px">
             <template slot-scope="scope">
             {{ (scope.$index + 1 )+ (formSearch.pageNum - 1) * formSearch.pageSize }}
             </template>
         </el-table-column>
-        <el-table-column label="序号" prop="code_biz_info" show-overflow-tooltip />
-        <el-table-column label="开通时间" prop="opter_name"  show-overflow-tooltip />
-        <el-table-column label="开通类型" prop="org_location" show-overflow-tooltip />
-        <el-table-column label="开通卡类型" prop="create_time"  show-overflow-tooltip />
-        <el-table-column label="会员费" prop="create_time"  show-overflow-tooltip />
+        <el-table-column label="开通时间" prop="opter_name"  show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ scope.row.orderDetailDTO.usageTime }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="开通类型" prop="org_location" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ scope.row.orderDetailDTO.productStatus == 1 ? '首次开通' : scope.row.orderDetailDTO.productStatus == 2 ? '续费开通' : '--' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="开通卡类型" prop="create_time"  show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ scope.row.orderDetailDTO.scopeOfApplication }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="会员费" prop="create_time"  show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ scope.row.orderDetailDTO.productPrice }}</span>
+          </template>
+        </el-table-column>
       </el-table>
       <!-- 分页 -->
       <!-- <y-pagination v-show="total>0" class="pageBox" :total="total" :page.sync="formSearch.pageNum" :limit.sync="formSearch.pageSize" @pagination="fetchData" /> -->
@@ -126,7 +141,6 @@ export default {
       listLoading: false,
       list: [],
       formSearch: {
-        psnId: "",
         pageNum: 1,
         pageSize: 10
       },
@@ -160,6 +174,26 @@ export default {
     this.getUserDetail()
   },
   methods: {
+    // 开通记录
+    async loadVipData() {
+      this.vipLoading = true
+      const params = {
+        pageNum: this.formSearch.pageNum,
+        pageSize: this.formSearch.pageSize,
+      }
+      params.orderSource = 6
+      params.userPhone = this.info.phone
+      params.orderStatus = 3
+      const result = await post('/offlineshopping/order/findOrderPage', {data: params})
+      if (result.code == 0) {
+        this.$nextTick(() => {
+          this.total = result.data.total * 1
+          this.list = result.data.list || []
+        })
+      } else {
+        this.$message.error(result.msg)
+      }
+    },
     /**
      * @description: 查询是否有市民列表权限
      * @param {type} 
@@ -189,6 +223,7 @@ export default {
         this.info.sex = this.info.sex == "0" ? "男" : this.info.sex == "1" ? "女" : '--'
         // 会员使用状态0  失效  1 使用
         this.info.cardStatus = this.info.cardStatus == 1 ? '使用' : this.info.cardStatus == 0 ? '失效' : '--'
+        this.loadVipData()
       })
     },
     /**

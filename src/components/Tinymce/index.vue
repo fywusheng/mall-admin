@@ -91,10 +91,10 @@ export default {
   },
   watch: {
     value(val) {
-      if (!this.hasChange && this.hasInit) {
-        this.$nextTick(() => {
-          window.tinymce.get(this.tinymceId).setContent(val || '')
-        })
+      if (!this.hasChange && !this.hasInit) {
+        setTimeout(() => {
+          window.tinymce.get(this.tinymceId).setContent(val)
+        }, 1000)
       }
     }
   },
@@ -146,6 +146,7 @@ export default {
         object_resizing: false,
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
         menubar: this.menubar,
+        removed_menuitems: 'image, media, codesample, template, anchor',
         plugins: plugins,
         end_container_on_empty_block: true,
         powerpaste_word_import: 'clean',
@@ -164,7 +165,8 @@ export default {
             if(_this.value){
               this.hasChange = true
             }
-            this.$emit('input', editor.getContent())
+            const v = editor.getContent() || _this.value
+            this.$emit('input', v)
           })
 
           // if (_this.value) {

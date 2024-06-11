@@ -60,7 +60,7 @@
       <tr style="height:40px">
         <td width="5%"></td>
         <td width="10%" class="td-colspan-label">下单人：</td>
-        <td width="20%" class="td-colspan-value">{{loginName}}</td>
+        <td width="20%" class="td-colspan-value">{{userName}}</td>
         <td width="10%" class="td-colspan-label">手机号码：</td>
         <td width="20%" class="td-colspan-value">{{loginName}}</td>
         <td width="10%" class="td-colspan-label">创建时间：</td>
@@ -87,7 +87,7 @@
           <td>
             <el-table class="custom-table" :data="dataList"
               :header-cell-style="{background:'#F9F9F9',color:'#000000'}" size="mini"
-              v-loading="loading" style="width:75%">
+              v-loading="loading" style="width:63%">
               <div slot="empty" class="empty-wrap">
                 <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
               </div>
@@ -173,7 +173,7 @@
       <tr style="height:40px">
         <td width="5%"></td>
         <!-- 后端说了原来就这样，如果显示的话往后排。 -->
-        <td width="10%" class="td-colspan-label">支付方式11：</td>
+        <td width="10%" class="td-colspan-label">支付方式：</td>
         <!-- <td width="20%" class="td-colspan-value">{{paymentMethod}}</td> -->
         <td width="20%" class="td-colspan-value">微信支付</td>
         <td width="10%" class="td-colspan-label">支付时间：</td>
@@ -184,7 +184,7 @@
       <tr style="height:40px">
         <td width="5%"></td>
         <td width="10%" class="td-colspan-label">支付单号：</td>
-        <td width="20%" class="td-colspan-value">{{receiveName}}</td>
+        <td width="20%" class="td-colspan-value">{{payOrderId}}</td>
         <td width="10%" class="td-colspan-label">实付金额：</td>
         <td width="20%" class="td-colspan-value">{{paidAmount}}</td>
         <td width="10%" class="td-colspan-label">获得积分：</td>
@@ -223,9 +223,11 @@ export default {
           this.paidAmount = result.data.paidAmount,
           this.userId = result.data.userId,
           this.loginName = result.data.userLoginName,
+          this.userName = result.data.userName
           this.mobile = '--',
           this.createdTime = result.data.createdTime,
           this.receiveName = result.data.receiveName,
+          this.payOrderId = result.data.orderId?.replace('CO', '')
           this.receivePhone = result.data.receivePhone,
           this.orderStatusLabel = result.data.orderStatusLabel,
           this.sceneType = result.data.sceneType,

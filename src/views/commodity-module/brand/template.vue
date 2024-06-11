@@ -63,7 +63,14 @@ export default {
         name: [
           {
             required: true,
-            message: "品牌名称不能为空，请输入！",
+            message: "品牌名称(中文)不能为空，请输入！",
+            trigger: "blur"
+          }
+        ],
+        nameEn: [
+          {
+            required: true,
+            message: "品牌名称(英文)不能为空，请输入！",
             trigger: "blur"
           }
         ]

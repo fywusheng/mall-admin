@@ -3,8 +3,8 @@
     <!-- 查询条件区开始 -->
     <el-form ref="formSearch" :model="formSearch" :inline="true" class="search-form clearfix"
       size="small">
-      <el-form-item class="search-field fl" label="所在地市" prop="uactAttribution">
-        <y-united-select size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="handdleSearch" :data="cityList" clearable v-model="formSearch.districtArea"></y-united-select>
+      <el-form-item class="search-field fl" label="所在地市" prop="districtArea">
+        <y-united-select ref="unitedSelect" size="mini" maxLevel="1" :delChildren="true" :settings="{ value:'code',label:'name',leaf:'pid'}" @codeChange="codeChange" :data="cityList" clearable ></y-united-select>
       </el-form-item>
       <el-form-item class="search-field fl" label="会员使用状态" prop="cardStatus">
         <el-select @change="handdleSearch" clearable v-model="formSearch.cardStatus" size="mini"
@@ -31,7 +31,7 @@
 
     <!-- 查询结果区开始 -->
     <div class="table-wrap ">
-      <el-table ref="table" v-loading="listLoading" height="446px" :data="list"
+      <el-table ref="table" v-loading="listLoading" max-height="490px" :data="list"
         element-loading-text="加载中..." highlight-current-row>
         <el-table-column align="center" label="序号" prop="id" width="50px">
           <template slot-scope="scope">
@@ -127,13 +127,13 @@ export default {
      * @author: syx
      */
     resetPwd(uactId) {
-      this.$confirm("是否确认重置密码？", "警告", {
+      this.$confirm("是否确认重置密码？密码重置后会自动变更为手机号前 8 位！", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "error"
       }).then(() => {
         //谨慎操作
-        post('/nun/api/userWeb/alterLoginPwd', { uactId }).then(data => {
+        post('/nun/api/userWeb/alterLoginPwd',{data:  {data: { uactId }}}).then(data => {
           this.$message.success("重置密码成功")
           console.log("resetPwd -> data", data)
         })
@@ -158,6 +158,18 @@ export default {
         })
       })
     },
+
+    addLevel(tree, level = 1) {
+      tree.forEach(node => {
+        node.level = level;
+        if (level == 2) {
+          delete node.children
+        }
+        if (node.children) {
+          this.addLevel(node.children, level + 1);
+        }
+      })
+    },
     /**
      * @description: 获取城市列表
      * @param {type} 
@@ -166,6 +178,7 @@ export default {
      */
     getCityList() {
       clientFetch("/area/getAreaTree").then(res => {
+        this.addLevel(res.data)
         this.cityList = res.data  
       }).catch(e => {
         console.log(e)
@@ -193,10 +206,20 @@ export default {
     },
     // 重置表单
     onReset(formName) {
-      // this.formSearch.startDate = "" 让resetFields清除
+      this.formSearch.startDate = ""
       this.formSearch.endDate = ""
       this.daterange = ""
+      this.formSearch.districtArea = ''
       this.$refs[formName].resetFields()
+      this.$refs.unitedSelect.$refs.select?.handleClear()
+      this.handdleSearch()
+    },
+    codeChange (val, node) {
+      if (node && node.length && node[0]) {
+        this.formSearch.districtArea = node[0]?.label
+      } else {
+        this.formSearch.districtArea = ''
+      }
       this.handdleSearch()
     },
     /**

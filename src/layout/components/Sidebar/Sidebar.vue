@@ -49,6 +49,7 @@ export default {
         '内容管理': 'menu-content',
         '消息中心': 'menu-msg',
         '设置': 'menu-setting',
+        '运营管理': 'menu-yunying'
       }
     }
   },

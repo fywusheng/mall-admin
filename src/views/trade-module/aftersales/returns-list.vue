@@ -3,7 +3,7 @@
     <el-row class="mb-2">
       <el-form :inline="true">
         <el-form-item label="">
-          <el-input v-model="searchParams.orderId" placeholder="请输入订单编号..." clearable
+          <el-input v-model="searchParams.orderCode" placeholder="请输入订单编号..." clearable
             size="mini"></el-input>
         </el-form-item>
         <el-form-item label="">
@@ -108,8 +108,8 @@
       <el-table-column prop="returnsDesc" label="售后状态" width="200px" show-overflow-tooltip></el-table-column>
       <el-table-column prop="orderCode" label="归属订单" width="200px" align="center">
         <template slot-scope="scope">
-          <el-button  type="text"
-            @click="forward2DetailsPage(scope.row)">{{scope.row.orderCode}}</el-button>
+          <span  style="color: #FF5500;"
+            @click="forward2DetailsPage(scope.row)">{{scope.row.orderCode}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="returnsPrice" label="实付金额" width="80px"

@@ -37,7 +37,7 @@
           <el-button type="success" size="small" @click="handleEditor">添加</el-button>
         </div>
       </div> -->
-      <el-table ref="table" v-loading="listLoading" height="460px" :data="formData"
+      <el-table ref="table" v-loading="listLoading" max-height="490px" :data="formData"
         element-loading-text="加载中..." fit highlight-current-row>
         <el-table-column label="序号" width="50" align="center">
           <template slot-scope="scope">
@@ -47,8 +47,8 @@
           </template>
         </el-table-column>
         <el-table-column align="center" label="专题名称" prop="colName" show-overflow-tooltip />
-        <el-table-column align="center" label="展示顺序" prop="srt" show-overflow-tooltip>
-        </el-table-column>
+        <!-- <el-table-column align="center" label="展示顺序" prop="srt" show-overflow-tooltip>
+        </el-table-column> -->
         <el-table-column align="center" label="图标" prop="absoluteUrl" show-overflow-tooltip>
           <template slot-scope="scope">
             <el-button icon="el-icon-document" @click="handleImg(scope.row)" size="mini">缩略图</el-button>
@@ -91,7 +91,7 @@
         <el-form-item label="文件缩略图">
           <img :src="formAdd.absoluteUrl" alt="" style="width: 100px" />
         </el-form-item>
-        <el-form-item label="展示顺序" prop="srt">
+        <!-- <el-form-item label="展示顺序" prop="srt">
           <el-row>
             <el-col :span="12">
               <el-select v-model="formAdd.srt" placeholder="全部" size="small">
@@ -101,7 +101,7 @@
               </el-select>
             </el-col>
           </el-row>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="是否启用:" :label-width="formLabelWidth" prop="dispFlag">
           <el-radio-group v-model="formAdd.dispFlag">
             <el-radio :label="true">启用</el-radio>
@@ -173,9 +173,9 @@ export default {
           { required: true, message: "请输入专题类别名称", trigger: "blur" }
         ],
         srt: [{ required: true, message: "请选择专题排序", trigger: "change" }],
-        absoluteUrl: [
-          { required: true, message: "请上传文件", trigger: "change" }
-        ],
+        // absoluteUrl: [
+        //   { required: true, message: "请上传文件", trigger: "change" }
+        // ],
         dispFlag: [
           { required: true, message: "请选择是否启用状态", trigger: "change" }
         ]

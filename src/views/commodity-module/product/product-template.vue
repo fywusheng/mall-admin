@@ -52,19 +52,19 @@
         <tr>
           <td width="5%"></td>
           <td width="45%">
-            <el-form-item label="名称前缀" prop="prefixName" class="item">
+            <!-- <el-form-item label="名称前缀" prop="prefixName" class="item">
               <el-input v-model="dataForm.prefixName" placeholder="请输入商品名称前缀..."
                 :disabled="dataForm.saleState==5" maxlength="32" style="width:80%"></el-input>
-            </el-form-item>
+            </el-form-item> -->
           </td>
         </tr>
         <tr>
           <td width="5%"></td>
           <td width="45%">
-            <el-form-item label="名称后缀" prop="suffixName" class="item">
+            <!-- <el-form-item label="名称后缀" prop="suffixName" class="item">
               <el-input v-model="dataForm.suffixName" placeholder="请输入商品名称后缀..."
                 :disabled="dataForm.saleState==5" maxlength="32" style="width:80%"></el-input>
-            </el-form-item>
+            </el-form-item> -->
           </td>
         </tr>
         <tr>
@@ -375,7 +375,7 @@
       <tr>
         <td style="width:5%"></td>
         <td align="center">
-          <editor class="editor" id="editor" @onInit="initEditor"
+          <editor class="editor" :id="'editor'" @onInit="initEditor"
             apiKey="n6lxhfc42kw4ihomm7bg3sm81oxv33otyiwukx8y15x8ncbd" v-model="productDetail"
             style="width:100%" :init="editorOptions">
           </editor>
@@ -474,13 +474,16 @@ export default {
         { key: 2, label: "重量" },
         { key: 3, label: "体积" }
       ],
+      // 心脑血管、骨质疏松、糖尿病、慢性疼痛、脑血管疾病、日常保健、心脑血管、脑卒中、生理监测
       targetAudienceOptions: [
-        { key: "高血压", label: "高血压" },
-        { key: "高血脂", label: "高血脂" },
-        { key: "高血糖", label: "高血糖" },
-        { key: "高尿酸", label: "高尿酸" },
-        { key: "脂肪肝", label: "脂肪肝" },
-        { key: "肾囊肿", label: "肾囊肿" },
+        { key: "骨质疏松", label: "骨质疏松" },
+        { key: "糖尿病", label: "糖尿病" },
+        { key: "慢性疼痛", label: "慢性疼痛" },
+        { key: "脑血管疾病", label: "脑血管疾病" },
+        { key: "日常保健", label: "日常保健" },
+        { key: "心脑血管", label: "心脑血管" },
+        { key: "脑卒中", label: "脑卒中" },
+        { key: "生理监测", label: "生理监测" },
       ],
       SuppliedTypeOptions: [
         { key: 0, label: "平台自营" },
@@ -602,9 +605,9 @@ export default {
     Editor
   },
   watch: {
-    productDetail (val) {
-      console.log('----', val)
-    }
+    // productDetail (val) {
+    //   console.log('----', val)
+    // }
   },
   async mounted() {
     const user = localStorage.getItem('userInfor')
@@ -930,7 +933,7 @@ export default {
         this.oldMoneyForm.discountAmount = result.data.discountAmount,
         this.oldMoneyForm.pointDiscountPoint = result.data.pointDiscountPoint,
         this.oldMoneyForm.registerPoint = result.data.registerPoint,
-        this.productDetail = result.data.productDetail,
+        this.productDetail = result.data.productDetail
         this.dataForm = dataForm,
         this.oldMoneyForm.money = result.data.isRebate + '',
         this.moneyValue = result.data.rebateMoney,//返利
@@ -1182,6 +1185,8 @@ export default {
       this.$router.back();
     },
     handleAvatarSuccess(response, file) {
+      // console.log(response)
+      // console.log(file)
       if (!response || response.code != 0) {
         return;
       }

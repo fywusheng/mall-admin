@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import requestUpload from '@/utils/request-upload'
+import requestUpload from '@/utils/http-nepsp'
 // import HttpService from '@/utils/http-client'
 import Qs from 'qs'
 
@@ -73,7 +73,7 @@ export function resetPassword(data) {
 export function clientUpload(data) {
   return requestUpload({
     // url: '/nepsp-api/cms/iep/web/cms/imgUpload',
-    url: '/nepsp-api/cms/iep/web/cms/imgUpload',
+    url: '/cms/iep/web/cms/imgUpload',
     method: 'post',
     data
   })
@@ -84,7 +84,7 @@ export function clientUpload(data) {
 export function clientFileUpload(formData) {
   return requestUpload({
     // url: '/nepsp-api/cms/iep/web/cms/singleFileUpload',
-    url: '/nepsp-api/cms/iep/web/cms/singleFileUpload',
+    url: '/cms/iep/web/cms/singleFileUpload',
     method: 'post',
     data: formData
   })
