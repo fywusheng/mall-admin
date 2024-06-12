@@ -22,9 +22,7 @@
         <!-- TODO -->
         <!-- 最后确认 是否需要根据类型不同来显示加盟商管理的内容，暂时先放开，把限制去掉 -->
         <!-- v-if="userObject.accountType == 9 || userObject.accountType == 1" -->
-        <div
-          class="_right"
-        >
+        <div class="_right">
           <div class="_title">加盟商管理</div>
           <div class="body">
             <div class="_item" v-for="(item, i) in GYManage.list" :key="i">
@@ -47,6 +45,33 @@
                 @click="goPath(GYManageValues[i].url, item.t)"
               >
                 {{ GYManageValues[i].number }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="_right">
+          <div class="_title">门店管理</div>
+          <div class="body">
+            <div class="_item" v-for="(item, i) in StoreManage.list" :key="i">
+              <div class="_icon">
+                <img :src="item.icon" alt="" style="width: 35px" />
+              </div>
+              <div class="_lable">
+                {{ item.t }}
+                <!-- <el-popover
+                  placement="top-start"
+                  width="200"
+                  trigger="hover"
+                  :content="item.notice"
+                >
+                  <i slot="reference" class="el-icon-warning-outline"></i>
+                </el-popover> -->
+              </div>
+              <div
+                class="_num _marginTop _hover"
+                @click="goPath(StoreManageValues[i].url, item.t)"
+              >
+                {{ StoreManageValues[i].number }}
               </div>
             </div>
           </div>
@@ -135,17 +160,19 @@
           end-placeholder="结束日期"
         >
         </el-date-picker>
-        <el-button class="statistics-table" @click="showExportDialog">统计报表</el-button>
+        <el-button class="statistics-table" @click="showExportDialog"
+          >统计报表</el-button
+        >
         <div class="_center">
           <div class="_item" v-for="(item, i) in showData.list" :key="i">
             <div class="_lable">
               {{ item.t }}
               <div class="_icon">
-              <el-avatar
-                :src="item.icon"
-                style="width: 30px; height: 30px"
-              ></el-avatar>
-            </div>
+                <el-avatar
+                  :src="item.icon"
+                  style="width: 30px; height: 30px"
+                ></el-avatar>
+              </div>
             </div>
             <div class="_num _hover" @click="goPath(saleData[i].url)">
               {{ saleData[i].num }}
@@ -168,10 +195,11 @@
                 :data="franchiseeSalePrice"
                 height="600"
                 stripe
-                style="width: 100%">
-                <el-table-column type="index" label="排名" width="60"/>
-                <el-table-column prop="franchisee" label="加盟商名称"/>
-                <el-table-column prop="salePrice" label="销售额" width="140"/>
+                style="width: 100%"
+              >
+                <el-table-column type="index" label="排名" width="60" />
+                <el-table-column prop="franchisee" label="加盟商名称" />
+                <el-table-column prop="salePrice" label="销售额" width="140" />
               </el-table>
             </div>
           </div>
@@ -187,10 +215,15 @@
                 :data="franchiseeRegisterCount"
                 height="600"
                 stripe
-                style="width: 100%">
-                <el-table-column type="index" label="排名" width="60"/>
-                <el-table-column prop="franchisee" label="加盟商名称"/>
-                <el-table-column prop="registerCount" label="注册数" width="140"/>
+                style="width: 100%"
+              >
+                <el-table-column type="index" label="排名" width="60" />
+                <el-table-column prop="franchisee" label="加盟商名称" />
+                <el-table-column
+                  prop="registerCount"
+                  label="注册数"
+                  width="140"
+                />
               </el-table>
             </div>
           </div>
@@ -206,10 +239,15 @@
                 :data="franchiseeMemberCount"
                 height="600"
                 stripe
-                style="width: 100%">
-                <el-table-column type="index" label="排名" width="60"/>
-                <el-table-column prop="franchisee" label="加盟商名称"/>
-                <el-table-column prop="memberCount" label="会员数" width="140"/>
+                style="width: 100%"
+              >
+                <el-table-column type="index" label="排名" width="60" />
+                <el-table-column prop="franchisee" label="加盟商名称" />
+                <el-table-column
+                  prop="memberCount"
+                  label="会员数"
+                  width="140"
+                />
               </el-table>
             </div>
           </div>
@@ -217,8 +255,8 @@
       </div>
 
       <!-- 导出弹窗 -->
-      <export-modal v-model="visibleExportModal"/>
-      
+      <export-modal v-model="visibleExportModal" />
+
       <!-- <div
         class="showData"
         v-if="userObject.accountType == 9 || userObject.accountType == 1"
@@ -283,7 +321,7 @@
 // import Activate from './activate'
 // import AreaMap from './area'
 // import Status from './status'
-import exportModal from './export-modal.vue'
+import exportModal from "./export-modal.vue";
 import { fetch, post } from "@/utils/http-client";
 export default {
   name: "DeviceStatics",
@@ -444,6 +482,27 @@ export default {
           },
         ],
       },
+      StoreManage: {
+        title: "门店管理",
+        list: [
+          {
+            t: "已有门店",
+            icon: require("../../../src/assets/imgs/index-store-1.png"),
+          },
+          {
+            t: "待审核门店",
+            icon: require("../../../src/assets/imgs/index-store-2.png"),
+          },
+          {
+            t: "审核未通过门店",
+            icon: require("../../../src/assets/imgs/index-store-3.png"),
+          },
+          {
+            t: "待续签门店",
+            icon: require("../../../src/assets/imgs/index-store-4.png"),
+          },
+        ],
+      },
       GYSDataShow: [],
       GYSelect: "1",
       defineDay: [],
@@ -458,6 +517,12 @@ export default {
         { number: "", url: "" },
         { number: "", url: "" },
       ],
+      StoreManageValues: [
+        { number: "", url: "/apps/store-manage/store-list" },
+        { number: "", url: "/apps/store-manage/store-list" },
+        { number: "", url: "/apps/store-manage/store-list" },
+        { number: "", url: "/apps/store-manage/renewal-list" },
+      ],
       visibleExportModal: false,
       tableData: [],
       franchiseeSalePrice: [], // 销售排行
@@ -470,7 +535,7 @@ export default {
     // Activate,
     // Status,
     // AreaMap
-    exportModal
+    exportModal,
   },
   created() {
     this.getStoreInfo();
@@ -505,14 +570,14 @@ export default {
           data.refundOrderCount,
           data.refundAmount,
           // 新增四个字段不跳转
-          {...data.orderAmount, url: 'no-jump'},
-          {...data.registerCount, url: 'no-jump'},
-          {...data.memberCount, url: 'no-jump'},
-          {...data.orderAmountAvg, url: 'no-jump'},
+          { ...data.orderAmount, url: "no-jump" },
+          { ...data.registerCount, url: "no-jump" },
+          { ...data.memberCount, url: "no-jump" },
+          { ...data.orderAmountAvg, url: "no-jump" },
         ];
-        this.franchiseeSalePrice = res.data.franchiseeSalePrice || []
-        this.franchiseeRegisterCount = res.data.franchiseeRegisterCount || []
-        this.franchiseeMemberCount = res.data.franchiseeMemberCount || []
+        this.franchiseeSalePrice = res.data.franchiseeSalePrice || [];
+        this.franchiseeRegisterCount = res.data.franchiseeRegisterCount || [];
+        this.franchiseeMemberCount = res.data.franchiseeMemberCount || [];
       } else {
         this.$message.warning(res.msg);
       }
@@ -540,9 +605,9 @@ export default {
       this.supplierDisplayBoard();
     },
     // 统计报表
-    showExportDialog () {
-      console.log('统计报表显示')
-      this.visibleExportModal = true
+    showExportDialog() {
+      console.log("统计报表显示");
+      this.visibleExportModal = true;
     },
     //供应商数据看板
     async supplierDisplayBoard() {
@@ -570,7 +635,7 @@ export default {
       }
     },
     goPath(url, name) {
-      console.log(url, name)
+      console.log(url, name);
       const queryParam = {
         在售商品: "1",
         待上架商品: "2",
@@ -583,7 +648,7 @@ export default {
         审核未通过加盟商: "0",
       };
       // 下边四个字段点击不跳转
-      if (url == 'no-jump') return
+      if (url == "no-jump") return;
       if (!url) return;
       if (queryParam[name]) {
         this.$router.push({ path: url, query: { type: queryParam[name] } });
@@ -597,9 +662,9 @@ export default {
       if (res.code == "200") {
         const data = res.data || {};
         this.GYManageValues = [
-          {...data.auditPassNum, url: '/apps/franchisee/franchisee-list'},
-          {...data.auditDoingNum, url: '/apps/franchisee/franchisee-list'},
-          {...data.auditNoPassNum, url: '/apps/franchisee/franchisee-list'},
+          { ...data.auditPassNum, url: "/apps/franchisee/franchisee-list" },
+          { ...data.auditDoingNum, url: "/apps/franchisee/franchisee-list" },
+          { ...data.auditNoPassNum, url: "/apps/franchisee/franchisee-list" },
         ];
       } else {
         this.$message.warning(res.msg);
@@ -612,17 +677,17 @@ export default {
       const A1 = {
         num: v2[0].countNum,
         // url: v2[0].url,
-        url: '/apps/commodity/product',
+        url: "/apps/commodity/product",
       };
       const B1 = {
         num: v2[1].countNum,
         // url: v2[1].url,
-        url: '/apps/commodity/product',
+        url: "/apps/commodity/product",
       };
       const C1 = {
         num: v2[2].countNum,
         // url: v2[2].url,
-        url: '/apps/commodity/product',
+        url: "/apps/commodity/product",
       };
       this.manageListV = [
         [A, B, C],
@@ -948,7 +1013,7 @@ export default {
       margin-top: 20px;
       ::v-deep .el-table__header-wrapper {
         table thead tr th.el-table__cell {
-          background-color: #EBEDF0 !important;
+          background-color: #ebedf0 !important;
           height: 56px;
           font-size: 14px;
           font-family: PingFangSC, PingFang SC;
@@ -961,17 +1026,20 @@ export default {
           height: 80px;
           font-size: 12px !important;
           &:nth-child(1) {
-            color: #FF5500 !important;
+            color: #ff5500 !important;
           }
         }
       }
-      ::v-deep .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
-        background: #FFFAF7;
+      ::v-deep
+        .el-table--striped
+        .el-table__body
+        tr.el-table__row--striped
+        td.el-table__cell {
+        background: #fffaf7;
         font-size: 14px;
         font-weight: 400;
         color: #323233;
       }
-
     }
   }
   ._padding {

@@ -428,7 +428,7 @@ export const constantRoutes = [
       {
         path: 'activity-notify',
         component: resolve => require(['../views/store-manage-module/activity-notify/list.vue'], resolve),
-        name: 'Renewal-List',
+        name: 'Activity-Notify',
         meta: { title: '商城  / 门店管理 / 活动通知' }
       },
     ]
@@ -444,6 +444,12 @@ export const constantRoutes = [
         component: resolve => require(['../views/operating-module/banner-manage/index.vue'], resolve),
         name: 'BannerManage',
         meta: { title: '商城  / 运营管理 / 轮播图管理' }
+      },
+      {
+        path: 'recommon',
+        component: resolve => require(['../views/operating-module/recommon/index.vue'], resolve),
+        name: 'recommon',
+        meta: { title: '商城  / 运营管理 / 首页精品推荐' }
       },
       {
         path: 'feedback-manage',

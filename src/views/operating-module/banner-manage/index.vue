@@ -1,28 +1,62 @@
 <template>
   <div class="app-container">
-    <el-form ref="formSearch" :model="formSearch" :inline="true" class="search-form clearfix"
-      size="mini">
-      <el-form-item class="search-field fl" label="轮播图名称" prop="bannerName">
-        <el-input v-model="formSearch.bannerName" placeholder="请输入启动页名称" clearable />
+    <el-form
+      ref="formSearch"
+      :model="formSearch"
+      :inline="true"
+      class="search-form clearfix"
+      size="mini"
+    >
+      <el-form-item
+        class="search-field fl"
+        label="轮播图名称"
+        prop="bannerName"
+      >
+        <el-input
+          v-model="formSearch.bannerName"
+          placeholder="请输入启动页名称"
+          clearable
+        />
       </el-form-item>
       <el-form-item label="跳转形式" class="search-field fl" prop="jumpWay">
         <el-select v-model="formSearch.jumpWay" placeholder="全部">
-          <el-option v-for="item in stayOptions" :key="item.value" :label="item.label"
-            :value="item.value">
+          <el-option
+            v-for="item in stayOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item class="search-field fl" label="时间" prop="selectedDate">
-        <el-date-picker v-model="formSearch.selectedDate" type="daterange" range-separator="-"
-          start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
+        <el-date-picker
+          v-model="formSearch.selectedDate"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item class="">
         <!-- <el-button class="two-words" plain size="mini" @click="onReset('formSearch')">重置
         </el-button> -->
-        <el-button class="two-words" type="primary" icon="el-icon-search" size="mini" @click="fetchData(1)">查询
+        <el-button
+          class="two-words"
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="fetchData(1)"
+          >查询
         </el-button>
-        <el-button size="mini" icon="el-icon-circle-plus-outline" @click="handleEditor">添加</el-button>
+        <el-button
+          size="mini"
+          icon="el-icon-circle-plus-outline"
+          @click="handleEditor"
+          >添加</el-button
+        >
       </el-form-item>
     </el-form>
     <div class="table-wrap">
@@ -31,36 +65,85 @@
           <el-button type="success" size="small" @click="handleEditor">添加</el-button>
         </div>
       </div> -->
-      <el-table v-loading="listLoading" height="460px" :data="formData"
-        element-loading-text="加载中..." fit highlight-current-row>
+      <el-table
+        v-loading="listLoading"
+        height="460px"
+        :data="formData"
+        element-loading-text="加载中..."
+        fit
+        highlight-current-row
+      >
         <el-table-column label="序号" width="50" align="center">
           <template slot-scope="scope">
             {{ scope.$index + 1 + (formSearch.current - 1) * formSearch.size }}
           </template>
         </el-table-column>
-        <el-table-column label="轮播图名称" prop="bannerName" show-overflow-tooltip min-width="110px"
-          align="center" />
-        <el-table-column label="缩略图" prop="img" show-overflow-tooltip align="center">
+        <el-table-column
+          label="轮播图名称"
+          prop="bannerName"
+          show-overflow-tooltip
+          min-width="110px"
+          align="center"
+        />
+        <el-table-column
+          label="缩略图"
+          prop="img"
+          show-overflow-tooltip
+          align="center"
+        >
           <template slot-scope="scope">
-            <el-link type="primary" @click="handleImg(scope.row)">缩略图</el-link>
+            <el-link type="primary" @click="handleImg(scope.row)"
+              >缩略图</el-link
+            >
           </template>
         </el-table-column>
-        <el-table-column label="跳转形式" prop="jumpWay" show-overflow-tooltip min-width="110px"
-          align="center">
+        <el-table-column
+          label="跳转形式"
+          prop="jumpWay"
+          show-overflow-tooltip
+          min-width="110px"
+          align="center"
+        >
           <template slot-scope="scope">
             {{ scope.row.jumpWay | toType }}
           </template>
         </el-table-column>
-        <el-table-column label="顺序" prop="srt" show-overflow-tooltip min-width="110px"
-          align="center" />
-        <el-table-column label="发布人" prop="releaser" show-overflow-tooltip align="center" />
-        <el-table-column label="状态" prop="bannerStatus" show-overflow-tooltip align="center">
+        <el-table-column
+          label="顺序"
+          prop="srt"
+          show-overflow-tooltip
+          min-width="110px"
+          align="center"
+        />
+        <el-table-column
+          label="发布人"
+          prop="releaser"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          label="状态"
+          prop="bannerStatus"
+          show-overflow-tooltip
+          align="center"
+        >
           <template slot-scope="scope">
             {{ scope.row.bannerStatus | toStas }}
           </template>
         </el-table-column>
-        <el-table-column label="发布日期" prop="releaserTime" show-overflow-tooltip align="center" />
-        <el-table-column align="center" prop="created_at" fixed="right" label="操作" width="200">
+        <el-table-column
+          label="发布日期"
+          prop="releaserTime"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          align="center"
+          prop="created_at"
+          fixed="right"
+          label="操作"
+          width="200"
+        >
           <template slot-scope="scope">
             <!-- <el-link
               size="small"
@@ -69,9 +152,13 @@
               >查看</el-link
             > -->
 
-            <el-button size="mini" @click="handleEditor(scope.row)">修改</el-button>
+            <el-button size="mini" @click="handleEditor(scope.row)"
+              >修改</el-button
+            >
 
-            <el-button size="mini" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button size="mini" @click="handleDelete(scope.row)"
+              >删除</el-button
+            >
             <!-- <el-link
               size="small"
               type="primary"
@@ -83,19 +170,40 @@
       </el-table>
       <!-- <y-pagination v-show="total > 0" class="pageBox" :total="total"
         :page.sync="formSearch.current" :limit.sync="formSearch.size" @pagination="fetchData" /> -->
-      <el-pagination background v-show="total > 10" @size-change="changeSize" @current-change="changePage" :page-size="formSearch.pageSize" layout="total, slot, jumper, prev, pager, next" :total="total"></el-pagination>
+      <el-pagination
+        background
+        v-show="total > 10"
+        @size-change="changeSize"
+        @current-change="changePage"
+        :page-size="formSearch.pageSize"
+        layout="total, slot, jumper, prev, pager, next"
+        :total="total"
+      ></el-pagination>
 
       <el-dialog :visible.sync="imgPreviewVisible">
         <img width="100%" :src="dialogImageUrl" alt="缩略图" />
       </el-dialog>
-      <el-dialog :title="addFlag ? '新增banner' : '编辑banner'" class="add-dialog"
-        :visible.sync="editVisible" width="800px">
-        <el-form ref="formAdd" :model="formAdd" :label-width="formLabelWidth" :rules="formAddRule">
+      <el-dialog
+        :title="addFlag ? '新增banner' : '编辑banner'"
+        class="add-dialog"
+        :visible.sync="editVisible"
+        width="800px"
+      >
+        <el-form
+          ref="formAdd"
+          :model="formAdd"
+          :label-width="formLabelWidth"
+          :rules="formAddRule"
+        >
           <el-row :gutter="10">
             <el-col :span="12">
               <el-form-item label="banner名称" prop="bannerName">
-                <el-input v-model="formAdd.bannerName" placeholder="请输入轮播图名称" size="small"
-                  clearable></el-input>
+                <el-input
+                  v-model="formAdd.bannerName"
+                  placeholder="请输入轮播图名称"
+                  size="small"
+                  clearable
+                ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -103,8 +211,13 @@
           <el-row :gutter="10">
             <el-col :span="12">
               <el-form-item label="文件" prop="bannerUrl">
-                <el-upload class="upload-demo" action="#" multiple :file-list="fileList"
-                  :on-change="handleUpLoadChange">
+                <el-upload
+                  class="upload-demo"
+                  action="#"
+                  multiple
+                  :file-list="fileList"
+                  :on-change="handleUpLoadChange"
+                >
                   <el-button size="small" type="primary">点击上传</el-button>
                 </el-upload>
               </el-form-item>
@@ -123,32 +236,63 @@
             </el-col> -->
           </el-row>
           <el-form-item label="内容形式">
-            <el-radio-group v-model="formAdd.jumpWay" @change="handleContentType">
+            <el-radio-group
+              v-model="formAdd.jumpWay"
+              @change="handleContentType"
+            >
               <el-radio label="0">URL地址</el-radio>
               <el-radio label="1">图文</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="URL地址" prop="jumpUrl" :label-width="formLabelWidth"
-            v-if="formAdd.jumpWay === '0'">
-            <el-input v-model="formAdd.jumpUrl" placeholder="请输入跳转地址" size="small"
-              autocomplete="off" />
+          <el-form-item
+            label="URL地址"
+            prop="jumpUrl"
+            :label-width="formLabelWidth"
+            v-if="formAdd.jumpWay === '0'"
+          >
+            <el-input
+              v-model="formAdd.jumpUrl"
+              placeholder="请输入跳转地址"
+              size="small"
+              autocomplete="off"
+            />
           </el-form-item>
-          <el-form-item label="富文本" :label-width="formLabelWidth" prop="jumpText"
-            v-if="formAdd.jumpWay === '1'">
+          <el-form-item
+            label="富文本"
+            :label-width="formLabelWidth"
+            prop="jumpText"
+            v-if="formAdd.jumpWay === '1'"
+          >
             <y-editor v-model="formAdd.jumpText"> </y-editor>
           </el-form-item>
-          <el-form-item label="banner顺序" prop="srt" :label-width="formLabelWidth">
+          <el-form-item
+            label="banner顺序"
+            prop="srt"
+            :label-width="formLabelWidth"
+          >
             <el-row>
               <el-col :span="12">
-                <el-select v-model="formAdd.srt" placeholder="全部" size="small">
-                  <el-option v-for="item in order" :key="item.value" :label="item.value"
-                    :value="item.value">
+                <el-select
+                  v-model="formAdd.srt"
+                  placeholder="全部"
+                  size="small"
+                >
+                  <el-option
+                    v-for="item in order"
+                    :key="item.value"
+                    :label="item.value"
+                    :value="item.value"
+                  >
                   </el-option>
                 </el-select>
               </el-col>
             </el-row>
           </el-form-item>
-          <el-form-item label="发布状态" prop="bannerStatus" :label-width="formLabelWidth">
+          <el-form-item
+            label="发布状态"
+            prop="bannerStatus"
+            :label-width="formLabelWidth"
+          >
             <el-radio-group v-model="formAdd.bannerStatus">
               <el-radio label="1">启用</el-radio>
               <el-radio label="0">禁用</el-radio>
@@ -157,7 +301,9 @@
         </el-form>
         <div slot="footer">
           <el-button @click="editVisible = false">取 消</el-button>
-          <el-button type="primary" @click="handleSubmit('formAdd')">确 定</el-button>
+          <el-button type="primary" @click="handleSubmit('formAdd')"
+            >确 定</el-button
+          >
         </div>
       </el-dialog>
     </div>
@@ -172,7 +318,7 @@
 //   updateBannerInfo
 // } = operatingApi.bannerApi
 
-import { post } from '@/utils/http-nepsp'
+import { post } from "@/utils/http-nepsp";
 export default {
   name: "operatingBannerManage",
   data() {
@@ -180,7 +326,7 @@ export default {
       /* 暂定停留时间 */
       stayOptions: [
         { label: "URL地址", value: "0" },
-        { label: "图文", value: "1" }
+        { label: "图文", value: "1" },
       ],
       /* 查询依赖 */
       formSearch: {
@@ -188,7 +334,7 @@ export default {
         size: 10,
         bannerName: "",
         jumpWay: "",
-        selectedDate: ""
+        selectedDate: "",
       },
       listLoading: false,
       /* 表格数据 */
@@ -215,26 +361,26 @@ export default {
         jumpUrl: "",
         jumpWay: "0",
         srt: "",
-        jumpText: ""
+        jumpText: "",
       },
       /* 表单验证 */
       formAddRule: {
         bannerName: [
-          { required: true, message: "请输入角色名称", trigger: "blur" }
+          { required: true, message: "请输入角色名称", trigger: "blur" },
         ],
         bannerLocal: [
-          { required: true, message: "请选择banner顺序", trigger: "change" }
+          { required: true, message: "请选择banner顺序", trigger: "change" },
         ],
         bannerUrl: [
-          { required: true, message: "请上传文件", trigger: "change" }
+          { required: true, message: "请上传文件", trigger: "change" },
         ],
         jumpUrl: [
-          { required: false, message: "请输入URL地址", trigger: "blur" }
+          { required: false, message: "请输入URL地址", trigger: "blur" },
         ],
         jumpText: [{ required: false, message: "请输入正文", trigger: "blur" }],
         bannerStatus: [
-          { required: true, message: "请选择发布状态", trigger: "change" }
-        ]
+          { required: true, message: "请选择发布状态", trigger: "change" },
+        ],
       },
       total: 10,
       selectedStay: "",
@@ -244,8 +390,8 @@ export default {
       addFlag: false,
       fileList: [],
       selectedFile: "",
-      formLabelWidth: "110px"
-    }
+      formLabelWidth: "110px",
+    };
   },
   methods: {
     /**
@@ -255,14 +401,14 @@ export default {
      * @author: camus
      */
     onReset(refsName) {
-      this.$refs[refsName].resetFields()
+      this.$refs[refsName].resetFields();
       this.formSearch = {
         ...this.formSearch,
         beginTime: "",
         endTime: "",
-        current: 1
-      }
-      this._qryBannerForPage()
+        current: 1,
+      };
+      this._qryBannerForPage();
     },
     /**
      * @description: 查询
@@ -272,16 +418,16 @@ export default {
      */
     fetchData(val) {
       if (val === 1) {
-        const { selectedDate } = this.formSearch
-        this.formSearch.pageSize = 10
-        this.formSearch.pageNum = 1
+        const { selectedDate } = this.formSearch;
+        this.formSearch.pageSize = 10;
+        this.formSearch.pageNum = 1;
         this.formSearch = {
           ...this.formSearch,
           beginTime: selectedDate[0],
-          endTime: selectedDate[1]
-        }
+          endTime: selectedDate[1],
+        };
       }
-      this._qryBannerForPage()
+      this._qryBannerForPage();
     },
     /**
      * @description: 编辑
@@ -290,11 +436,11 @@ export default {
      * @author: camus
      */
     handleEditor(row = {}) {
-      this.addFlag = !row.bannerId
+      this.addFlag = !row.bannerId;
       if (row.bannerId) {
-        this.formAdd = row
+        this.formAdd = row;
       }
-      this.editVisible = true
+      this.editVisible = true;
     },
     /**
      * @description: 表单提交
@@ -305,19 +451,19 @@ export default {
     handleSubmit(refName) {
       this.formAdd = {
         ...this.formAdd,
-        releaser: this.$store.getters.name
-      }
+        releaser: this.$store.getters.name,
+      };
 
       this.$refs[refName].validate((valid) => {
         if (valid) {
           if (this.addFlag) {
-            this._addBannerInfo(this.formAdd)
+            this._addBannerInfo(this.formAdd);
           } else {
-            this._updateBannerInfo(this.formAdd)
+            this._updateBannerInfo(this.formAdd);
           }
-          this.editVisible = false
+          this.editVisible = false;
         }
-      })
+      });
     },
     /**
      * @description: 删除
@@ -326,20 +472,20 @@ export default {
      * @author: camus
      */
     async handleDelete(value) {
-      const { bannerId } = value
+      const { bannerId } = value;
       try {
         await this.$confirm("此操作将永久删除该数据, 是否继续?", "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
-        })
-        this._deleteBannerInfo(bannerId)
-        this.$message.success("删除成功")
+          type: "warning",
+        });
+        this._deleteBannerInfo(bannerId);
+        this.$message.success("删除成功");
       } catch (error) {
         this.$message({
           type: "info",
-          message: "已取消"
-        })
+          message: "已取消",
+        });
       }
     },
     /**
@@ -350,20 +496,22 @@ export default {
      */
     async _qryBannerForPage() {
       try {
-        this.listLoading = true
-        const { data } = await post('/cms/api/open/app/qryBannerForPage', {data: this.formSearch})
-        this.formData = data.list
-        this.total = data.total
+        this.listLoading = true;
+        const { data } = await post("/cms/api/open/app/qryBannerForPage", {
+          data: this.formSearch,
+        });
+        this.formData = data.list;
+        this.total = data.total;
         data.total &&
           (this.order = Array.from({ length: data.total }, (v, k) => {
-            return { value: k + 1 }
-          }))
+            return { value: k + 1 };
+          }));
       } catch (error) {
-        this.$message("未查询到相关数据")
-        this.formData = []
-        this.total = 0
+        this.$message("未查询到相关数据");
+        this.formData = [];
+        this.total = 0;
       }
-      this.listLoading = false
+      this.listLoading = false;
     },
     /**
      * @description: 添加请求
@@ -373,11 +521,11 @@ export default {
      */
     async _addBannerInfo(data) {
       try {
-        await post('/cms/api/open/app/addBannerInfo', {data: data})
-        await this._qryBannerForPage()
-        this.$message.success("新增成功")
+        await post("/cms/api/open/app/addBannerInfo", { data: data });
+        await this._qryBannerForPage();
+        this.$message.success("新增成功");
       } catch (error) {
-        this.$message("数据未添加")
+        this.$message("数据未添加");
       }
     },
     /**
@@ -388,11 +536,11 @@ export default {
      */
     async _deleteBannerInfo(data) {
       try {
-        await post('/cms/api/open/app/deleteBannerInfo', {data: data})
-        await this._qryBannerForPage()
-        this.$message.success("删除成功")
+        await post("/cms/api/open/app/deleteBannerInfo", { data: data });
+        await this._qryBannerForPage();
+        this.$message.success("删除成功");
       } catch (error) {
-        this.$message("数据删除未成功")
+        this.$message("数据删除未成功");
       }
     },
     /**
@@ -403,11 +551,11 @@ export default {
      */
     async _updateBannerInfo(data) {
       try {
-        await post('/cms/api/open/app/updateBannerInfo', {data: data})
-        await this._qryBannerForPage()
-        this.$message.success("编辑成功")
+        await post("/cms/api/open/app/updateBannerInfo", { data: data });
+        await this._qryBannerForPage();
+        this.$message.success("编辑成功");
       } catch (error) {
-        this.$message("数据未更新")
+        this.$message("数据未更新");
       }
     },
     /**
@@ -417,9 +565,9 @@ export default {
      * @author: camus
      */
     handleImg(row) {
-      const { bannerUrl = "" } = row
-      this.imgPreviewVisible = true
-      this.dialogImageUrl = bannerUrl
+      const { bannerUrl = "" } = row;
+      this.imgPreviewVisible = true;
+      this.dialogImageUrl = bannerUrl;
     },
     /**
      * @description: 文件上传
@@ -428,26 +576,26 @@ export default {
      * @author: camus
      */
     handleUpLoadChange(file) {
-      const url = URL.createObjectURL(file.raw)
-      this.$forceUpdate()
-      this.formAdd.bannerUrl = url
+      const url = URL.createObjectURL(file.raw);
+      this.$forceUpdate();
+      this.formAdd.bannerUrl = url;
       this.formAdd.bannerSize =
-        Math.floor((file.size / (1024 * 1024)) * 100) / 100
+        Math.floor((file.size / (1024 * 1024)) * 100) / 100;
       /* 转base64 */
-      const reader = new FileReader()
-      reader.readAsDataURL(file.raw)
+      const reader = new FileReader();
+      reader.readAsDataURL(file.raw);
       reader.onload = () => {
         this.formAdd.base64String = reader.result.replace(
           /^data:image\/\w+;base64,/,
           ""
-        )
-      }
-      const { name: fileName } = file
-      this.formAdd.fileName = fileName
+        );
+      };
+      const { name: fileName } = file;
+      this.formAdd.fileName = fileName;
       this.formAdd.fileExt = fileName.substring(
         fileName.lastIndexOf(".") + 1,
         fileName.length
-      )
+      );
     },
     /**
      * @description: 动态添加验证
@@ -457,25 +605,25 @@ export default {
      */
     handleContentType(value) {
       if (value === "0") {
-        this.formAdd.jumpUrl = ""
-        this.formAdd.jumpText = ""
-        this.formAddRule.jumpText[0].required = false
-        this.formAddRule.jumpUrl[0].required = true
+        this.formAdd.jumpUrl = "";
+        this.formAdd.jumpText = "";
+        this.formAddRule.jumpText[0].required = false;
+        this.formAddRule.jumpUrl[0].required = true;
       } else {
-        this.formAdd.jumpUrl = ""
-        this.formAdd.jumpText = ""
-        this.formAddRule.jumpText[0].required = true
-        this.formAddRule.jumpUrl[0].required = false
+        this.formAdd.jumpUrl = "";
+        this.formAdd.jumpText = "";
+        this.formAddRule.jumpText[0].required = true;
+        this.formAddRule.jumpUrl[0].required = false;
       }
     },
     changeSize(pageSize) {
-      this.formSearch.pageSize = pageSize
-      this.formSearch.pageNum = 1
-      this.fetchData()
+      this.formSearch.pageSize = pageSize;
+      this.formSearch.pageNum = 1;
+      this.fetchData();
     },
     changePage(pageNum) {
-      this.formSearch.pageNum = pageNum
-      this.fetchData()
+      this.formSearch.pageNum = pageNum;
+      this.fetchData();
     },
     // /**
     //  * @description: 发布时间
@@ -527,9 +675,9 @@ export default {
      */
     toStas: (stas) => {
       if (!stas) {
-        return ""
+        return "";
       }
-      return stas === "0" ? "禁用" : "启用"
+      return stas === "0" ? "禁用" : "启用";
     },
     /**
      * @description: 跳转形式
@@ -539,10 +687,10 @@ export default {
      */
     toType: (stas) => {
       if (!stas) {
-        return ""
+        return "";
       }
-      return stas === "0" ? "URL" : "图文"
-    }
+      return stas === "0" ? "URL" : "图文";
+    },
   },
   watch: {
     editVisible(val) {
@@ -563,34 +711,34 @@ export default {
           jumpUrl: "",
           jumpWay: "0",
           srt: "",
-          jumpText: ""
-        }
+          jumpText: "",
+        };
       }
       this.$nextTick(() => {
-        this.$refs.formAdd.clearValidate()
-      })
+        this.$refs.formAdd.clearValidate();
+      });
     },
     "formAdd.bannerUrl": {
       handler(newVal) {
         if (newVal) {
-          this.$refs.formAdd.clearValidate("bannerUrl")
+          this.$refs.formAdd.clearValidate("bannerUrl");
         }
-      }
-    }
+      },
+    },
   },
 
   created() {
-    this._qryBannerForPage()
+    this._qryBannerForPage();
     // /**
     //  * @description: test
     //  * @param {*}
     //  */
     // this.$store.dispatch("user/setName", "jane");
     // this.$store.dispatch("user/setId", 11111);
-  }
-}
+  },
+};
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .app-container {
   .right-label {
     color: #303133;
