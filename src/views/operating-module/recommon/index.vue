@@ -310,7 +310,6 @@ export default {
             if (index === result.data.list.length - 1) {
               element.isBottom = true;
             }
-            console.log(index, result.data.list.length);
           });
           this.dataList = result.data.list;
           this.totalCount = result.data.totalCount * 1;
