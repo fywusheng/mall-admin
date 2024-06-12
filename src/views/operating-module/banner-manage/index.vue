@@ -619,10 +619,12 @@ export default {
     changeSize(pageSize) {
       this.formSearch.pageSize = pageSize;
       this.formSearch.pageNum = 1;
+      this.formSearch.current = 1;
       this.fetchData();
     },
     changePage(pageNum) {
       this.formSearch.pageNum = pageNum;
+      this.formSearch.current = pageNum;
       this.fetchData();
     },
     // /**

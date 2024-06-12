@@ -541,6 +541,7 @@ export default {
     this.getStoreInfo();
     this.mange();
     this.supplierManagement();
+    this.storeManagement();
     this.supplierDisplayBoard();
     this.indexOrderCount();
   },
@@ -646,6 +647,10 @@ export default {
         已有加盟商: "1",
         待审核加盟商: "2",
         审核未通过加盟商: "0",
+        已有门店: "",
+        待审核门店: "2",
+        审核未通过门店: "0",
+        待续签门店: "0",
       };
       // 下边四个字段点击不跳转
       if (url == "no-jump") return;
@@ -666,6 +671,19 @@ export default {
           { ...data.auditDoingNum, url: "/apps/franchisee/franchisee-list" },
           { ...data.auditNoPassNum, url: "/apps/franchisee/franchisee-list" },
         ];
+      } else {
+        this.$message.warning(res.msg);
+      }
+    },
+    //供应商管理
+    async storeManagement() {
+      const res = await post("/srm/sh/stores/indexStoreCount", {});
+      if (res.code == "200") {
+        const data = res.data || {};
+        this.StoreManageValues[0].number = data.allCount;
+        this.StoreManageValues[1].number = data.toReviewCount;
+        this.StoreManageValues[2].number = data.reviewFailedCount;
+        this.StoreManageValues[3].number = data.renewalFailedCount;
       } else {
         this.$message.warning(res.msg);
       }

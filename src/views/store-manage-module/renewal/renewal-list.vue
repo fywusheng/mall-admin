@@ -195,7 +195,13 @@ export default {
     FranchiseeSelect,
   },
   async mounted() {
-    this.loadData();
+    // 从首页跳转过来的链接
+    if (this.$route.query && this.$route.query.type >= 0) {
+      this.searchParams.renewalStatus = parseInt(this.$route.query.type);
+      this.loadData();
+    } else {
+      this.loadData();
+    }
   },
   methods: {
     changePage(pageNo) {
