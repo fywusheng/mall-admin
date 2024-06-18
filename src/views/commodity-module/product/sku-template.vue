@@ -91,9 +91,9 @@
           ></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item label="佣金" prop="stockBalance">
+      <el-form-item label="佣金" prop="commissionPrice">
         <el-input
-          v-model="dataForm.stockBalance"
+          v-model="dataForm.price.commissionPrice"
           placeholder="请输入商品的返佣金额"
           style="width: 100%"
           maxlength="6"
@@ -160,6 +160,23 @@ export default {
         return callback();
       }
     };
+    var validatorCommissionPrice = (rule, value, callback) => {
+      if (this.dataForm.price.commissionPrice === "") {
+        return callback(new Error("请输入商品佣金"));
+      }
+      if (
+        this.dataForm.price.commissionPrice > this.dataForm.price.sellingPrice
+      ) {
+        console.log(
+          this.dataForm,
+          Number(this.dataForm.price.commissionPrice) >
+            Number(this.dataForm.price.sellingPrice)
+        );
+        return callback(new Error("佣金金额输入有误，请重新输入…"));
+      } else {
+        return callback();
+      }
+    };
     return {
       dialogTitle: "创建SKU",
       showDialog: false,
@@ -176,6 +193,7 @@ export default {
           markOffPrice: "",
           costPrice: "",
           sellingPrice: "",
+          commissionPrice: "",
         },
       },
       dataRules: {
@@ -184,6 +202,14 @@ export default {
         ],
         stockBalance: [
           { required: true, message: "请输入商品库存数量...", trigger: "blur" },
+        ],
+        commissionPrice: [
+          {
+            // required: true,
+            // message: "请输入佣金",
+            validator: validatorCommissionPrice,
+            trigger: "blur",
+          },
         ],
         price: [
           { required: true, validator: validatorSkuPrice, trigger: "blur" },
@@ -213,6 +239,7 @@ export default {
         this.dataForm.price.markOffPrice = "";
         this.dataForm.price.sellingPrice = "";
         this.dataForm.price.costPrice = "";
+        this.dataForm.price.commissionPrice = "";
         this.fileList = [];
         if (this.attr_tableData) {
           this.attr_tableData.forEach((ele) => {
@@ -232,6 +259,7 @@ export default {
         this.dataForm.price.markOffPrice = result.data.markOffPrice;
         this.dataForm.price.sellingPrice = result.data.sellingPrice;
         this.dataForm.price.costPrice = result.data.costPrice;
+        this.dataForm.price.commissionPrice = result.data.commissionPrice;
         if (this.attr_tableData && this.dataForm.skuSpecsMap) {
           this.attr_tableData.forEach((ele) => {
             for (const [key, value] of Object.entries(

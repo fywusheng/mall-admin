@@ -84,14 +84,14 @@
       >
       </el-table-column>
       <el-table-column
-        prop="sellingPrice"
+        prop="costPrice"
         label="成本价"
         align="center"
         width="80px"
       >
       </el-table-column>
       <el-table-column
-        prop="sellingPrice"
+        prop="commissionPrice"
         label="佣金"
         align="center"
         width="80px"

@@ -48,7 +48,7 @@
                   </div>
                   <el-form-item prop="mainImgUrl">
                     <div
-                      v-for="(item, index) in dataForm.mainImgUrl"
+                      v-for="(item, index) in mainImgUrls"
                       :key="index"
                       class="avatar-wrapper"
                     >
@@ -82,6 +82,8 @@
                     :limit="1"
                     :before-upload="beforeVideoUpload"
                     :on-success="handleVideoSuccess"
+                    :file-list="videoList"
+                    :on-remove="handleRemoveVideo"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
                   </el-upload>
@@ -798,6 +800,7 @@ export default {
       supplierOptions: [],
       frontDeskCategoriesOptions: [],
       categoryMap: {},
+      videoList: [],
       valuationUnitOptions: [
         { key: 1, label: "件" },
         { key: 2, label: "重量" },
@@ -897,6 +900,7 @@ export default {
         ],
       },
       uploadImgIndex: 0,
+      mainImgUrls: ["", "", "", "", ""],
       dataForm: {
         id: "",
         name: "",
@@ -913,7 +917,12 @@ export default {
         valuationUnit: "",
         unitVal: "",
         tariffType: "",
-        mainImgUrl: ["", "", "", "", ""],
+        mainImgUrl: "",
+        mgUrlTwo: "",
+        imgUrlThree: "",
+        imgUrlFour: "",
+        imgUrlFive: "",
+        mainVideoUrl: "",
         delFlag: "",
         saleState: "",
         attributeMap: new Map(),
@@ -1350,6 +1359,11 @@ export default {
           unitVal: result.data.unitVal,
           tariffType: result.data.tariffType,
           mainImgUrl: result.data.mainImgUrl,
+          imgUrlTwo: result.data.imgUrlTwo,
+          imgUrlThree: result.data.imgUrlThree,
+          imgUrlFour: result.data.imgUrlFour,
+          imgUrlFive: result.data.imgUrlFive,
+          mainVideoUrl: result.data.mainVideoUrl,
           delFlag: result.data.delFlag,
           attributes: result.data.attributes,
           saleState: result.data.saleState,
@@ -1398,14 +1412,58 @@ export default {
           this.dataForm.categoryNode,
           result.data.attributes
         );
+        // 回显视频
+        if (this.dataForm.mainVideoUrl) {
+          this.videoList = [
+            {
+              name: this.getImgName(this.dataForm.mainVideoUrl),
+              url: this.dataForm.mainVideoUrl,
+            },
+          ];
+        }
+
+        // 回显商品主图
+        const mainUrls = [
+          "mainImgUrl",
+          "imgUrlTwo",
+          "imgUrlThree",
+          "imgUrlFour",
+          "imgUrlFive",
+        ];
+        mainUrls.forEach((item, index) => {
+          this.mainImgUrls[index] = result.data[item] || "";
+        });
+        for (let i = 0; i < this.mainImgUrls.length; i++) {
+          if (this.mainImgUrls[i] === "") {
+            this.uploadImgIndex = i;
+            break; // 当i等于5时跳出循环
+          }
+        }
+        this.$forceUpdate();
       } else {
         this.$message.error(result.msg);
+      }
+    },
+    getImgName(url) {
+      if (url.indexOf("/") > 0) {
+        if (url.indexOf("?") > 0) {
+          url = url.split("?")[0];
+        }
+        //如果包含有"/"号 从最后一个"/"号+1的位置开始截取字符串
+        return url.substring(url.lastIndexOf("/") + 1, url.length);
+      } else {
+        return "";
       }
     },
     save() {
       this.$refs.dataFormInfor.validate(async (valid) => {
         if (valid) {
           let flag = false;
+          if (this.dataForm.mainImgUrl === "") {
+            this.$message.warning("请上传商品主图");
+            return;
+          }
+
           if (this.oldMoneyForm.shop == "1") {
             this.$refs.serviceForm.validate((res) => {
               if (res) {
@@ -1640,15 +1698,23 @@ export default {
       this.$router.back();
     },
     handleAvatarSuccess(index, response, file) {
-      console.log(index);
-      if (!response || response.code != 0) {
-        return;
-      }
+      console.log("index", "--------", index, response, file);
+      // if (!response || response.code != 0) {
+      //   return;
+      // }
 
-      this.dataForm.mainImgUrl[index] = file.response.data.absoluteUrl;
+      this.mainImgUrls[index] = response.data.absoluteUrl;
+      const nameJson = {
+        0: "mainImgUrl",
+        1: "imgUrlTwo",
+        2: "imgUrlThree",
+        3: "imgUrlFour",
+        4: "imgUrlFive",
+      };
+      this.dataForm[nameJson[index]] = response.data.absoluteUrl;
 
-      for (let i = 0; i < this.dataForm.mainImgUrl.length; i++) {
-        if (this.dataForm.mainImgUrl[i] === "") {
+      for (let i = 0; i < this.mainImgUrls.length; i++) {
+        if (this.mainImgUrls[i] === "") {
           this.uploadImgIndex = i;
           break; // 当i等于5时跳出循环
         }
@@ -1657,10 +1723,11 @@ export default {
       this.$forceUpdate();
     },
     beforeAvatarUpload(index, file) {
-      const isJPG = file.type === "image/jpeg";
+      console.log("文件格式", file.type);
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error("上传头像图片只能是 JPG、PNG 格式!");
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
@@ -1668,8 +1735,9 @@ export default {
       return isJPG && isLt2M;
     },
     handleVideoSuccess(response, file) {
+      console.log("video成功", response, file);
       if (response?.code == 0) {
-        this.dataForm.contractFileUrl = response.data.absoluteUrl;
+        this.dataForm.mainVideoUrl = response.data.absoluteUrl;
       }
     },
     beforeVideoUpload(file) {
@@ -1683,6 +1751,9 @@ export default {
         this.$message.error("上传文件大小不能超过 500MB!");
       }
       return isFile && isLt30M;
+    },
+    handleRemoveVideo(file, fileList) {
+      this.dataForm.mainVideoUrl = "";
     },
   },
 };
