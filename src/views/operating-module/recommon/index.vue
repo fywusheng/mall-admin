@@ -88,7 +88,7 @@
             type="default"
             icon="el-icon-circle-plus-outline"
             size="mini"
-            @click="forward2ProductAddPage()"
+            @click="showGoods()"
             >导入</el-button
           >
         </el-form-item>
@@ -103,7 +103,6 @@
       size="mini"
       v-loading="loading"
       style="padding-top: 0"
-      @selection-change="handleSelectionChange"
     >
       <div slot="empty" class="empty-wrap">
         <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
@@ -156,14 +155,14 @@
             :disabled="scope.row.isTop"
             size="mini"
             icon="el-icon-top"
-            @click="publishSingleSelection(scope.row)"
+            @click="updateGoodsIndex(scope.row, 2)"
             >上移</el-button
           >
           <el-button
             :disabled="scope.row.isBottom"
             size="mini"
             icon="el-icon-bottom"
-            @click="stopSingleSelection(scope.row)"
+            @click="updateGoodsIndex(scope.row, 1)"
             >下移</el-button
           >
           <el-button size="mini" icon="el-icon-delete" @click="audit(scope.row)"
@@ -178,6 +177,7 @@
       @size-change="changeSize"
       @current-change="changePage"
       :page-size="pageSize"
+      :current-page.sync="pageNo"
       layout="total, slot, jumper, prev, pager, next"
       :total="totalCount"
     >
@@ -187,7 +187,7 @@
   </div>
 </template>
 <script>
-import { fetch, downloadByPost, post } from "@/utils/http-client";
+import { fetch, post } from "@/utils/http-client";
 import CouponGoodsTemplate from "./coupon-goods";
 export default {
   name: "",
@@ -199,7 +199,6 @@ export default {
       pageNo: 1,
       pageSize: 10,
       dataList: [],
-      multipleSelection: [],
       totalCount: 20,
       loading: false,
       disabled: false,
@@ -215,7 +214,6 @@ export default {
         categoryId: "",
         //saleState:5
       },
-      showDialog: false,
     };
   },
   created() {
@@ -229,41 +227,6 @@ export default {
     this.loadData();
   },
   methods: {
-    formatSaleState: function (row, column) {
-      return row.saleState === 5
-        ? "在售中"
-        : row.saleState === 51
-        ? "上架中"
-        : row.saleState === 6
-        ? "已停售"
-        : row.saleState === 61
-        ? "下架中"
-        : "--";
-    },
-    formatAuditState: function (row, column) {
-      return row.auditState === 2
-        ? "待审核"
-        : row.auditState === 3
-        ? "审核不通过"
-        : row.auditState === 4
-        ? "审核通过"
-        : "--";
-    },
-    handleClick(tab, event) {
-      this.dataList = [];
-      this.pageNo = 1;
-      this.searchParams = {};
-      if (this.activeType === "1") {
-        this.searchParams.queryType = 1;
-      } else if (this.activeType === "2") {
-        this.searchParams.queryType = 2;
-      } else if (this.activeType === "3") {
-        this.searchParams.queryType = 3;
-      } else {
-        this.searchParams.queryType = 4;
-      }
-      this.loadData();
-    },
     changePage(pageNo) {
       this.pageNo = pageNo;
       this.loadData();
@@ -299,264 +262,59 @@ export default {
         pageSize: this.pageSize,
         queryObject: this.searchParams,
       };
-      const result = await post("/product/listByPageNo", params);
+      const result = await post("/product/getProductPageByType", params);
       this.loading = false;
       if (result.code == 200) {
         this.$nextTick(() => {
           result.data.list.forEach((element, index) => {
-            if (index === 0) {
+            element.index = (this.pageNo - 1) * this.pageSize + index;
+            if (element.index === 0) {
               element.isTop = true;
             }
-            if (index === result.data.list.length - 1) {
+            if (element.index === result.data.totalCount - 1) {
               element.isBottom = true;
             }
           });
           this.dataList = result.data.list;
           this.totalCount = result.data.totalCount * 1;
-          //this.pageSize = result.data.limit;
         });
       } else {
         this.$message.error(result.msg);
       }
     },
 
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
-
-    publishSingleSelection(row) {
-      this.multipleSelection = [];
-      let line = row;
-      line["categoryNode"] = row.categoryCode;
-      this.multipleSelection.push(line);
-      this.publishedSelling(row);
-    },
-
-    //上架
-    async up() {
-      const result = await post("/product/published.selling", {
-        publishType: "onsale",
-        productList: this.multipleSelection,
+    // 上移 or 下移
+    async updateGoodsIndex(row, type) {
+      const result = await post("/product/updateSort", {
+        productId: row.id,
+        type,
       });
-      this.loading = false;
-      if (result.code == 200) {
-        this.$message.success(result.msg);
-        this.$nextTick(() => {
-          this.activeType = "2";
-          this.queryType = 2;
-          this.loadData();
-        });
-      } else {
-        this.$message.error(result.msg);
-      }
+      // this.pageNo = 1;
+      this.loadData();
     },
-    async allup() {
-      const resArr = [];
-      for (const item of this.multipleSelection) {
-        const resp = await fetch("/product/sku/list", { productId: item.id });
-        if (resp.code == 200) {
-          this.loading = false;
-          if (
-            !resp.data ||
-            (resp.data && Array.isArray(resp.data) && resp.data.length == 0)
-          ) {
-            this.$message.warning("请先设置SKU,设置成功后方可上架!");
-            resArr.push(false);
-            break;
-          } else {
-            resArr.push(true);
-          }
-        } else {
-          this.loading = false;
-          this.$message.error(resp.msg);
-          resArr.push(false);
-          break;
-        }
-      }
-      if (
-        resArr.length == this.multipleSelection.length &&
-        !resArr.includes(false)
-      ) {
-        this.up();
-      }
+    // 移除
+    async audit(row) {
+      const result = await post("/product/deleteProductModule", { id: row.id });
 
-      // const endState = this.multipleSelection.some(async (item) => {
-      //   const resp = await fetch("/product/sku/list", { productId: item.id });
-      //   if (resp.code == 200) {
-      //     this.loading = false
-      //     if (!resp.data || (resp.data && Array.isArray(resp.data) && resp.data.length == 0)) {
-      //       this.$message.warning('请先设置SKU,设置成功后方可上架!')
-      //       return true
-      //     }
-      //   } else {
-      //     this.loading = false
-      //     this.$message.error(resp.msg)
-      //     return
-      //   }
-      // })
-      // console.log('123123', endState)
-      // if (!endState) {
-      //   this.up()
-      // }
+      // this.pageNo = 1;
+      this.loadData();
     },
-    publishedSelling(row) {
-      //校验sku
-      if (!this.multipleSelection || this.multipleSelection.length == 0) {
-        this.$message.error("请选择需要上架销售的商品！");
-        return;
-      }
-      this.$confirm("确定要上架销售所选中的商品吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(async () => {
-          this.loading = true;
-          if (row) {
-            console.log("==当行操作--");
-            const resp = await fetch("/product/sku/list", {
-              productId: row.id,
-            });
-            if (resp.code == 200) {
-              this.loading = false;
-              const data = resp.data;
-              if (data && Array.isArray(data) && data.length !== 0) {
-                this.up();
-              } else {
-                this.$message.error("请先设置SKU,设置成功后方可上架!");
-              }
-            } else {
-              this.loading = false;
-              this.$message.error(result.msg);
-              return;
-            }
-          } else {
-            console.log("==多行操作--");
-            this.allup();
-          }
-        })
-        .catch(() => {});
-    },
-
-    stopSingleSelection(row) {
-      //TODO 后端要求categoryNode的值为categoryCode
-      console.log("==row--", row);
-      this.multipleSelection = [];
-      let line = row;
-      line["categoryNode"] = row.categoryCode;
-      this.multipleSelection.push(line);
-      this.stopedSelling();
-    },
-
-    stopedSelling() {
-      if (!this.multipleSelection || this.multipleSelection.length == 0) {
-        this.$message.error("请选择需要下架的商品！");
-        return;
-      }
-      this.$confirm("确定要下架所选中的商品吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(async () => {
-          this.loading = true;
-          console.log("===3333===", this.multipleSelection);
-          const result = await post("/product/published.selling", {
-            publishType: "offsale",
-            productList: this.multipleSelection,
-          });
-          this.loading = false;
-          if (result.code == 200) {
-            this.$message.success(result.msg);
-            this.$nextTick(() => {
-              this.activeType = "3";
-              this.queryType = 3;
-              this.loadData();
-            });
-          } else {
-            this.$message.error(result.msg);
-          }
-        })
-        .catch(() => {});
-    },
-    // 去审核处理 TODO 在平台处做审核处理，商家端不处理
-    audit(row) {
-      var auditState = 4;
-      this.$confirm(
-        "该商品资料完整度是否满足销售规则，符合则通过否则请驳回?",
-        "审核确认提示",
-        {
-          distinguishCancelAndClose: true,
-          confirmButtonText: "通过",
-          cancelButtonText: "驳回",
-          type: "warning",
-        }
-      )
-        .then(async () => {
-          this.loading = true;
-          const result = await post("/product/audit", {
-            id: row.id,
-            auditState: 4,
-          });
-          this.loading = false;
-          if (result.code == 200) {
-            this.$message.success("商品审核成功！");
-            this.loadData();
-          } else {
-            this.$message.error(result.msg);
-          }
-        })
-        .catch(async (action) => {
-          if (action === "cancel") {
-            this.loading = true;
-            const result = await post("/product/audit", {
-              id: row.id,
-              auditState: 3,
-            });
-            this.loading = false;
-            if (result.code == 200) {
-              this.$message.success("商品审核成功！");
-              this.loadData();
-            } else {
-              this.$message.error(result.msg);
-            }
-          }
-        });
-    },
+    // 导入商品
     async addGoodsList(data) {
       if (!data) return;
-      let list = [...this.totalRecords, ...data];
-      list = list.reduce((prev, item) => {
-        const cur = prev.find((i) => i.id === item.id);
-        if (cur) {
-          return prev;
-        }
-        return [...prev, item];
-      }, []);
-      this.totalRecords = list;
-      this.totalCount = this.totalRecords.length;
-      this.changePage(1);
-    },
-    forward2ProductAddPage(row) {
-      this.$refs.goodsTemplate.show(true);
-    },
-    forward2SpecPage(row) {
-      //categoryNode:row.categoryNode
-      this.$router.push({
-        name: "SkuListDetails",
-        params: { categoryNode: row.categoryCode, id: row.id },
+      const productIdList = [];
+      data.forEach((item) => {
+        productIdList.push(item.id);
       });
+      const result = await post("/product/saveProductModule", {
+        productIdList,
+      });
+      this.pageNo = 1;
+      this.loadData();
     },
-
-    async exportProduct() {
-      this.loading = true;
-      const params = {
-        pageNum: this.pageNo,
-        pageSize: this.pageSize,
-        queryObject: this.searchParams,
-      };
-      await downloadByPost("/product/export", "商品列表.xlsx", params);
-      this.loading = false;
+    // 商品弹窗
+    showGoods(row) {
+      this.$refs.goodsTemplate.show(true);
     },
   },
 };
