@@ -238,6 +238,7 @@ export default {
         pageSize: this.pageSize,
         queryObject: {
           ...this.searchParams,
+          storeType: 1,
         },
       };
       const result = await post("/srm/sh/stores/listByPageNo", params);
