@@ -27,9 +27,9 @@ _uploader.props.httpRequest.default = async function (options) {
     formData.append('fileExt', fileExt)
     const result = await clientFileUpload(formData)
     if (result.code == 0) {
-      options.onSuccess(result.data)
+      options.onSuccess(result)
     }else{
-      options.onError(result.data)
+      options.onError(result)
     }
   } else {
     // 图片上传

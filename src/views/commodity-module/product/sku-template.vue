@@ -164,6 +164,9 @@ export default {
       if (this.dataForm.price.commissionPrice === "") {
         return callback(new Error("请输入商品佣金"));
       }
+      if (Number(this.dataForm.price.commissionPrice) < 0) {
+        return callback(new Error("佣金金额输入有误，请重新输入…"));
+      }
       if (
         this.dataForm.price.commissionPrice > this.dataForm.price.sellingPrice
       ) {

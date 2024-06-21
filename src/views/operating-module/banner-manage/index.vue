@@ -18,7 +18,7 @@
           clearable
         />
       </el-form-item>
-      <el-form-item label="跳转形式" class="search-field fl" prop="jumpWay">
+      <!-- <el-form-item label="跳转形式" class="search-field fl" prop="jumpWay">
         <el-select v-model="formSearch.jumpWay" placeholder="全部">
           <el-option
             v-for="item in stayOptions"
@@ -28,7 +28,7 @@
           >
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item class="search-field fl" label="时间" prop="selectedDate">
         <el-date-picker
           v-model="formSearch.selectedDate"
@@ -97,7 +97,7 @@
             >
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="跳转形式"
           prop="jumpWay"
           show-overflow-tooltip
@@ -107,7 +107,7 @@
           <template slot-scope="scope">
             {{ scope.row.jumpWay | toType }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           label="顺序"
           prop="srt"
@@ -241,7 +241,7 @@
               @change="handleContentType"
             >
               <el-radio label="0">URL地址</el-radio>
-              <el-radio label="1">图文</el-radio>
+              <!-- <el-radio label="1">图文</el-radio> -->
             </el-radio-group>
           </el-form-item>
           <el-form-item
