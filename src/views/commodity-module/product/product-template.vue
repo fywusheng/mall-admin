@@ -60,6 +60,7 @@
                         :class="{ active: uploadImgIndex === index }"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess.bind(this, index)"
+                        :on-error="handleError"
                         :before-upload="beforeAvatarUpload.bind(this, index)"
                         :auto-upload="true"
                       >
@@ -82,6 +83,7 @@
                     :limit="1"
                     :before-upload="beforeVideoUpload"
                     :on-success="handleVideoSuccess"
+                    :on-error="handleError"
                     :file-list="videoList"
                     :on-remove="handleRemoveVideo"
                   >
@@ -138,7 +140,7 @@
             </el-form-item>
           </td>
           <td width="50%">
-            <el-form-item label="商品推荐语" prop="summarized" class="item">
+            <!-- <el-form-item label="商品推荐语" prop="summarized" class="item">
               <el-input
                 v-model="dataForm.summarized"
                 placeholder="请输入商品推荐语或卖点，50个字以内..."
@@ -146,7 +148,7 @@
                 maxlength="32"
                 style="width: 80%"
               ></el-input>
-            </el-form-item>
+            </el-form-item> -->
           </td>
         </tr>
         <tr>
@@ -1175,6 +1177,10 @@ export default {
     },
     beforeEditorUpload() {
       this.uploading = true;
+    },
+    handleError(err) {
+      console.log("err: ", err);
+      this.$message.error(err.message);
     },
     uploadEditorSuccess(res) {
       if (!res.code) {
