@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import requestUpload from '@/utils/http-nepsp'
+import requestUpload, {BlobHttpService} from '@/utils/http-nepsp'
 // import HttpService from '@/utils/http-client'
 import Qs from 'qs'
 
@@ -82,12 +82,14 @@ export function clientUpload(data) {
 // 文件上传
 // 图片文件上传，特殊处理，直接代理到 生产地址
 export function clientFileUpload(formData) {
-  return requestUpload({
-    // url: '/nepsp-api/cms/iep/web/cms/singleFileUpload',
-    url: '/cms/iep/web/cms/singleFileUpload',
-    method: 'post',
-    data: formData
+  return new Promise((resolve, reject) => {
+    BlobHttpService.post('/cms/iep/web/cms/singleFileUpload', formData).then(response => {
+      resolve(response.data);
+    }, err => {
+      reject(err)
+    })
   })
+  // return uploadFile('/cms/iep/web/cms/singleFileUpload', formData)
 }
 
 export function getPermissionTree(data){

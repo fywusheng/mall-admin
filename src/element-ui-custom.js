@@ -18,18 +18,21 @@ _uploader.props.httpRequest.default = async function (options) {
   // }
   const fileName = options.file.name
   const fileExt =  fileName.split('.').pop()
-  if (fileExt == 'xlsx') {
+
+  if ( !['jpg','jpeg','png'].includes(fileExt)) {
+    // 文件上传
     const formData = new FormData()
     formData.append('file', options.file)
     formData.append('fileName', fileName)
     formData.append('fileExt', fileExt)
     const result = await clientFileUpload(formData)
-    if (result.data.code == 0) {
+    if (result.code == 0) {
       options.onSuccess(result.data)
     }else{
       options.onError(result.data)
     }
   } else {
+    // 图片上传
     const base64String = await _uploader.getBase64(options.file)
     const result = await clientUpload({
       base64String: base64String.split(',')[1],

@@ -12,12 +12,12 @@ const HttpService = axios.create({
   },
   timeout: 60000 // request timeout
 })
-const BlobHttpService = axios.create({
+export const BlobHttpService = axios.create({
   baseURL: process.env.VUE_APP_BASE_NEPSP_API,
   // withCredentials: true, // send cookies when cross-domain requests
-  responseType: 'blob',
+  // responseType: 'json',
   headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
+    'Content-Type': 'multipart/form-data',
     'token': getToken()
   },
   timeout: 60000 // request timeout
@@ -155,6 +155,17 @@ export function downloadByPost(url, fileName, data = {}) {
         navigator.msSaveBlob(blob, fileName);
       }
       resolve(response.data);
+    }, err => {
+      reject(err)
+    })
+  })
+}
+
+export function uploadFile(url, data = {}) {
+  return new Promise((resolve, reject) => {
+    BlobHttpService.post(url, data).then(response => {
+     console.log('上传成功')
+      resolve(response);
     }, err => {
       reject(err)
     })
