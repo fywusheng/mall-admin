@@ -191,10 +191,10 @@
             <el-table-column prop="" label="规格图片">
               <template slot-scope="scope">
                 <el-upload
-                  list-type="picture-card"
                   :limit="1"
                   accept="image/*"
-                  :file-list="scope.row.specImgUrlList"
+                  class="avatar-uploader"
+                  :show-file-list="false"
                   :before-upload="beforeAvatarUpload"
                   :on-remove="handleRemove"
                   :on-success="handleChange"
@@ -208,10 +208,15 @@
                 >
                   <!-- :disabled='scope.row.saleState==5||scope.row.firstClassAttrId!=selectedRadioValue' -->
                   <!-- v-if="scope.row.saleState==6" -->
-                  <i
-                    slot="default"
-                    class="el-icon-plus avatar-uploader-icon"
-                  ></i>
+                  <img
+                    v-if="
+                      scope.row.specImgUrlList &&
+                      scope.row.specImgUrlList.length
+                    "
+                    :src="scope.row.specImgUrlList[0].url"
+                    class="avatar"
+                  />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </template>
             </el-table-column>
@@ -290,6 +295,7 @@ export default {
             }
           });
           this.specImgList = result.data;
+          this.$forceUpdate();
         }
       } else {
         this.$message.error(result.msg);
@@ -393,5 +399,35 @@ export default {
 }
 .hide .el-upload--picture-card {
   display: none;
+}
+.avatar-uploader {
+  display: inline-block;
+  margin-right: 10px;
+  &.active {
+    .el-upload {
+      border: 0.5px dashed #609df3;
+    }
+  }
+}
+.avatar-uploader .el-upload {
+  border: 0.5px dashed #5f5d5d;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #609df3;
+  width: 85px;
+  height: 85px;
+  line-height: 85px;
+  text-align: center;
+}
+.avatar {
+  width: 85px;
+  height: 85px;
+  display: block;
 }
 </style>

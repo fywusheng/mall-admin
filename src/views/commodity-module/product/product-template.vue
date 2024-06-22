@@ -80,15 +80,25 @@
                     class="upload-demo"
                     style="width: 80%; margin-top: 12px"
                     action="#"
-                    :limit="1"
                     :before-upload="beforeVideoUpload"
                     :on-success="handleVideoSuccess"
                     :on-error="handleError"
-                    :file-list="videoList"
+                    :show-file-list="false"
                     :on-remove="handleRemoveVideo"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
                   </el-upload>
+                  <div v-if="videoName" class="video-name">
+                    {{ videoName }}
+                    <span
+                      v-if="uploadVideoStatus === '上传失败'"
+                      class="upload-status error"
+                      >{{ uploadVideoStatus }}</span
+                    >
+                    <span v-else class="upload-status">{{
+                      uploadVideoStatus
+                    }}</span>
+                  </div>
                 </td>
               </tr>
             </table>
@@ -803,6 +813,8 @@ export default {
       frontDeskCategoriesOptions: [],
       categoryMap: {},
       videoList: [],
+      videoName: "",
+      uploadVideoStatus: "",
       valuationUnitOptions: [
         { key: 1, label: "件" },
         { key: 2, label: "重量" },
@@ -1180,6 +1192,7 @@ export default {
     },
     handleError(err) {
       console.log("err: ", err);
+      this.uploadVideoStatus = "上传失败";
       this.$message.error(err.message);
     },
     uploadEditorSuccess(res) {
@@ -1426,6 +1439,7 @@ export default {
               url: this.dataForm.mainVideoUrl,
             },
           ];
+          this.videoName = this.getImgName(this.dataForm.mainVideoUrl);
         }
 
         // 回显商品主图
@@ -1467,6 +1481,10 @@ export default {
           let flag = false;
           if (this.dataForm.mainImgUrl === "") {
             this.$message.warning("请上传商品主图");
+            return;
+          }
+          if (this.uploadVideoStatus.startsWith("上传中")) {
+            this.$message.warning("视频上传中，请稍后保存");
             return;
           }
 
@@ -1744,9 +1762,12 @@ export default {
       console.log("video成功", response, file);
       if (response?.code == 0) {
         this.dataForm.mainVideoUrl = response.data.absoluteUrl;
+        this.uploadVideoStatus = "上传成功";
       }
     },
     beforeVideoUpload(file) {
+      this.videoName = file.name;
+      this.uploadVideoStatus = "上传中……";
       let fileType = file.name.substring(file.name.lastIndexOf(".") + 1);
       const isFile = ["mp4", "flv"].includes(fileType);
       const isLt30M = file.size / 1024 / 1024 < 500;
@@ -1765,6 +1786,19 @@ export default {
 };
 </script>
 <style lang="scss" rel="stylesheet/scss">
+.video-name {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  .upload-status {
+    color: #67c23a;
+    margin-left: 20px;
+    &.error {
+      color: #f56c6c;
+    }
+  }
+}
 .add_store {
   margin-bottom: 23px;
 }

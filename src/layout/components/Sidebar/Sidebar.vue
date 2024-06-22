@@ -1,21 +1,33 @@
 <template>
   <header v-loading="loading">
-
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <div class="content">
-        <div class="menu menu-home" :class="isHome ? 'active' : ''" @click="goHome()">
+        <div
+          class="menu menu-home"
+          :class="isHome ? 'active' : ''"
+          @click="goHome()"
+        >
           <svg-icon class="iconfont" :icon-class="'menu-home'" />
           系统首页
         </div>
         <div v-for="nav in navList" :key="nav.id">
           <div class="menu" @click="menuClick(nav)">
-            <svg-icon class="iconfont" :icon-class="getIconClassName(nav.name)" />
-            {{nav.name}}
+            <svg-icon
+              class="iconfont"
+              :icon-class="getIconClassName(nav.name)"
+            />
+            {{ nav.name }}
           </div>
           <div class="sub-menu">
-            <div v-for="i in nav.children" :key="i.id" class="sub-item"
-              :class="{active: i.url === activeIndex}" @click="menuClick(i)">
-              {{i.name}}</div>
+            <div
+              v-for="i in nav.children"
+              :key="i.id"
+              class="sub-item"
+              :class="{ active: i.url === activeIndex }"
+              @click="menuClick(i)"
+            >
+              {{ i.name }}
+            </div>
           </div>
         </div>
       </div>
@@ -24,49 +36,49 @@
 </template>
 
 <script>
-import { fetch, } from "@/utils/http-client"
-import { mapGetters } from 'vuex'
-import variables from '@/styles/variables.scss'
+import { fetch } from "@/utils/http-client";
+import { mapGetters } from "vuex";
+import variables from "@/styles/variables.scss";
 
 export default {
-  name: 'Sidebar',
+  name: "Sidebar",
   data() {
     return {
       isHome: false,
       activeIndex: location.hash.substr(1),
-      contentHeight: window.innerHeight - 100 + 'px',
+      contentHeight: window.innerHeight - 100 + "px",
       loading: false,
       navList: [],
       iconList: {
-        '门店管理': 'menu-store',
-        '商品管理': 'menu-product',
-        '物流管理': 'menu-liu',
-        '结算管理': 'menu-jiesuan',
-        '用户管理': 'menu-kehu',
-        '营销管理': 'menu-yingxiao',
-        '交易管理': 'menu-jiaoyi',
-        '加盟商管理': 'menu-jms',
-        '内容管理': 'menu-content',
-        '消息中心': 'menu-msg',
-        '设置': 'menu-setting',
-        '运营管理': 'menu-yunying'
-      }
-    }
+        门店管理: "menu-store",
+        商品管理: "menu-product",
+        物流管理: "menu-liu",
+        结算管理: "menu-jiesuan",
+        用户管理: "menu-kehu",
+        营销管理: "menu-yingxiao",
+        交易管理: "menu-jiaoyi",
+        加盟商管理: "menu-jms",
+        内容管理: "menu-content",
+        消息中心: "menu-msg",
+        设置: "menu-setting",
+        运营管理: "menu-yunying",
+      },
+    };
   },
   computed: {
-    ...mapGetters(['sidebar', 'avatar', 'device', 'name']),
+    ...mapGetters(["sidebar", "avatar", "device", "name"]),
     showLogo() {
-      return this.$store.state.settings.sidebarLogo
+      return this.$store.state.settings.sidebarLogo;
     },
     isCollapse() {
-      return !this.sidebar.opened
+      return !this.sidebar.opened;
     },
     // navList() {
     //   return this.$store.getters['sidebar/navList']
     // },
     variables() {
-      return variables
-    }
+      return variables;
+    },
   },
   watch: {
     // 可以通过watch监听路由地址的变化, 只要路由地址发生变化, 就会自动调用对应的回调函数
@@ -78,40 +90,39 @@ export default {
     //   }
     // },
     "$route.path": {
-      handler (newValue, oldValue) {
-        this.activeIndex = newValue
-        this.isHome = false
-        if (newValue == '/apps/dashboard') {
-          this.isHome = true
+      handler(newValue, oldValue) {
+        this.activeIndex = newValue;
+        this.isHome = false;
+        if (newValue == "/apps/dashboard") {
+          this.isHome = true;
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   async mounted() {
-    const navRes = await fetch('/authority/getPermission')
-    this.loading = false
+    const navRes = await fetch("/authority/getPermission");
+    this.loading = false;
     if (navRes.code == 200) {
-      this.$store.dispatch('sidebar/updateNavList', navRes.data)
-      this.navList = navRes.data
+      this.$store.dispatch("sidebar/updateNavList", navRes.data);
+      this.navList = navRes.data;
     } else {
-      this.$message.error(navRes.msg)
+      this.$message.error(navRes.msg);
     }
   },
   methods: {
     getIconClassName(name) {
-      return this.iconList[name] ? this.iconList[name] : 'menu-setting'
+      return this.iconList[name] ? this.iconList[name] : "menu-setting";
     },
     menuClick(nav) {
-      this.$router.push(nav.url)
+      this.$router.push(nav.url);
     },
     goHome() {
-      this.$router.push('/')
-    }
-  }
-}
+      this.$router.push("/");
+    },
+  },
+};
 </script>
-
 
 <style lang="scss" rel="stylesheet/scss" scoped>
 .content {
@@ -142,9 +153,10 @@ export default {
       width: 100px;
       // height: 40px;
       margin: 12px 0 9px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
+      padding-left: 15px;
       cursor: pointer;
       &:hover {
         color: #ff5500;
