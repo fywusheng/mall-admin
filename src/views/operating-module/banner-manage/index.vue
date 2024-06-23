@@ -480,7 +480,7 @@ export default {
           } else {
             this._updateBannerInfo(this.formAdd);
           }
-          this.editVisible = false;
+          // this.editVisible = false;
         }
       });
     },
@@ -540,9 +540,18 @@ export default {
      */
     async _addBannerInfo(data) {
       try {
-        await post("/cms/api/open/app/addBannerInfo", { data: data });
-        await this._qryBannerForPage();
-        this.$message.success("新增成功");
+        const result = await post("/cms/api/open/app/addBannerInfo", {
+          data: data,
+        });
+        if (result.code === 0) {
+          if (result.data) {
+            this.$message.success("新增成功");
+            this.editVisible = false;
+          } else {
+            this.$message.error("顺序重复，请重新输入");
+          }
+          await this._qryBannerForPage();
+        }
       } catch (error) {
         this.$message("数据未添加");
       }
@@ -572,9 +581,18 @@ export default {
      */
     async _updateBannerInfo(data) {
       try {
-        await post("/cms/api/open/app/updateBannerInfo", { data: data });
-        await this._qryBannerForPage();
-        this.$message.success("编辑成功");
+        const result = await post("/cms/api/open/app/updateBannerInfo", {
+          data: data,
+        });
+        if (result.code === 0) {
+          if (result.data) {
+            this.$message.success("编辑成功");
+            this.editVisible = false;
+          } else {
+            this.$message.error("顺序重复，请重新输入");
+          }
+          await this._qryBannerForPage();
+        }
       } catch (error) {
         this.$message("数据未更新");
       }
