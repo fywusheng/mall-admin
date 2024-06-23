@@ -235,15 +235,15 @@
               </el-form-item>
             </el-col> -->
           </el-row>
-          <el-form-item label="内容形式">
+          <!-- <el-form-item label="内容形式">
             <el-radio-group
               v-model="formAdd.jumpWay"
               @change="handleContentType"
             >
               <el-radio label="0">URL地址</el-radio>
-              <!-- <el-radio label="1">图文</el-radio> -->
+              <el-radio label="1">图文</el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item
             label="URL地址"
             prop="jumpUrl"

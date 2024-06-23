@@ -134,14 +134,21 @@
         fixed="right"
       >
         <template slot-scope="scope">
-          <!-- 已续签 置灰续签按钮 -->
+          <!-- 不限制续签 -->
           <el-button
-            :disabled="scope.row.renewalStatus == 1"
             icon="el-icon-set-up"
             size="mini"
             @click="renewal(scope.row)"
             >续签</el-button
           >
+          <!-- 已续签 置灰续签按钮 -->
+          <!-- <el-button
+            :disabled="scope.row.renewalStatus == 1"
+            icon="el-icon-set-up"
+            size="mini"
+            @click="renewal(scope.row)"
+            >续签</el-button
+          > -->
           <el-button
             icon="el-icon-document"
             size="mini"

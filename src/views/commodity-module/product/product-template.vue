@@ -36,6 +36,15 @@
                 style="width: 80%"
               ></el-input>
             </el-form-item>
+            <el-form-item label="商品简称(短名)" prop="subName" class="item">
+              <el-input
+                v-model="dataForm.subName"
+                placeholder="请输入商品简称..."
+                :disabled="dataForm.saleState == 5"
+                maxlength="32"
+                style="width: 80%"
+              ></el-input>
+            </el-form-item>
           </td>
           <td width="50%" rowspan="4" align="center" valian="middle">
             <table width="100%">
@@ -107,10 +116,19 @@
         <tr>
           <td width="5%"></td>
           <td width="45%">
-            <el-form-item label="商品简称(短名)" prop="subName" class="item">
+            <!-- <el-form-item label="商品简称(短名)" prop="subName" class="item">
               <el-input
                 v-model="dataForm.subName"
                 placeholder="请输入商品简称..."
+                :disabled="dataForm.saleState == 5"
+                maxlength="32"
+                style="width: 80%"
+              ></el-input>
+            </el-form-item> -->
+            <el-form-item label="搜索关键字" prop="keywords" class="item">
+              <el-input
+                v-model="dataForm.keywords"
+                placeholder="请输入商品搜索关键字，多关键字以','隔开..."
                 :disabled="dataForm.saleState == 5"
                 maxlength="32"
                 style="width: 80%"
@@ -139,7 +157,7 @@
         <tr>
           <td width="5%"></td>
           <td width="45%">
-            <el-form-item label="搜索关键字" prop="keywords" class="item">
+            <!-- <el-form-item label="搜索关键字" prop="keywords" class="item">
               <el-input
                 v-model="dataForm.keywords"
                 placeholder="请输入商品搜索关键字，多关键字以','隔开..."
@@ -147,7 +165,7 @@
                 maxlength="32"
                 style="width: 80%"
               ></el-input>
-            </el-form-item>
+            </el-form-item> -->
           </td>
           <td width="50%">
             <!-- <el-form-item label="商品推荐语" prop="summarized" class="item">

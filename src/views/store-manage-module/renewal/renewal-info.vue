@@ -252,6 +252,7 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 style="width: 80% !important"
+                :picker-options="pickerOptions"
               />
             </el-form-item>
           </td>
@@ -317,7 +318,7 @@
       <el-col :span="24"></el-col>
     </el-row>
     <el-row type="flex" style="height: 30px; text-align: center">
-      <el-col :span="24" style="align: center">
+      <el-col :span="24">
         <el-button @click="back2Prev">返回列表</el-button>
         <el-button
           type="primary"
@@ -333,6 +334,7 @@
 <script>
 import Vue from "vue";
 import { fetch, post } from "@/utils/http-client";
+import dayjs from "dayjs";
 import { deepClone } from "@/utils/index";
 import FranchiseeSelect from "@/components/FranchiseeSelect";
 
@@ -359,6 +361,20 @@ export default {
       brandOptions: [],
       categoryOptions: [],
       supplierOptions: [],
+      pickerOptions: {
+        onPick(val) {
+          // onPick 是日期选择器组件中的一个事件回调函数，在用户选择日期时触发。 里面有minDate 和 maxDate值返回
+          // if (val.minDate) {
+          //   this.minDate = val.minDate;
+          // } else this.minDate = null;
+        },
+        disabledDate: (time) => {
+          console.log("time: ", this.dataForm.periodEndValidity);
+          return (
+            time.getTime() < new Date(this.dataForm.periodEndValidity).getTime()
+          );
+        },
+      },
       dataForm: {
         // reviewStatus: '1', // 审核状态
         // reviewComments: '通过', // 审核意见
@@ -527,6 +543,10 @@ export default {
         result.data.operatingBrand = result.data.operatingBrand.split(",");
 
         this.dataForm = { ...result.data };
+        // 假设我们有一个日期
+        // const date = dayjs(result.data.periodEndValidity);
+        // const nextDay = date.add(1, "day").format("YYYY-MM-DD");
+        // this.dataForm.newPeriodData = [nextDay, nextDay];
       } else {
         this.$message.error(result.msg);
       }
