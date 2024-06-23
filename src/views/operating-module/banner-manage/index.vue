@@ -480,7 +480,7 @@ export default {
           type: "warning",
         });
         this._deleteBannerInfo(bannerId);
-        this.$message.success("删除成功");
+        //this.$message.success("删除成功");
       } catch (error) {
         this.$message({
           type: "info",
