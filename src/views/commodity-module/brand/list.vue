@@ -3,8 +3,12 @@
     <el-row class="mb-2">
       <el-form :inline="true">
         <el-form-item label="">
-          <el-input v-model="searchParams.name" placeholder="请输入品牌名称（中/英）..." clearable
-            size="mini"></el-input>
+          <el-input
+            v-model="searchParams.name"
+            placeholder="请输入品牌名称（中/英）..."
+            clearable
+            size="mini"
+          ></el-input>
         </el-form-item>
         <!-- <el-form-item label="">
           <el-input
@@ -15,55 +19,124 @@
           ></el-input>
         </el-form-item> -->
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" @click="loadData"
-            size="mini">查询</el-button>
-          <el-button type="default" icon="el-icon-circle-plus-outline" @click="add"
-            size="mini">新增</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="loadData"
+            size="mini"
+            >查询</el-button
+          >
+          <el-button
+            type="default"
+            icon="el-icon-circle-plus-outline"
+            @click="add"
+            size="mini"
+            >新增</el-button
+          >
         </el-form-item>
       </el-form>
     </el-row>
-    <el-table class="custom-table" :data="dataList"
-      :header-cell-style="{background:'#FAF9F7',color:'#000000'}" size="mini" v-loading="loading">
+    <el-table
+      class="custom-table"
+      :data="dataList"
+      :header-cell-style="{ background: '#FAF9F7', color: '#000000' }"
+      size="mini"
+      v-loading="loading"
+    >
       <div slot="empty" class="empty-wrap">
         <i class="iconfont icon-tishi"></i><span>系统暂无数据</span>
       </div>
       <el-table-column type="index" label="序号"> </el-table-column>
       <el-table-column prop="brandLogo" label="LOGO" width="100px">
         <template slot-scope="scope">
-          <el-image :src="scope.row.brandLogo" style="height:28px;width:28px;" fit="scale-down">
+          <el-image
+            :src="scope.row.brandLogo"
+            style="height: 28px; width: 28px"
+            fit="scale-down"
+          >
             <div slot="error" class="image-slot">
               <i class="el-icon-picture-outline"></i>
             </div>
           </el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="中文名称" width="200px" show-overflow-tooltip> </el-table-column>
-      <el-table-column prop="nameEn" label="英文名称" width="200px" show-overflow-tooltip> </el-table-column>
+      <el-table-column
+        prop="name"
+        label="中文名称"
+        width="200px"
+        show-overflow-tooltip
+      >
+      </el-table-column>
+      <el-table-column
+        prop="nameEn"
+        label="英文名称"
+        width="200px"
+        show-overflow-tooltip
+      >
+      </el-table-column>
       <el-table-column prop="description" label="描述" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="createdTime" label="创建时间" align="center" width="150px">
+      <el-table-column
+        prop="createdTime"
+        label="创建时间"
+        align="center"
+        width="150px"
+      >
       </el-table-column>
-      <el-table-column prop="updatedTime" label="修改时间" align="center" width="150px">
+      <el-table-column
+        prop="updatedTime"
+        label="修改时间"
+        align="center"
+        width="150px"
+      >
       </el-table-column>
-      <el-table-column prop="delFlag" label="启用状态" width="80px" align="center">
+      <el-table-column
+        prop="delFlag"
+        label="启用状态"
+        width="80px"
+        align="center"
+      >
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.delFlag" active-color="#FF5500" :active-value="0"
-            inactive-color="#909399" :inactive-value="1" @change="resetting(scope.row)">
+          <el-switch
+            v-model="scope.row.delFlag"
+            active-color="#FF5500"
+            :active-value="0"
+            inactive-color="#909399"
+            :inactive-value="1"
+            @change="resetting(scope.row)"
+          >
           </el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200px" fixed="right">
         <template slot-scope="scope">
-          <el-button icon="el-icon-edit" :underline="false" style="font-size:13px" size="mini"
-            @click="edit(scope.row)">编辑&nbsp;&nbsp;</el-button>
-          <el-button icon="el-icon-delete" :underline="false" style="font-size:13px" size="mini"
-            @click="del(scope.row)">删除&nbsp;&nbsp;</el-button>
+          <el-button
+            icon="el-icon-edit"
+            :underline="false"
+            style="font-size: 13px"
+            size="mini"
+            @click="edit(scope.row)"
+            >编辑&nbsp;&nbsp;</el-button
+          >
+          <el-button
+            icon="el-icon-delete"
+            :underline="false"
+            style="font-size: 13px"
+            size="mini"
+            @click="del(scope.row)"
+            >删除&nbsp;&nbsp;</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-show="totalSize > 10" :page-size="pageSize" @size-change="changeSize"
-      @current-change="changePage" layout="total, slot, jumper, prev, pager, next"
-      :total="totalSize">
+    <el-pagination
+      v-show="totalSize > 10"
+      :page-size="pageSize"
+      @size-change="changeSize"
+      @current-change="changePage"
+      layout="total, slot, jumper, prev, pager, next"
+      :total="totalSize"
+    >
     </el-pagination>
     <edit-template ref="template"></edit-template>
   </div>
@@ -71,7 +144,7 @@
 <script>
 import { fetch, post } from "@/utils/http-client";
 import EditTemplate from "./template";
-import Template from './template.vue';
+import Template from "./template.vue";
 
 export default {
   name: "",
@@ -84,11 +157,11 @@ export default {
       loading: false,
       searchParams: {},
       dialogList: [],
-      showDialog: false
+      showDialog: false,
     };
   },
   components: {
-    EditTemplate
+    EditTemplate,
   },
   async mounted() {
     this.loadData();
@@ -108,9 +181,9 @@ export default {
       const params = {
         pageNum: this.page,
         pageSize: this.pageSize,
-        queryObject: this.searchParams
+        queryObject: this.searchParams,
       };
-      const result = await post('/brand/listByPageNo', params);
+      const result = await post("/brand/listByPageNo", params);
       this.loading = false;
       if (result.code == 200) {
         this.$nextTick(() => {
@@ -128,7 +201,7 @@ export default {
       this.$refs.template.show(true, row);
     },
     async resetting(row) {
-      const result = await post('/brand/resetting', row);
+      const result = await post("/brand/resetting", row);
       if (result.code == 200) {
         this.$message.success("品牌启用状态重置成功!");
         this.loadData();
@@ -137,25 +210,26 @@ export default {
       }
     },
     async del(row) {
-      this.$confirm('此操作将永久删除该品牌, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          const result = await post('/brand/delete', row);
+      this.$confirm("此操作将永久删除该品牌, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          const result = await post("/brand/delete", row);
           if (result.code == 200) {
             this.$message.success("品牌删除成功!");
             this.loadData();
           } else {
             this.$message.error(result.msg);
           }
-        }).catch(() => {});
+        })
+        .catch(() => {});
     },
     forward2AuthorizationPage(row) {
-      this.$router.push({ name: 'Authorization2Role', params: { id: row.id } })
-    }
+      this.$router.push({ name: "Authorization2Role", params: { id: row.id } });
+    },
   },
 };
 </script>
-<style lang="scss" rel="stylesheet/scss">
-</style>
+<style lang="scss" rel="stylesheet/scss"></style>

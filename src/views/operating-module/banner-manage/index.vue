@@ -92,10 +92,22 @@
           align="center"
         >
           <template slot-scope="scope">
+            <el-image
+              :src="scope.row.bannerUrl"
+              style="height: 28px; width: 28px"
+              fit="scale-down"
+              @click="handleImg(scope.row)"
+            >
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline"></i>
+              </div>
+            </el-image>
+          </template>
+          <!-- <template slot-scope="scope">
             <el-link type="primary" @click="handleImg(scope.row)"
               >缩略图</el-link
             >
-          </template>
+          </template> -->
         </el-table-column>
         <!-- <el-table-column
           label="跳转形式"
