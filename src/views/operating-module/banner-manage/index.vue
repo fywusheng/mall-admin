@@ -94,7 +94,7 @@
           <template slot-scope="scope">
             <el-image
               :src="scope.row.bannerUrl"
-              style="height: 28px; width: 28px"
+              style="height: 20px; width: 20px"
               fit="scale-down"
               @click="handleImg(scope.row)"
             >
