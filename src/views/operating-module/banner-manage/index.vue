@@ -553,9 +553,11 @@ export default {
      * @return {type}
      * @author: camus
      */
-    async _deleteBannerInfo(data) {
+    async _deleteBannerInfo(bannerId) {
       try {
-        await post("/cms/api/open/app/deleteBannerInfo", { data: data });
+        await post("/cms/api/open/app/deleteBannerInfo", {
+          data: { bannerId },
+        });
         await this._qryBannerForPage();
         this.$message.success("删除成功");
       } catch (error) {
