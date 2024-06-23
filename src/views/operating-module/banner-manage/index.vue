@@ -272,7 +272,7 @@
           >
             <el-row>
               <el-col :span="12">
-                <el-select
+                <!-- <el-select
                   v-model="formAdd.srt"
                   placeholder="全部"
                   size="small"
@@ -284,10 +284,17 @@
                     :value="item.value"
                   >
                   </el-option>
-                </el-select>
+                </el-select> -->
+                <el-input-number
+                  v-model="formAdd.srt"
+                  :min="1"
+                  :label-width="formLabelWidth"
+                  label="banner顺序"
+                ></el-input-number>
               </el-col>
             </el-row>
           </el-form-item>
+
           <el-form-item
             label="发布状态"
             prop="bannerStatus"
