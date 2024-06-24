@@ -50,6 +50,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/big-data',
+    component: resolve => require(['../views/big-data/index'], resolve),
+    hidden: true
+  },
+  {
     path: '/auth-redirect',
     component: resolve => require(['../views/login/auth-redirect'], resolve),
     hidden: true
