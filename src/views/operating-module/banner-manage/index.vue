@@ -256,7 +256,7 @@
               <el-radio label="1">图文</el-radio>
             </el-radio-group>
           </el-form-item> -->
-          <el-form-item
+          <!-- <el-form-item
             label="URL地址"
             prop="jumpUrl"
             :label-width="formLabelWidth"
@@ -268,7 +268,7 @@
               size="small"
               autocomplete="off"
             />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item
             label="富文本"
             :label-width="formLabelWidth"
