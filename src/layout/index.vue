@@ -13,7 +13,8 @@
       </div>
 
       <div class="_right">
-        <div class="">欢迎! {{userObject.loginName}}</div>
+        <div class="big" @click="goBig">数据大屏模式</div>
+        <div class="">欢迎! {{ userObject.loginName }}</div>
         <div class="logout" @click="loginOut">退出</div>
       </div>
     </div>
@@ -21,8 +22,8 @@
     <div :class="classObj" class="app-wrapper">
       <!-- <top-sidebar class="left-sidebar-container"></top-sidebar> -->
       <sidebar class="sidebar-container" />
-      <div :class="{hasTagsView:needTagsView}" class="main-container">
-        <div :class="{'fixed-header':fixedHeader}">
+      <div :class="{ hasTagsView: needTagsView }" class="main-container">
+        <div :class="{ 'fixed-header': fixedHeader }">
           <navbar />
           <tags-view v-if="needTagsView" />
         </div>
@@ -36,13 +37,13 @@
 </template>
 
 <script>
-import { AppMain, Navbar, Sidebar, TopSidebar } from './components'
-import ResizeMixin from './mixin/ResizeHandler'
-import { mapState } from 'vuex'
-import { removeToken } from '@/utils/auth' // get token from cookie
+import { AppMain, Navbar, Sidebar, TopSidebar } from "./components";
+import ResizeMixin from "./mixin/ResizeHandler";
+import { mapState } from "vuex";
+import { removeToken } from "@/utils/auth"; // get token from cookie
 
 export default {
-  name: 'Layout',
+  name: "Layout",
   components: {
     AppMain,
     Navbar,
@@ -50,16 +51,16 @@ export default {
     //Settings,
     Sidebar,
     //TagsView
-    TopSidebar
+    TopSidebar,
   },
   mixins: [ResizeMixin],
   computed: {
     ...mapState({
-      sidebar: state => state.app.sidebar,
-      device: state => state.app.device,
-      showSettings: state => state.settings.showSettings,
-      needTagsView: state => state.settings.tagsView,
-      fixedHeader: state => state.settings.fixedHeader
+      sidebar: (state) => state.app.sidebar,
+      device: (state) => state.app.device,
+      showSettings: (state) => state.settings.showSettings,
+      needTagsView: (state) => state.settings.tagsView,
+      fixedHeader: (state) => state.settings.fixedHeader,
     }),
     classObj() {
       return {
@@ -67,32 +68,35 @@ export default {
         // hideSidebar: !this.sidebar.opened,
         //openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
-      }
-    }
+        mobile: this.device === "mobile",
+      };
+    },
   },
   data() {
     return {
-      autoObj: { 0: '供应商', 1: '合伙人', 9: '平台自营' },
+      autoObj: { 0: "供应商", 1: "合伙人", 9: "平台自营" },
       userObject: {},
-      imgsrc: require('../layout/static/logo.jpg')
-    }
+      imgsrc: require("../layout/static/logo.jpg"),
+    };
   },
   mounted() {
-    const user = localStorage.getItem('userInfor')
-    this.userObject = JSON.parse(user)
+    const user = localStorage.getItem("userInfor");
+    this.userObject = JSON.parse(user);
   },
   methods: {
+    goBig() {
+      this.$router.push(`/big-data`);
+    },
     loginOut() {
       // 退出清空 token
-      removeToken()
+      removeToken();
       this.$router.push(`/login`);
     },
     handleClickOutside() {
-      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
-    }
+      this.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
+    },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -129,7 +133,7 @@ export default {
       font-size: 20px;
       font-family: PingFangSC, PingFang SC;
       font-weight: 500;
-      color: #FFFFFF;
+      color: #ffffff;
       line-height: 28px;
       letter-spacing: 1px;
     }
@@ -151,6 +155,11 @@ export default {
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     top: 13px;
+    .big {
+      font-weight: bold;
+      margin-right: 12px;
+      cursor: pointer;
+    }
     .logout {
       margin-left: 29px;
     }
