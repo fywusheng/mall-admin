@@ -85,7 +85,9 @@ export default {
   },
   methods: {
     goBig() {
-      this.$router.push(`/big-data`);
+      const url = location.href.split("#")[0] + "#/big-data";
+      window.open(url, "_black");
+      // this.$router.push(`/big-data`);
     },
     loginOut() {
       // 退出清空 token

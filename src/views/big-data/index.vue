@@ -5,15 +5,15 @@
       title="切换全屏"
       class="el-icon-full-screen"
     ></i>
+    <div class="time">{{ time }}</div>
     <div class="header">
       <h2>松辉云康数据大屏</h2>
-      <div class="time">{{ time }}</div>
     </div>
     <div class="count-wrapper">
-      <div class="count">销售总额：8.8888万元</div>
-      <div class="count">用户总数：6.6666万人</div>
-      <div class="count">门店总数：5555</div>
-      <div class="count">加盟商总数：999</div>
+      <div class="count">销售总额：{{ saleTotalCount }}万元</div>
+      <div class="count">用户总数：{{ userTotalCount }}万人</div>
+      <div class="count">门店总数：{{ storeTotalCount }}</div>
+      <div class="count">加盟商总数：{{ supplyTotalCount }}</div>
     </div>
     <div id="main"></div>
     <div id="footer" class="footer">
@@ -23,15 +23,16 @@
           <el-table
             :data="userList"
             show-summary
-            height="200"
             stripe
+            height="290"
             @load="handleLoad"
             style="width: 100%"
+            ref="table1"
           >
-            <el-table-column type="index" label="城市" width="60" />
-            <el-table-column prop="franchisee" label="注册用户数" />
-            <el-table-column prop="salePrice" label="交易用户数" />
-            <el-table-column prop="salePrice" label="活跃用户数" />
+            <el-table-column prop="cityName" label="城市" />
+            <el-table-column prop="userCount" label="注册用户数" />
+            <el-table-column prop="orderUserCount" label="交易用户数" />
+            <el-table-column prop="activeCount" label="活跃用户数" />
           </el-table>
         </div>
       </div>
@@ -39,16 +40,17 @@
         <div class="title">门店数据</div>
         <div class="table">
           <el-table
+            ref="table2"
+            height="290"
             :data="userList"
             show-summary
-            height="200"
             stripe
             style="width: 100%"
           >
-            <el-table-column type="index" label="城市" width="60" />
-            <el-table-column prop="franchisee" label="已有门店数" />
-            <el-table-column prop="salePrice" label="门店销售额" />
-            <el-table-column prop="salePrice" label="待续签门店数" />
+            <el-table-column prop="cityName" label="城市" />
+            <el-table-column prop="storeCount" label="已有门店数" />
+            <el-table-column prop="storeAmount" label="门店销售额" />
+            <el-table-column prop="renewalCount" label="待续签门店数" />
           </el-table>
         </div>
       </div>
@@ -56,16 +58,17 @@
         <div class="title">加盟商数据</div>
         <div class="table">
           <el-table
+            ref="table3"
+            height="290"
             :data="userList"
             show-summary
-            height="200"
             stripe
             style="width: 100%"
           >
-            <el-table-column type="index" label="城市" width="60" />
-            <el-table-column prop="franchisee" label="已有加盟商数" />
-            <el-table-column prop="salePrice" label="加盟商销售额" />
-            <el-table-column prop="salePrice" label="加盟费总额" />
+            <el-table-column prop="cityName" label="城市" />
+            <el-table-column prop="informationCount" label="已有加盟商数" />
+            <el-table-column prop="informationAmount" label="加盟商销售额" />
+            <el-table-column prop="initialFee" label="加盟费总额" />
           </el-table>
         </div>
       </div>
@@ -78,44 +81,54 @@ import "@/plugin/chart/echarts-all.js";
 import dayjs from "dayjs";
 import screenfull from "screenfull";
 import lodash from "lodash";
-import { fetch, post } from "@/utils/http-client";
+import { post } from "@/utils/http-client";
 export default {
   name: "BigData",
   data() {
     return {
       time: "",
-      userList: [
-        { franchisee: 1 },
-        { franchisee: 2 },
-        { franchisee: 2 },
-        { franchisee: 2 },
-        { franchisee: 2 },
-        { franchisee: 2 },
-        { franchisee: 2 },
-      ],
+      area: "天津",
+      saleTotalCount: 0, //销售总额
+      userTotalCount: 0, //用户总数
+      storeTotalCount: 0, //门店总数
+      supplyTotalCount: 0, //销售总额
+      userList: [],
     };
   },
   mounted() {
     this.updateTime();
     this.onresize = lodash.debounce(this.onresize, 700);
     window.onresize = this.onresize;
-    // setTimeout(() => {
-    this.setEcahrtsHeight();
-    this.initChart();
-    // }, 200);
+    setTimeout(() => {
+      this.setEcahrtsHeight();
+      this.initChart();
+    }, 200);
     this.indexOrderCount();
   },
   methods: {
     //销售数据看板
     async indexOrderCount() {
       let params = {
-        flag: "1",
+        area: this.area,
       };
-      const res = await post("/order/indexOrderCount", params);
+      const res = await post("/srm/sh/stores/getIndexDataCountByArea", params);
       if (res.code == "200") {
-        this.franchiseeSalePrice = res.data.franchiseeSalePrice || [];
-        this.franchiseeRegisterCount = res.data.franchiseeRegisterCount || [];
-        this.franchiseeMemberCount = res.data.franchiseeMemberCount || [];
+        this.userList = res.data.results || [];
+        // 总数
+        this.saleTotalCount = res.data.totalAmount;
+        this.userTotalCount = res.data.totalUserCount;
+        this.storeTotalCount = res.data.totalStoreNum;
+        this.supplyTotalCount = res.data.totalInformationNun;
+        setTimeout(() => {
+          this.$refs.table1.doLayout();
+          this.$refs.table2.doLayout();
+          this.$refs.table3.doLayout();
+        }, 2000);
+        this.$nextTick(() => {
+          this.$refs.table1.doLayout();
+          this.$refs.table2.doLayout();
+          this.$refs.table3.doLayout();
+        });
       } else {
         this.$message.warning(res.msg);
       }
@@ -191,7 +204,11 @@ export default {
             },
             data: [
               { name: "北京", value: Math.round(Math.random() * 1000) },
-              { name: "天津", value: Math.round(Math.random() * 1000) },
+              {
+                name: "天津",
+                value: Math.round(Math.random() * 1000),
+                selected: true,
+              },
               { name: "上海", value: Math.round(Math.random() * 1000) },
               { name: "重庆", value: Math.round(Math.random() * 1000) },
               { name: "河北", value: Math.round(Math.random() * 1000) },
@@ -231,6 +248,7 @@ export default {
 
       // 为echarts对象加载数据
       myChart.setOption(option);
+      const _this = this;
       myChart.on(echarts.config.EVENT.MAP_SELECTED, function (param) {
         // var selected = param.selected;
         // var str = "当前选择： ";
@@ -239,9 +257,9 @@ export default {
         //     str += p + " ";
         //   }
         // }
-        // document.getElementById("wrong-message").innerHTML = str;
-        // alert(param);
-        console.log("123123", param);
+        console.log("123123", param.target);
+        _this.area = param.target;
+        _this.indexOrderCount();
       });
       this.myChart = myChart;
     },
@@ -261,7 +279,7 @@ export default {
       const height = document.documentElement.clientHeight;
       // console.log(position);
       let mainHeight = height - position.bottom;
-      mainHeight = mainHeight < 280 ? 280 : mainHeight;
+      mainHeight = mainHeight < 351 ? 351 : mainHeight;
       chartEle.style.display = "block";
       chartEle.style.height = mainHeight + "px";
     },
@@ -321,6 +339,16 @@ export default {
       color: #2c12bf;
     }
   }
+  .time {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 16px;
+    height: 25px;
+    position: absolute;
+    top: 45px;
+    right: 90px;
+  }
   .header {
     h2 {
       font-weight: 650;
@@ -339,7 +367,7 @@ export default {
     }
   }
   .count-wrapper {
-    margin-top: 40px;
+    margin-top: 14px;
     font-size: 24px;
     font-weight: 650;
     font-style: normal;
@@ -351,15 +379,14 @@ export default {
     display: flex;
     justify-content: space-evenly;
     // padding: 0 16%;
-    height: 320px;
+    height: 380px;
     .table-wrapper {
-      width: 28%;
+      width: 29%;
       .title {
         font-size: 24px;
-        margin: 32px 0;
+        margin: 16px 0;
       }
       .table {
-        margin-top: 20px;
         ::v-deep .el-table__header-wrapper {
           table thead tr th.el-table__cell {
             background-color: #ebedf0 !important;
