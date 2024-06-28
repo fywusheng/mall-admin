@@ -21,6 +21,7 @@
         <div class="title">用户数据</div>
         <div class="table">
           <el-table
+            v-loading="loading"
             :data="userList"
             show-summary
             stripe
@@ -40,6 +41,7 @@
         <div class="title">门店数据</div>
         <div class="table">
           <el-table
+            v-loading="loading"
             ref="table2"
             height="290"
             :data="userList"
@@ -58,6 +60,7 @@
         <div class="title">加盟商数据</div>
         <div class="table">
           <el-table
+            v-loading="loading"
             ref="table3"
             height="290"
             :data="userList"
@@ -88,6 +91,7 @@ export default {
     return {
       time: "",
       area: "天津",
+      loading: true,
       saleTotalCount: 0, //销售总额
       userTotalCount: 0, //用户总数
       storeTotalCount: 0, //门店总数
@@ -106,12 +110,13 @@ export default {
     this.indexOrderCount();
   },
   methods: {
-    //销售数据看板
     async indexOrderCount() {
+      this.loading = true;
       let params = {
         area: this.area,
       };
       const res = await post("/srm/sh/stores/getIndexDataCountByArea", params);
+      this.loading = false;
       if (res.code == "200") {
         this.userList = res.data.results || [];
         // 总数
