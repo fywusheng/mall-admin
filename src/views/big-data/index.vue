@@ -1,10 +1,6 @@
 <template>
   <div class="big-data">
-    <i
-      @click="enterScreenfull"
-      title="切换全屏"
-      class="el-icon-full-screen"
-    ></i>
+    <i @click="enterScreenfull" title="切换全屏" class="el-icon-full-screen"></i>
     <div class="time">{{ time }}</div>
     <div class="header">
       <h2>松辉云康数据大屏</h2>
@@ -20,16 +16,7 @@
       <div class="table-wrapper">
         <div class="title">用户数据</div>
         <div class="table">
-          <el-table
-            v-loading="loading"
-            :data="userList"
-            show-summary
-            stripe
-            height="290"
-            @load="handleLoad"
-            style="width: 100%"
-            ref="table1"
-          >
+          <el-table v-loading="loading" :data="userList" show-summary stripe height="290" @load="handleLoad" style="width: 100%" ref="table1">
             <el-table-column prop="cityName" label="城市" />
             <el-table-column prop="userCount" label="注册用户数" />
             <el-table-column prop="orderUserCount" label="交易用户数" />
@@ -40,15 +27,7 @@
       <div class="table-wrapper">
         <div class="title">门店数据</div>
         <div class="table">
-          <el-table
-            v-loading="loading"
-            ref="table2"
-            height="290"
-            :data="userList"
-            show-summary
-            stripe
-            style="width: 100%"
-          >
+          <el-table v-loading="loading" ref="table2" height="290" :data="userList" show-summary stripe style="width: 100%">
             <el-table-column prop="cityName" label="城市" />
             <el-table-column prop="storeCount" label="已有门店数" />
             <el-table-column prop="storeAmount" label="门店销售额" />
@@ -59,15 +38,7 @@
       <div class="table-wrapper">
         <div class="title">加盟商数据</div>
         <div class="table">
-          <el-table
-            v-loading="loading"
-            ref="table3"
-            height="290"
-            :data="userList"
-            show-summary
-            stripe
-            style="width: 100%"
-          >
+          <el-table v-loading="loading" ref="table3" height="290" :data="userList" show-summary stripe style="width: 100%">
             <el-table-column prop="cityName" label="城市" />
             <el-table-column prop="informationCount" label="已有加盟商数" />
             <el-table-column prop="informationAmount" label="加盟商销售额" />
@@ -92,10 +63,10 @@ export default {
       time: "",
       area: "天津",
       loading: true,
-      saleTotalCount: 0, //销售总额
-      userTotalCount: 0, //用户总数
-      storeTotalCount: 0, //门店总数
-      supplyTotalCount: 0, //销售总额
+      saleTotalCount: "", //销售总额
+      userTotalCount: "", //用户总数
+      storeTotalCount: "", //门店总数
+      supplyTotalCount: "", //销售总额
       userList: [],
     };
   },
@@ -124,11 +95,7 @@ export default {
         this.userTotalCount = res.data.totalUserCount;
         this.storeTotalCount = res.data.totalStoreNum;
         this.supplyTotalCount = res.data.totalInformationNun;
-        setTimeout(() => {
-          this.$refs.table1.doLayout();
-          this.$refs.table2.doLayout();
-          this.$refs.table3.doLayout();
-        }, 2000);
+
         this.$nextTick(() => {
           this.$refs.table1.doLayout();
           this.$refs.table2.doLayout();
@@ -304,15 +271,7 @@ export default {
       }, 1000);
     },
     getNowTime() {
-      const weekArr = [
-        "星期日",
-        "星期一",
-        "星期二",
-        "星期三",
-        "星期四",
-        "星期五",
-        "星期六",
-      ];
+      const weekArr = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
       var timetap = dayjs().format(`YYYY-MM-DD HH:mm:ss`);
       var timedata = new Date();
       var week = weekArr[timedata.getDay()];
@@ -328,8 +287,7 @@ export default {
 
 <style lang="scss" scoped>
 .big-data {
-  font-family: "PingFangSC-Semibold", "PingFang SC Semibold", "PingFang SC",
-    sans-serif;
+  font-family: "PingFangSC-Semibold", "PingFang SC Semibold", "PingFang SC", sans-serif;
   height: 100vh;
   overflow: scroll;
   padding-top: 20px;
@@ -411,11 +369,7 @@ export default {
             }
           }
         }
-        ::v-deep
-          .el-table--striped
-          .el-table__body
-          tr.el-table__row--striped
-          td.el-table__cell {
+        ::v-deep .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
           background: #fffaf7;
           font-size: 14px;
           font-weight: 400;
