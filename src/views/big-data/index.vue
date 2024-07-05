@@ -60,6 +60,7 @@ export default {
   name: "BigData",
   data() {
     return {
+      desenType: true, // 脱敏模式
       time: "",
       area: "天津",
       loading: true,
@@ -89,6 +90,14 @@ export default {
       const res = await post("/srm/sh/stores/getIndexDataCountByArea", params);
       this.loading = false;
       if (res.code == "200") {
+        if (this.desenType) {
+          res.data.totalAmount = "******";
+          res.data.results.forEach((item) => {
+            item.storeAmount = "******";
+            item.informationAmount = "******";
+          });
+        }
+
         this.userList = res.data.results || [];
         // 总数
         this.saleTotalCount = res.data.totalAmount;

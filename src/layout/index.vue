@@ -14,6 +14,7 @@
 
       <div class="_right">
         <div class="big" @click="goBig">数据大屏模式</div>
+        <el-switch class="swith" v-model="value" active-color="#13ce66" inactive-color="#999999"> </el-switch>
         <div class="">欢迎! {{ userObject.loginName }}</div>
         <div class="logout" @click="loginOut">退出</div>
       </div>
@@ -76,6 +77,7 @@ export default {
     return {
       autoObj: { 0: "供应商", 1: "合伙人", 9: "平台自营" },
       userObject: {},
+      value: true,
       imgsrc: require("../layout/static/logo.jpg"),
     };
   },
@@ -157,6 +159,10 @@ export default {
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     top: 13px;
+    align-items: center;
+    .swith {
+      margin: 0 12px;
+    }
     .big {
       font-weight: bold;
       margin-right: 12px;
