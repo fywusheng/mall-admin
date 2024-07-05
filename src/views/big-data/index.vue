@@ -72,6 +72,7 @@ export default {
     };
   },
   mounted() {
+    this.desenType = JSON.parse(window.localStorage.getItem("desenType"));
     this.updateTime();
     this.onresize = lodash.debounce(this.onresize, 700);
     window.onresize = this.onresize;

@@ -14,7 +14,9 @@
 
       <div class="_right">
         <div class="big" @click="goBig">数据大屏模式</div>
-        <el-switch class="swith" v-model="value" active-color="#13ce66" inactive-color="#999999"> </el-switch>
+        <transition name="el-fade-in-linear">
+          <el-switch v-if="!loading" class="swith" v-model="value" active-color="#13ce66" inactive-color="#999999" @change="handleDesenTypeChange"> </el-switch>
+        </transition>
         <div class="">欢迎! {{ userObject.loginName }}</div>
         <div class="logout" @click="loginOut">退出</div>
       </div>
@@ -42,6 +44,7 @@ import { AppMain, Navbar, Sidebar, TopSidebar } from "./components";
 import ResizeMixin from "./mixin/ResizeHandler";
 import { mapState } from "vuex";
 import { removeToken } from "@/utils/auth"; // get token from cookie
+import { post } from "@/utils/http-client";
 
 export default {
   name: "Layout",
@@ -78,14 +81,37 @@ export default {
       autoObj: { 0: "供应商", 1: "合伙人", 9: "平台自营" },
       userObject: {},
       value: true,
+      loading: false,
       imgsrc: require("../layout/static/logo.jpg"),
     };
   },
   mounted() {
     const user = localStorage.getItem("userInfor");
     this.userObject = JSON.parse(user);
+    this.getDesenType();
   },
   methods: {
+    async getDesenType(desenType) {
+      this.loading = true;
+      const res = await post("/srm/sh/stores/getDataEnabled", { desenType });
+      if (res.code == "200") {
+        this.value = res.data === "0" ? false : true;
+        this.loading = false;
+        window.localStorage.setItem("desenType", this.value);
+      } else {
+        this.$message.warning(res.msg);
+      }
+    },
+    async handleDesenTypeChange(desenType) {
+      const res = await post("/srm/sh/stores/getDataEnabled", { enabled: desenType ? "1" : "0" });
+      if (res.code == "200") {
+        this.$message.success("设置成功");
+        window.localStorage.setItem("desenType", desenType);
+      } else {
+        this.value = !desenType;
+        this.$message.warning(res.msg);
+      }
+    },
     goBig() {
       const url = location.href.split("#")[0] + "#/big-data";
       window.open(url, "_black");
