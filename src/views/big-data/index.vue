@@ -1,6 +1,9 @@
 <template>
   <div class="big-data">
-    <i @click="enterScreenfull" title="切换全屏" class="el-icon-full-screen"></i>
+    <div @click="enterScreenfull" class="screenful">
+      <img v-if="!isFullscreen" :src="require('@/assets/imgs/screenful-1.png')" alt="" />
+      <img v-else :src="require('@/assets/imgs/screenful-2.png')" alt="" />
+    </div>
     <div class="time">{{ time }}</div>
     <div class="header">
       <h2>松辉云康数据大屏</h2>
@@ -47,6 +50,9 @@
         </div>
       </div>
     </div>
+    <div class="footer-bg">
+      <img :src="require('@/assets/imgs/large-bottom-bg.png')" alt="" />
+    </div>
   </div>
 </template>
 
@@ -56,11 +62,13 @@ import dayjs from "dayjs";
 import screenfull from "screenfull";
 import lodash from "lodash";
 import { post } from "@/utils/http-client";
+
 export default {
   name: "BigData",
   data() {
     return {
       desenType: true, // 脱敏模式
+      isFullscreen: true,
       time: "",
       area: "天津",
       loading: true,
@@ -145,15 +153,6 @@ export default {
           x: "left",
           data: [""],
         },
-        dataRange: {
-          show: false,
-          min: 0,
-          max: 2500,
-          x: "left",
-          y: "bottom",
-          text: ["高", "低"], // 文本，默认为数值文本
-          calculable: true,
-        },
         toolbox: {
           show: false,
           orient: "vertical",
@@ -173,6 +172,39 @@ export default {
             china: true,
           },
         },
+        // 值域
+        dataRange: {
+          show: false,
+          min: 0,
+          max: 2500,
+          x: "left",
+          y: "bottom",
+          text: ["高", "低"], // 文本，默认为数值文本
+          calculable: true,
+          orient: "vertical", // 布局方式，默认为垂直布局，可选为：
+          // 'horizontal' ¦ 'vertical'
+          // x: "left", // 水平安放位置，默认为全图左对齐，可选为：
+          // 'center' ¦ 'left' ¦ 'right'
+          // ¦ {number}（x坐标，单位px）
+          // y: "bottom", // 垂直安放位置，默认为全图底部，可选为：
+          // 'top' ¦ 'bottom' ¦ 'center'
+          // ¦ {number}（y坐标，单位px）
+          backgroundColor: "rgba(0,0,0,0)",
+          borderColor: "#ccc", // 值域边框颜色
+          borderWidth: 0, // 值域边框线宽，单位px，默认为0（无边框）
+          padding: 5, // 值域内边距，单位px，默认各方向内边距为5，
+          // 接受数组分别设定上右下左边距，同css
+          itemGap: 10, // 各个item之间的间隔，单位px，默认为10，
+          // 横向布局时为水平间隔，纵向布局时为纵向间隔
+          itemWidth: 20, // 值域图形宽度，线性渐变水平布局宽度为该值 * 10
+          itemHeight: 14, // 值域图形高度，线性渐变垂直布局高度为该值 * 10
+          splitNumber: 5, // 分割段数，默认为5，为0时为线性渐变
+          color: ["#4863DA", "#f0ffff"], //颜色
+          //text:['高','低'],         // 文本，默认为数值文本
+          textStyle: {
+            color: "#333", // 值域文字颜色
+          },
+        },
         series: [
           {
             name: "",
@@ -182,7 +214,11 @@ export default {
             roam: false,
             itemStyle: {
               normal: { label: { show: true } },
-              emphasis: { label: { show: true } },
+              emphasis: {
+                label: { show: true },
+                borderColor: "#FFF5D9",
+                color: "#FFF5D9",
+              },
             },
             data: [
               { name: "北京", value: Math.round(Math.random() * 1000) },
@@ -267,6 +303,7 @@ export default {
     },
     enterScreenfull() {
       screenfull.toggle();
+      this.isFullscreen = screenfull.isFullscreen;
     },
     handleLoad(event) {
       console.log("数据加载完成", event);
@@ -282,7 +319,7 @@ export default {
     },
     getNowTime() {
       const weekArr = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-      var timetap = dayjs().format(`YYYY-MM-DD HH:mm:ss`);
+      var timetap = dayjs().format(`YYYY年MM月DD日 HH:mm:ss`);
       var timedata = new Date();
       var week = weekArr[timedata.getDay()];
       return timetap + " " + week;
@@ -299,17 +336,22 @@ export default {
 .big-data {
   font-family: "PingFangSC-Semibold", "PingFang SC Semibold", "PingFang SC", sans-serif;
   height: 100vh;
-  overflow: scroll;
-  padding-top: 20px;
+  overflow: hidden;
   position: relative;
-  .el-icon-full-screen {
+  background: url("../../assets/imgs/largeScreen-bg.png") 100% 100% no-repeat;
+  background-size: 100vw 100vh;
+  .screenful {
     cursor: pointer;
     font-size: 24px;
     position: absolute;
-    top: 45px;
+    top: 30px;
     right: 48px;
-    &:hover {
-      color: #2c12bf;
+    width: 20px;
+    height: 20px;
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
   }
   .time {
@@ -319,16 +361,25 @@ export default {
     font-size: 16px;
     height: 25px;
     position: absolute;
-    top: 45px;
+    top: 30px;
     right: 90px;
+    color: #ffffff;
   }
   .header {
+    height: 85px;
+    width: 100vw;
+    background: url("../../assets/imgs/large-top-bg.png") 100% 100% no-repeat;
+    background-size: 100vw 85px;
     h2 {
       font-weight: 650;
       font-style: normal;
-      font-size: 48px;
-      text-align: center;
-      // margin-top: 40px;
+      font-size: 45px;
+      color: #ffffff;
+      font-family: "youshe";
+      margin-left: 120px;
+      letter-spacing: 9px;
+      font-style: normal;
+      text-shadow: 0px 5px 5px rgba(7, 10, 53, 0.5);
     }
     .time {
       display: flex;
@@ -386,6 +437,19 @@ export default {
           color: #323233;
         }
       }
+    }
+  }
+  .footer-bg {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    height: 85px;
+    width: 100vw;
+    background: url("../../assets/imgs/large-bottom-bg.png") 100% 100% no-repeat;
+    background-size: 100vw 85px;
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 }

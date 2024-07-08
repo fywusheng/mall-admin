@@ -8,6 +8,7 @@ import Element from 'element-ui'
 import './styles/page.scss'
 
 import '@/styles/index.scss' // global css
+import "./assets/styles/font.css"; //字体样式
 
 import App from './App'
 import store from './store'

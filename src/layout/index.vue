@@ -15,7 +15,7 @@
       <div class="_right">
         <div class="big" @click="goBig">数据大屏模式</div>
         <transition name="el-fade-in-linear">
-          <el-switch v-if="!loading" class="swith" v-model="value" active-color="#13ce66" inactive-color="#999999" @change="handleDesenTypeChange"> </el-switch>
+          <el-switch v-if="!loading" class="swith" v-model="value" active-color="#FFFFFF" inactive-color="#E7AD8D" @change="handleDesenTypeChange"> </el-switch>
         </transition>
         <div class="">欢迎! {{ userObject.loginName }}</div>
         <div class="logout" @click="loginOut">退出</div>
@@ -250,5 +250,8 @@ export default {
 
 .mobile .fixed-header {
   width: 100%;
+}
+::v-deep .el-switch__core:after {
+  background-color: #f57129;
 }
 </style>
