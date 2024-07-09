@@ -6,7 +6,7 @@
     </div>
     <div class="time">{{ time }}</div>
     <div class="header">
-      <h2>松辉云康数据大屏</h2>
+      <h2>松辉云康数据大屏1</h2>
     </div>
     <div class="count-wrapper">
       <div class="count">销售总额：{{ saleTotalCount }}万元</div>
