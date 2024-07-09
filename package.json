@@ -57,7 +57,7 @@
     "dayjs": "^1.11.2",
     "driver.js": "0.9.5",
     "dropzone": "5.5.1",
-    "echarts": "4.2.1",
+    "echarts": "^4.2.1",
     "element-ui": "2.15.7",
     "es6-promise": "^4.2.8",
     "file-saver": "2.0.1",

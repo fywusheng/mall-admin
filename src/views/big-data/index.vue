@@ -6,49 +6,41 @@
     </div>
     <div class="time">{{ time }}</div>
     <div class="header">
-      <h2>松辉云康数据大屏1</h2>
+      <h2>松辉云康数据大屏</h2>
+    </div>
+    <div class="main-content">
+      <div class="left">
+        <div class="count">
+          <div class="count-item">
+            <div class="label">销售总额（万元）</div>
+            <div class="counter">{{ saleTotalCount }}</div>
+          </div>
+          <div class="count-item">
+            <div class="label">用户总数（万人）</div>
+            <div class="counter">{{ userTotalCount }}</div>
+          </div>
+          <div class="count-item">
+            <div class="label">门店总数（个）</div>
+            <div class="counter">{{ storeTotalCount }}</div>
+          </div>
+          <div class="count-item">
+            <div class="label">加盟商总数（个）</div>
+            <div class="counter">{{ supplyTotalCount }}</div>
+          </div>
+        </div>
+        <div class="china-map" id="main"></div>
+      </div>
+      <div class="right">
+        <user-data :list="userList"></user-data>
+        <store-data :list="userList"></store-data>
+        <supply-data :list="userList"></supply-data>
+      </div>
     </div>
     <div class="count-wrapper">
       <div class="count">销售总额：{{ saleTotalCount }}万元</div>
       <div class="count">用户总数：{{ userTotalCount }}万人</div>
       <div class="count">门店总数：{{ storeTotalCount }}</div>
       <div class="count">加盟商总数：{{ supplyTotalCount }}</div>
-    </div>
-    <div id="main"></div>
-    <div id="footer" class="footer">
-      <div class="table-wrapper">
-        <div class="title">用户数据</div>
-        <div class="table">
-          <el-table v-loading="loading" :data="userList" show-summary stripe height="290" @load="handleLoad" style="width: 100%" ref="table1">
-            <el-table-column prop="cityName" label="城市" />
-            <el-table-column prop="userCount" label="注册用户数" />
-            <el-table-column prop="orderUserCount" label="交易用户数" />
-            <el-table-column prop="activeCount" label="活跃用户数" />
-          </el-table>
-        </div>
-      </div>
-      <div class="table-wrapper">
-        <div class="title">门店数据</div>
-        <div class="table">
-          <el-table v-loading="loading" ref="table2" height="290" :data="userList" show-summary stripe style="width: 100%">
-            <el-table-column prop="cityName" label="城市" />
-            <el-table-column prop="storeCount" label="已有门店数" />
-            <el-table-column prop="storeAmount" label="门店销售额" />
-            <el-table-column prop="renewalCount" label="待续签门店数" />
-          </el-table>
-        </div>
-      </div>
-      <div class="table-wrapper">
-        <div class="title">加盟商数据</div>
-        <div class="table">
-          <el-table v-loading="loading" ref="table3" height="290" :data="userList" show-summary stripe style="width: 100%">
-            <el-table-column prop="cityName" label="城市" />
-            <el-table-column prop="informationCount" label="已有加盟商数" />
-            <el-table-column prop="informationAmount" label="加盟商销售额" />
-            <el-table-column prop="initialFee" label="加盟费总额" />
-          </el-table>
-        </div>
-      </div>
     </div>
     <div class="footer-bg">
       <img :src="require('@/assets/imgs/large-bottom-bg.png')" alt="" />
@@ -62,9 +54,13 @@ import dayjs from "dayjs";
 import screenfull from "screenfull";
 import lodash from "lodash";
 import { post } from "@/utils/http-client";
+import UserData from "./components/user-data.vue";
+import StoreData from "./components/store-data.vue";
+import SupplyData from "./components/supply-data.vue";
 
 export default {
   name: "BigData",
+  components: { UserData, StoreData, SupplyData },
   data() {
     return {
       desenType: true, // 脱敏模式
@@ -85,7 +81,7 @@ export default {
     this.onresize = lodash.debounce(this.onresize, 700);
     window.onresize = this.onresize;
     setTimeout(() => {
-      this.setEcahrtsHeight();
+      // this.setEcahrtsHeight();
       this.initChart();
     }, 200);
     this.indexOrderCount();
@@ -114,18 +110,18 @@ export default {
         this.storeTotalCount = res.data.totalStoreNum;
         this.supplyTotalCount = res.data.totalInformationNun;
 
-        this.$nextTick(() => {
-          this.$refs.table1.doLayout();
-          this.$refs.table2.doLayout();
-          this.$refs.table3.doLayout();
-        });
+        // this.$nextTick(() => {
+        //   this.$refs.table1.doLayout();
+        //   this.$refs.table2.doLayout();
+        //   this.$refs.table3.doLayout();
+        // });
       } else {
         this.$message.warning(res.msg);
       }
     },
     onresize() {
       console.log("抖动");
-      this.setEcahrtsHeight();
+      // this.setEcahrtsHeight();
       setTimeout(() => {
         this.myChart.resize();
       }, 100);
@@ -281,26 +277,27 @@ export default {
       });
       this.myChart = myChart;
     },
-    setEcahrtsHeight() {
-      const chartEle = document.getElementById("main");
-      chartEle.style.display = "none";
-      var element = document.getElementById("footer");
-      var rect = element.getBoundingClientRect();
-      var position = {
-        top: rect.top + window.scrollY,
-        left: rect.left + window.scrollX,
-        bottom: rect.bottom + window.scrollY,
-        right: rect.right + window.scrollX,
-        width: rect.width,
-        height: rect.height,
-      };
-      const height = document.documentElement.clientHeight;
-      // console.log(position);
-      let mainHeight = height - position.bottom;
-      mainHeight = mainHeight < 351 ? 351 : mainHeight;
-      chartEle.style.display = "block";
-      chartEle.style.height = mainHeight + "px";
-    },
+    // setEcahrtsHeight() {
+    //   return;
+    //   const chartEle = document.getElementById("main");
+    //   chartEle.style.display = "none";
+    //   var element = document.getElementById("footer");
+    //   var rect = element.getBoundingClientRect();
+    //   var position = {
+    //     top: rect.top + window.scrollY,
+    //     left: rect.left + window.scrollX,
+    //     bottom: rect.bottom + window.scrollY,
+    //     right: rect.right + window.scrollX,
+    //     width: rect.width,
+    //     height: rect.height,
+    //   };
+    //   const height = document.documentElement.clientHeight;
+    //   // console.log(position);
+    //   let mainHeight = height - position.bottom;
+    //   mainHeight = mainHeight < 351 ? 351 : mainHeight;
+    //   chartEle.style.display = "block";
+    //   chartEle.style.height = mainHeight + "px";
+    // },
     enterScreenfull() {
       screenfull.toggle();
       this.isFullscreen = screenfull.isFullscreen;
@@ -340,6 +337,8 @@ export default {
   position: relative;
   background: url("../../assets/imgs/largeScreen-bg.png") 100% 100% no-repeat;
   background-size: 100vw 100vh;
+  display: flex;
+  flex-direction: column;
   .screenful {
     cursor: pointer;
     font-size: 24px;
@@ -390,6 +389,51 @@ export default {
       height: 25px;
     }
   }
+  .main-content {
+    padding: 0;
+    flex: 1;
+    display: flex;
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .count {
+        height: 170px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        .count-item {
+          font-family: PingFangSC, PingFang SC;
+          font-size: 20px;
+          color: #ffffff;
+          font-style: normal;
+          height: 91px;
+          .counter {
+            background: url("../../assets/imgs/large-data-bg.png") no-repeat;
+            background-size: 127px 50px;
+            background-position: left 10px;
+            color: #ffffff;
+            font-family: "youshe";
+            padding-left: 12px;
+            font-size: 50px;
+            line-height: 65px;
+            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+            font-style: normal;
+            margin-left: -10px;
+          }
+        }
+      }
+      .china-map {
+        flex: 1;
+      }
+    }
+    .right {
+      width: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
   .count-wrapper {
     margin-top: 14px;
     font-size: 24px;
@@ -399,46 +443,7 @@ export default {
     justify-content: space-between;
     padding: 0 13%;
   }
-  .footer {
-    display: flex;
-    justify-content: space-evenly;
-    // padding: 0 16%;
-    height: 380px;
-    .table-wrapper {
-      width: 29%;
-      .title {
-        font-size: 24px;
-        margin: 16px 0;
-      }
-      .table {
-        ::v-deep .el-table__header-wrapper {
-          table thead tr th.el-table__cell {
-            background-color: #ebedf0 !important;
-            height: 56px;
-            font-size: 14px;
-            font-family: PingFangSC, PingFang SC;
-            font-weight: 500;
-            color: #323233;
-          }
-        }
-        ::v-deep .el-table__body-wrapper {
-          table tbody tr td {
-            // height: 80px;
-            font-size: 12px !important;
-            &:nth-child(1) {
-              color: #ff5500 !important;
-            }
-          }
-        }
-        ::v-deep .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
-          background: #fffaf7;
-          font-size: 14px;
-          font-weight: 400;
-          color: #323233;
-        }
-      }
-    }
-  }
+
   .footer-bg {
     position: absolute;
     bottom: 0px;
