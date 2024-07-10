@@ -44,14 +44,17 @@ export default {
     list() {
       setTimeout(() => {
         this.initEchart();
-      }, 1000);
+      }, 200);
     },
   },
   mounted() {
+    this.desenType = JSON.parse(window.localStorage.getItem("desenType"));
     window.addEventListener("resize", this.onresize);
   },
   data() {
-    return {};
+    return {
+      desenType: true, // 脱敏模式
+    };
   },
   computed: {
     informationCount() {
@@ -62,7 +65,11 @@ export default {
     },
     informationAmount() {
       if (this.list.length > 0) {
-        return this.formatNumber(this.sumArray(this.list, "informationAmount"));
+        if (!this.desenType) {
+          return this.formatNumber(this.sumArray(this.list, "informationAmount"));
+        } else {
+          return "****";
+        }
       }
       return 0;
     },
@@ -95,11 +102,15 @@ export default {
               if (index === 0) {
                 html = html + "<br/>总加盟商: " + item.data + "个";
               }
+              if (index === 1) {
+                if (!_this.desenType) {
+                  html = html + "<br/>总销售额: " + _this.formatNumber(item.data) + "元";
+                } else {
+                  html = html + "<br/>总销售额: " + "****万元";
+                }
+              }
               if (index === 2) {
                 html = html + "<br/>总加盟费: " + _this.formatNumber(item.data) + "元";
-              }
-              if (index === 1) {
-                html = html + "<br/>总销售额: " + _this.formatNumber(item.data) + "元";
               }
             });
             return `${html}`;
@@ -108,7 +119,7 @@ export default {
         },
         legend: {
           show: false,
-          data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+          // data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
         },
         grid: {
           top: "15px",

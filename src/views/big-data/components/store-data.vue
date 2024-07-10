@@ -44,14 +44,17 @@ export default {
     list() {
       setTimeout(() => {
         this.initEchart();
-      }, 1000);
+      }, 200);
     },
   },
   mounted() {
+    this.desenType = JSON.parse(window.localStorage.getItem("desenType"));
     window.addEventListener("resize", this.onresize);
   },
   data() {
-    return {};
+    return {
+      desenType: true, // 脱敏模式
+    };
   },
   computed: {
     storeCount() {
@@ -62,13 +65,17 @@ export default {
     },
     storeAmount() {
       if (this.list.length > 0) {
-        return _this.formatNumber(this.sumArray(this.list, "storeAmount"));
+        if (!this.desenType) {
+          return this.formatNumber(this.sumArray(this.list, "storeAmount"));
+        } else {
+          return "****";
+        }
       }
       return 0;
     },
     renewalCount() {
       if (this.list.length > 0) {
-        return _this.formatNumber(this.sumArray(this.list, "renewalCount"));
+        return this.formatNumber(this.sumArray(this.list, "renewalCount"));
       }
       return 0;
     },
@@ -98,7 +105,11 @@ export default {
                 html = html + "<br/>总门店数: " + item.data + "个";
               }
               if (index === 1) {
-                html = html + "<br/>总销售额: " + _this.formatNumber(item.data) + "元";
+                if (!_this.desenType) {
+                  html = html + "<br/>总销售额: " + _this.formatNumber(item.data) + "元";
+                } else {
+                  html = html + "<br/>总销售额: " + "****万元";
+                }
               }
               if (index === 2) {
                 html = html + "<br/>总待续签: " + _this.formatNumber(item.data) + "元";
@@ -109,7 +120,7 @@ export default {
         },
         legend: {
           show: false,
-          data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+          // data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
         },
         grid: {
           top: "10px",
