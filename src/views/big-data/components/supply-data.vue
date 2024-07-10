@@ -104,13 +104,13 @@ export default {
               }
               if (index === 1) {
                 if (!_this.desenType) {
-                  html = html + "<br/>总销售额: " + _this.formatNumber(item.data) + "元";
+                  html = html + "<br/>总销售额: " + _this.formatNumber(item.data) + "万元";
                 } else {
                   html = html + "<br/>总销售额: " + "****万元";
                 }
               }
               if (index === 2) {
-                html = html + "<br/>总加盟费: " + _this.formatNumber(item.data) + "元";
+                html = html + "<br/>总加盟费: " + _this.formatNumber(item.data) + "万元";
               }
             });
             return `${html}`;
@@ -182,7 +182,7 @@ export default {
         } else {
           // parseFloat() 去掉后面不用的0，如50.00
           //大于100的保留2位
-          return parseFloat((num / 10000).toFixed(2)) + "万";
+          return parseFloat((num / 10000).toFixed(2));
         }
       }
     },
