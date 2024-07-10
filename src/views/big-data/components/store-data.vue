@@ -6,26 +6,19 @@
     </div>
     <div class="count-wrapper">
       <div class="count-item">
-        <div class="counter">{{ totalUser }}</div>
+        <div class="counter">{{ storeCount }}</div>
         <div class="name">总门店数(人)</div>
       </div>
       <div class="count-item">
-        <div class="counter center">{{ saleUser }}</div>
+        <div class="counter center">{{ storeAmount }}</div>
         <div class="name">总销售额(万元)</div>
       </div>
       <div class="count-item">
-        <div class="counter right">{{ totalActiveUser }}</div>
+        <div class="counter right">{{ renewalCount }}</div>
         <div class="name">总待续签(万元)</div>
       </div>
     </div>
-    <div class="table-wrapper" id="chart">
-      <!-- <el-table :data="list" ref="table1">
-        <el-table-column prop="cityName" align="center" label="城市" />
-        <el-table-column prop="userCount" align="center" label="注册用户数" />
-        <el-table-column prop="orderUserCount" align="center" label="交易用户数" />
-        <el-table-column prop="activeCount" align="center" label="活跃用户数" />
-      </el-table> -->
-    </div>
+    <div class="table-wrapper" id="chart"></div>
   </div>
 </template>
 
@@ -39,6 +32,7 @@ require("echarts/lib/chart/line");
 // 引入提示框和标题组件
 require("echarts/lib/component/tooltip");
 require("echarts/lib/component/title");
+require("../theme/chalk");
 export default {
   props: {
     list: {
@@ -60,50 +54,65 @@ export default {
     return {};
   },
   computed: {
-    totalUser() {
+    storeCount() {
       if (this.list.length > 0) {
-        return this.sumArray(this.list, "userCount");
+        return this.sumArray(this.list, "storeCount");
       }
       return 0;
     },
-    saleUser() {
+    storeAmount() {
       if (this.list.length > 0) {
-        return this.sumArray(this.list, "orderUserCount");
+        return _this.formatNumber(this.sumArray(this.list, "storeAmount"));
       }
       return 0;
     },
-    totalActiveUser() {
+    renewalCount() {
       if (this.list.length > 0) {
-        return this.sumArray(this.list, "activeCount");
+        return _this.formatNumber(this.sumArray(this.list, "renewalCount"));
       }
       return 0;
     },
   },
   methods: {
     initEchart() {
-      console.log(echarts, "1231232213-------");
       // 基于准备好的dom，初始化echarts图表
-      const chartDom = document.getElementById("chart");
-      // chartDom.style.height = "200px";
-      var myChart = echarts.init(chartDom, "dark");
+      echarts.init(document.getElementById("chart")).dispose();
+      var myChart = echarts.init(document.getElementById("chart"), "chalk");
       this.myChart = myChart;
       myChart.darkMode = true;
       var option;
+      var _this = this;
 
       option = {
-        darkMode: true,
         title: {
           text: " ",
         },
         tooltip: {
           trigger: "axis",
+          confine: true,
+          // show: false,
+          formatter: function (params) {
+            let html = params[0].name;
+            params.forEach((item, index) => {
+              if (index === 0) {
+                html = html + "<br/>总门店数: " + item.data + "个";
+              }
+              if (index === 1) {
+                html = html + "<br/>总销售额: " + _this.formatNumber(item.data) + "元";
+              }
+              if (index === 2) {
+                html = html + "<br/>总待续签: " + _this.formatNumber(item.data) + "元";
+              }
+            });
+            return `${html}`;
+          },
         },
         legend: {
           show: false,
           data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
         },
         grid: {
-          top: "15px",
+          top: "10px",
           left: "50px",
           right: "15px",
           bottom: "30px",
@@ -118,47 +127,61 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: [],
         },
         yAxis: {
           type: "value",
+          boundaryGap: false,
         },
         series: [
           {
-            name: "Email",
-            type: "line",
-            stack: "Total",
-            data: [120, 132, 101, 134, 90, 230, 210],
+            data: [],
+            type: "bar",
           },
           {
-            name: "Union Ads",
-            type: "line",
-            stack: "Total",
-            data: [220, 182, 191, 234, 290, 330, 310],
+            data: [],
+            type: "bar",
           },
           {
-            name: "Video Ads",
-            type: "line",
-            stack: "Total",
-            data: [150, 232, 201, 154, 190, 330, 410],
+            data: [],
+            type: "bar",
           },
-          // {
-          //   name: "Direct",
-          //   type: "line",
-          //   stack: "Total",
-          //   data: [320, 332, 301, 334, 390, 330, 320],
-          // },
-          // {
-          //   name: "Search Engine",
-          //   type: "line",
-          //   stack: "Total",
-          //   data: [820, 932, 901, 934, 1290, 1330, 1320],
-          // },
         ],
       };
+      this.list.forEach((item) => {
+        option.xAxis.data.push(item.cityName);
+      });
+
+      option.series[0].data = this.getSeriesData(this.list, "storeCount");
+      option.series[1].data = this.getSeriesData(this.list, "storeAmount");
+      option.series[2].data = this.getSeriesData(this.list, "renewalCount");
 
       // 为echarts对象加载数据
       myChart.setOption(option);
+      console.log("门店option: ", option);
+    },
+    // 元转换成万元保留两位小数点
+    formatNumber(num) {
+      num = Number(num);
+      if (num == 0) {
+        return num + "";
+      } else {
+        if ((num / 10000).toFixed(2) == 0) {
+          //小于100的保留2位
+          return (num / 100).toFixed(4);
+        } else {
+          // parseFloat() 去掉后面不用的0，如50.00
+          //大于100的保留2位
+          return parseFloat((num / 10000).toFixed(2)) + "万";
+        }
+      }
+    },
+    getSeriesData(list, name) {
+      const data = [];
+      list.forEach((item) => {
+        data.push(item[name]);
+      });
+      return data;
     },
     onresize() {
       setTimeout(() => {
