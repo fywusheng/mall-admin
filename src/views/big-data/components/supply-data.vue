@@ -32,6 +32,8 @@ require("echarts/lib/chart/line");
 // 引入提示框和标题组件
 require("echarts/lib/component/tooltip");
 require("echarts/lib/component/title");
+require("echarts/lib/component/dataZoom");
+require("echarts/lib/component/dataZoomInside");
 require("../theme/chalk");
 export default {
   props: {
@@ -139,17 +141,28 @@ export default {
           boundaryGap: false,
           data: [],
         },
+        // 启用dataZoom组件，用于区域缩放
+        dataZoom: [
+          {
+            type: "inside", // 使用滑动条形式的dataZoom
+            start: 0, // 左侧在数据窗口范围的起始百分比, 0 表示从头开始
+            end: 30, // 右侧在数据窗口范围的结束百分比, 100 表示到尾部结束
+            xAxisIndex: [0],
+          },
+        ],
         yAxis: {
           type: "value",
         },
         series: [
           {
             data: [],
-            type: "bar",
+            type: "line",
+            areaStyle: {},
           },
           {
             data: [],
-            type: "bar",
+            type: "line",
+            areaStyle: {},
           },
           {
             data: [],

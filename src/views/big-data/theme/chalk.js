@@ -21,16 +21,16 @@
     }
     echarts.registerTheme('chalk', {
         "color": [
-            "#fc97af",
-            "#87f7cf",
-            "#f7f494",
+            "#dbae44",
+            "#40c76e",
+            "#1d6bd9",
             "#72ccff",
             "#f7c5a0",
             "#d4a4eb",
             "#d2f5a6",
             "#76f2f2"
         ],
-        "backgroundColor": "rgba(9,30,69,1)",
+        "backgroundColor": "#081a40",
         "textStyle": {},
         "title": {
             "textStyle": {
@@ -132,9 +132,9 @@
             "symbol": "circle",
             "smooth": true,
             "color": [
-                "#fc97af",
-                "#87f7cf",
-                "#f7f494",
+                "#40c76e",
+                "#dbae44",
+                "#1d6bd9",
                 "#72ccff",
                 "#f7c5a0",
                 "#d4a4eb",

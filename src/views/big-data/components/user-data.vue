@@ -153,7 +153,7 @@ export default {
   .table-wrapper {
     // height: 155px;
     flex: 1;
-    overflow: hidden;
+    overflow-y: scroll;
   }
   ::v-deep .el-table::before {
     height: 0;
