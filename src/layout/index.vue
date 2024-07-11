@@ -251,7 +251,7 @@ export default {
 .mobile .fixed-header {
   width: 100%;
 }
-::v-deep .el-switch__core:after {
-  background-color: #f57129;
-}
+// ::v-deep .el-switch__core:after {
+//   background-color: #f57129;
+// }
 </style>

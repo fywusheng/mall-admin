@@ -27,14 +27,13 @@
 var echarts = require("echarts/lib/echarts");
 // 引入柱状图
 require("echarts/lib/chart/line");
-// 引入深色主题
-// require("echarts/theme/dark");
 // 引入提示框和标题组件
 require("echarts/lib/component/tooltip");
 require("echarts/lib/component/title");
 require("echarts/lib/component/dataZoom");
 require("echarts/lib/component/dataZoomInside");
 require("../theme/chalk");
+import lodash from "lodash";
 export default {
   props: {
     list: {
@@ -200,8 +199,10 @@ export default {
       }
     },
     getSeriesData(list, name) {
+      const DataList = lodash.cloneDeep(list);
+      const sortList = DataList.sort((a, b) => a.informationCount > b.informationCount);
       const data = [];
-      list.forEach((item) => {
+      sortList.forEach((item) => {
         data.push(item[name]);
       });
       return data;
