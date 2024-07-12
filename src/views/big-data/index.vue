@@ -28,7 +28,9 @@
             <div class="counter">{{ supplyTotalCount }}</div>
           </div>
         </div>
-        <div class="china-map" id="main"></div>
+        <div class="china-map" id="main">
+          <china @onSelect="handleOnSelect" />
+        </div>
       </div>
       <div class="right">
         <user-data :list="userList"></user-data>
@@ -49,7 +51,7 @@
 </template>
 
 <script>
-import "@/plugin/chart/echarts-all.js";
+// import "@/plugin/chart/echarts-all.js";
 import dayjs from "dayjs";
 import screenfull from "screenfull";
 import lodash from "lodash";
@@ -57,10 +59,11 @@ import { post } from "@/utils/http-client";
 import UserData from "./components/user-data.vue";
 import StoreData from "./components/store-data.vue";
 import SupplyData from "./components/supply-data.vue";
+import China from "./components/china.vue";
 
 export default {
   name: "BigData",
-  components: { UserData, StoreData, SupplyData },
+  components: { UserData, StoreData, SupplyData, China },
   data() {
     return {
       desenType: true, // 脱敏模式
@@ -79,7 +82,7 @@ export default {
     this.desenType = JSON.parse(window.localStorage.getItem("desenType"));
     this.updateTime();
     this.onresize = lodash.debounce(this.onresize, 700);
-    window.onresize = this.onresize;
+    // window.onresize = this.onresize;
     setTimeout(() => {
       // this.setEcahrtsHeight();
       this.initChart();
@@ -87,6 +90,10 @@ export default {
     this.indexOrderCount();
   },
   methods: {
+    handleOnSelect(name) {
+      this.area = name;
+      this.indexOrderCount();
+    },
     async indexOrderCount() {
       this.loading = true;
       let params = {
@@ -129,7 +136,8 @@ export default {
 
     initChart() {
       // 基于准备好的dom，初始化echarts图表
-      console.log(echarts);
+      // console.log(echarts);
+      return;
       var myChart = echarts.init(document.getElementById("main"));
 
       var option = {
@@ -195,7 +203,7 @@ export default {
           itemWidth: 20, // 值域图形宽度，线性渐变水平布局宽度为该值 * 10
           itemHeight: 14, // 值域图形高度，线性渐变垂直布局高度为该值 * 10
           splitNumber: 5, // 分割段数，默认为5，为0时为线性渐变
-          color: ["#4C65D9", "#f0ffff"], //颜色
+          color: ["#4A7CE4", "#f0ffff"], //颜色
           //text:['高','低'],         // 文本，默认为数值文本
           textStyle: {
             color: "#333", // 值域文字颜色
@@ -210,10 +218,28 @@ export default {
             roam: false,
             itemStyle: {
               normal: { label: { show: true } },
+              areaColor: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(27,132,199,0.7)",
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(46,197,251,0.7)",
+                  },
+                ],
+                global: false,
+              },
               emphasis: {
                 label: { show: true },
-                borderColor: "#FFF5D9",
-                color: "#FFF5D9",
+                borderColor: "#FFF9EC",
+                color: "#FFF9EC",
               },
             },
             data: [
