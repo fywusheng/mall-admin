@@ -59,7 +59,7 @@ import { post } from "@/utils/http-client";
 import UserData from "./components/user-data.vue";
 import StoreData from "./components/store-data.vue";
 import SupplyData from "./components/supply-data.vue";
-import China from "./components/china.vue";
+import China from "./components/china-v2.vue";
 
 export default {
   name: "BigData",

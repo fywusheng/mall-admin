@@ -8,8 +8,7 @@ module.exports = ({ file }) => {
         'unitPrecision': 3,
         'minPixelValue': 1,
         'fontVieportUnit': 'rem',
-        'selectorBlackList': [
-        ]
+        'selectorBlackList': ['songhui']
       }
     } : {}
   }
