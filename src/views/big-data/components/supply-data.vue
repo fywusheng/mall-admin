@@ -125,7 +125,7 @@ export default {
         grid: {
           top: "15px",
           left: "50px",
-          right: "15px",
+          right: "40px",
           bottom: "30px",
           // containLabel: true
         },
@@ -150,6 +150,7 @@ export default {
             start: 0, // 左侧在数据窗口范围的起始百分比, 0 表示从头开始
             end: 30, // 右侧在数据窗口范围的结束百分比, 100 表示到尾部结束
             xAxisIndex: [0],
+            zoomLock: true,
           },
         ],
         yAxis: {

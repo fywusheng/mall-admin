@@ -186,6 +186,9 @@ export default {
     font-weight: 400;
     top: 13px;
     align-items: center;
+    ::v-deep .el-switch__core:after {
+      background-color: #f57129;
+    }
     .swith {
       margin: 0 12px;
     }
@@ -251,7 +254,4 @@ export default {
 .mobile .fixed-header {
   width: 100%;
 }
-// ::v-deep .el-switch__core:after {
-//   background-color: #f57129;
-// }
 </style>

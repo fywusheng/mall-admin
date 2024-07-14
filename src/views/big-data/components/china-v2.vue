@@ -31,13 +31,13 @@ export default {
       provinces: [
         { name: "河北", label: { left: 900, top: 370 }, location: { left: 874, top: 285 }, backgroudImage: { url: require("@/assets/imgs/large/hebei.png"), width: 135, height: 172 } },
         { name: "黑龙江", label: { left: 1097, top: 124 }, location: { left: 999, top: 4 }, backgroudImage: { url: require("@/assets/imgs/large/heilongjiang.png"), width: 268, height: 234 } },
-        { name: "吉林", label: { left: 1072, top: 217 }, location: { left: 1026, top: 179 }, backgroudImage: { url: require("@/assets/imgs/large/jilin.png"), width: 203, height: 136 } },
-        { name: "辽宁", label: { left: 1018, top: 286 }, location: { left: 983, top: 254 }, backgroudImage: { url: require("@/assets/imgs/large/liaoning.png"), width: 154, height: 129 } },
+        { name: "吉林", label: { left: 1092, top: 217 }, location: { left: 1026, top: 179 }, backgroudImage: { url: require("@/assets/imgs/large/jilin.png"), width: 203, height: 136 } },
+        { name: "辽宁", label: { left: 1028, top: 286 }, location: { left: 983, top: 254 }, backgroudImage: { url: require("@/assets/imgs/large/liaoning.png"), width: 154, height: 129 } },
         { name: "北京", label: { left: 927, top: 319 }, location: { left: 912, top: 324 }, backgroudImage: { url: require("@/assets/imgs/large/beijing.png"), width: 48, height: 44 } },
         { name: "天津", label: { left: 946, top: 344 }, location: { left: 940, top: 342 }, backgroudImage: { url: require("@/assets/imgs/large/tianjin.png"), width: 37, height: 46 } },
         { name: "内蒙古", label: { left: 680, top: 320 }, location: { left: 539, top: 15 }, backgroudImage: { url: require("@/assets/imgs/large/neimenggu.png"), width: 555, height: 401 } },
         { name: "宁夏", label: { left: 703, top: 402 }, location: { left: 672, top: 362 }, backgroudImage: { url: require("@/assets/imgs/large/ningxia.png"), width: 79, height: 109 } },
-        { name: "甘肃", label: { left: 650, top: 475 }, location: { left: 427, top: 264 }, backgroudImage: { url: require("@/assets/imgs/large/gansu.png"), width: 347, height: 275 } },
+        { name: "甘肃", label: { left: 650, top: 435 }, location: { left: 427, top: 264 }, backgroudImage: { url: require("@/assets/imgs/large/gansu.png"), width: 347, height: 275 } },
         { name: "陕西", label: { left: 740, top: 487 }, location: { left: 692, top: 367 }, backgroudImage: { url: require("@/assets/imgs/large/shanxi.png"), width: 137, height: 207 } },
         { name: "山西", label: { left: 830, top: 409 }, location: { left: 805, top: 334 }, backgroudImage: { url: require("@/assets/imgs/large/sanxi.png"), width: 95, height: 162 } },
         { name: "青海", label: { left: 467, top: 409 }, location: { left: 342, top: 342 }, backgroudImage: { url: require("@/assets/imgs/large/qinghai.png"), width: 311, height: 203 } },
@@ -186,6 +186,7 @@ export default {
         transition: transform 0.5s linear;
         &:hover {
           transform: scale(1.2);
+          z-index: 6;
           .songhui-trapezoid {
             height: 0;
             border-top: 0 solid pink;
@@ -200,6 +201,7 @@ export default {
         }
         &.active {
           transform: scale(1.2);
+          z-index: 6;
           .songhui-trapezoid {
             height: 0;
             border-top: 0 solid pink;
