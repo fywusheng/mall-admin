@@ -139,6 +139,9 @@ export default {
           type: "category",
           boundaryGap: false,
           data: [],
+          axisLabel: {
+            interval: 0, // 显示所有标签
+          },
         },
         // 启用dataZoom组件，用于区域缩放
         dataZoom: [

@@ -1,5 +1,5 @@
 <template>
-  <div class="map">
+  <div class="map" ref="map">
     <div class="songhui-wrapper" :style="{ width: map.width + 'px', height: map.height + 'px' }">
       <img class="songhui-map" :style="{ width: map.width + 'px', height: map.height + 'px' }" :src="require('@/assets/imgs/large/map-bg.png')" alt="" />
       <div class="songhui-provinces">
@@ -7,7 +7,7 @@
       </div>
 
       <div class="songhui-labels">
-        <div v-for="(ele, index) in provinces" :key="index" :style="{ top: ele.label.top + 'px', left: ele.label.left + 'px' }" class="songhui-label" :class="{ active: ele.name === cityName }" @click="hanldeCityClick(ele)">
+        <div v-for="(ele, index) in labes" :key="index" :style="{ top: ele.label.top + 'px', left: ele.label.left + 'px' }" class="songhui-label" :class="{ active: ele.name === cityName }" @click="hanldeCityClick(ele)">
           <img class="songhui-label-point" :src="require('@/assets/imgs/large/point.png')" alt="" />
           <div class="songhui-trapezoid">
             <div class="songhui-trapezoid-text">{{ ele.name }}</div>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import lodash from "lodash";
 export default {
   data() {
     return {
@@ -60,24 +61,45 @@ export default {
         { name: "上海", label: { left: 1056, top: 545 }, location: { left: 1048, top: 559 }, backgroudImage: { url: require("@/assets/imgs/large/shanghai.png"), width: 30, height: 25 } },
         // { name: "海南", label: { left: 806, top: 843 }, location: { left: 765, top: 856 }, backgroudImage: { url: require("@/assets/imgs/large/hainan.png"), width: 69, height: 52 } },
       ],
+      labes: [],
       map: {
         width: 1323,
         height: 879,
       },
-      zoom: 0.7,
+      zoom: 0.5,
     };
   },
   mounted() {
-    // 引入资源
-    // window.onresize = this.onresize;
+    const _this = this;
+    this.onresize = lodash.debounce(this.onresize, 1000);
+    window.addEventListener("resize", function () {
+      _this.onresize();
+    });
+
     this.zoomChinaMap();
     this.getActiveCity(this.cityName);
+    this.$nextTick(() => {
+      this.setZoom();
+      this.zoomChinaMap();
+      this.getActiveCity(this.cityName);
+    });
   },
   methods: {
+    setZoom() {
+      const mapDom = this.$refs.map;
+      const mapWidth = mapDom.offsetWidth;
+      const mapHeight = mapDom.offsetHeight;
+      if (mapHeight > mapWidth) {
+        this.zoom = (mapWidth / 1323).toFixed(2);
+      } else {
+        this.zoom = (mapHeight / 879).toFixed(2);
+      }
+    },
     zoomChinaMap() {
-      this.map.width = this.map.width * this.zoom;
-      this.map.height = this.map.height * this.zoom;
-      this.provinces.forEach((item) => {
+      this.map.width = 1323 * this.zoom;
+      this.map.height = 879 * this.zoom;
+      this.labes = lodash.cloneDeep(this.provinces);
+      this.labes.forEach((item) => {
         item.label.left = item.label.left * this.zoom;
         item.label.top = item.label.top * this.zoom;
         item.location.left = item.location.left * this.zoom;
@@ -87,7 +109,7 @@ export default {
       });
     },
     getActiveCity(cityName) {
-      this.activeCity = this.provinces.filter((item) => item.name === cityName);
+      this.activeCity = this.labes.filter((item) => item.name === cityName);
       // console.log("this.activeCity: ", this.activeCity);
     },
     hanldeCityClick(item) {
@@ -96,7 +118,13 @@ export default {
       this.$emit("onSelect", item.name);
     },
     onresize() {
-      // this.myChart.resize();
+      this.map.height = 0;
+      this.map.width = 0;
+      this.$nextTick(() => {
+        this.setZoom();
+        this.zoomChinaMap();
+        this.getActiveCity(this.cityName);
+      });
     },
   },
 };

@@ -69,7 +69,7 @@ export default {
       desenType: true, // 脱敏模式
       isFullscreen: true,
       time: "",
-      area: "天津",
+      area: "黑龙江",
       loading: true,
       saleTotalCount: "", //销售总额
       userTotalCount: "", //用户总数
